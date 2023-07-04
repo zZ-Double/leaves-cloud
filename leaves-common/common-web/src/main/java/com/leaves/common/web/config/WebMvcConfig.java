@@ -18,6 +18,7 @@ import java.util.TimeZone;
 @Configuration
 @Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
