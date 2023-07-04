@@ -3,20 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>leaves-cloud</artifactId>
+        <artifactId>leaves-common</artifactId>
         <groupId>com.leaves</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>leaves-common</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>common-core</module>
-        <module>common-web</module>
-        <module>common-log</module>
-    </modules>
-
+    <artifactId>common-log</artifactId>
 
 </project>

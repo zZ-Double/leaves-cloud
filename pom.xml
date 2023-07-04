@@ -125,7 +125,19 @@
 
             <dependency>
                 <groupId>com.leaves</groupId>
-                <artifactId>leaves-common</artifactId>
+                <artifactId>common-core</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>common-log</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>common-web</artifactId>
                 <version>${project-version}</version>
             </dependency>
 

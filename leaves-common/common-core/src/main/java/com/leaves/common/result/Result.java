@@ -28,11 +28,11 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> failed() {
-        return failed(ResultCode.SYSTEM_ERROR.getMsg());
+        return failed(ResultCode.SYSTEM_EXECUTION_ERROR.getMsg());
     }
 
     public static <T> Result<T> failed(String msg) {
-        return failed(ResultCode.SYSTEM_ERROR, msg);
+        return failed(ResultCode.SYSTEM_RESOURCE_ERROR, msg);
     }
 
     public static <T> Result<T> failed(IResultCode resultCode) {
