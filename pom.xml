@@ -13,6 +13,8 @@
 
     <modules>
         <module>leaves-common</module>
+        <module>leaves-web-test</module>
+        <module>leaves-dubbo-test</module>
     </modules>
 
     <groupId>com.leaves</groupId>
@@ -26,10 +28,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <spring-boot.version>2.4.2</spring-boot.version>
 
         <!-- spring cloud -->
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+        <spring-cloud-ribbon.version>2.2.5.RELEASE</spring-cloud-ribbon.version>
 
         <!-- db && orm -->
         <mysql.version>8.0.19</mysql.version>
@@ -78,6 +82,12 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                <version>${spring-cloud-ribbon.version}</version>
             </dependency>
 
             <dependency>
@@ -141,13 +151,19 @@
                 <version>${project-version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>dubbo-api</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-                <!-- maven-compiler-plugin 插件，解决 Lombok + MapStruct 组合 -->
+                <!-- maven-compiler-plugin 插件 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>

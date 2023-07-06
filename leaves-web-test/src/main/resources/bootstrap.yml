@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: test-app
+  profiles:
+    active: dev
+logging:
+  file:
+    path: ./logs/
+  level:
+    dao: debug
+    org:
+      mybatis: debug
