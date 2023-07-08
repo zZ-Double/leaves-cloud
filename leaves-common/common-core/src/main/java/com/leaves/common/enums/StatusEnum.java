@@ -7,7 +7,9 @@ import lombok.Getter;
 public enum StatusEnum implements IBaseEnum<Integer> {
 
     DISABLE (0, "禁用"), // false
-    ENABLE(1, "启用"); // true
+    ENABLE(1, "启用"), // true
+
+    ;
 
     @Getter
     private Integer value;
