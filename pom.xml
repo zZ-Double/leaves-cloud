@@ -14,7 +14,6 @@
     <modules>
         <module>leaves-common</module>
         <module>leaves-web-test</module>
-        <module>leaves-dubbo-test</module>
     </modules>
 
     <groupId>com.leaves</groupId>
@@ -148,12 +147,6 @@
             <dependency>
                 <groupId>com.leaves</groupId>
                 <artifactId>common-web</artifactId>
-                <version>${project-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.leaves</groupId>
-                <artifactId>dubbo-api</artifactId>
                 <version>${project-version}</version>
             </dependency>
 

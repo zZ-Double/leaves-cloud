@@ -27,10 +27,6 @@
             <artifactId>common-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.leaves</groupId>
-            <artifactId>dubbo-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
