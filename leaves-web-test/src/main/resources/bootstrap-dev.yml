@@ -12,11 +12,11 @@ spring:
         server-addr: http://localhost:8848
         file-extension: yaml
         namespace: leaves-cloud
-dubbo:
-  protocol:
-    port: -1
-    name: dubbo
-  registry:
-    address: spring-cloud://localhost:8848
-  cloud:
-    subscribed-services: dubbo-service
+#dubbo:
+#  protocol:
+#    port: -1
+#    name: dubbo
+#  registry:
+#    address: spring-cloud://localhost:8848
+#  cloud:
+#    subscribed-services: dubbo-service
