@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.leaves.common.security.config.ResourceServerConfig,\
+  com.leaves.common.security.handler.MyAccessDeniedHandler,\
+  com.leaves.common.security.handler.MyAuthenticationEntryPoint

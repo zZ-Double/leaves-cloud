@@ -11,6 +11,21 @@ public interface GlobalConstants {
     String ROOT_ROLE_CODE = "ROOT";
 
     /**
+     * 角色前缀
+     */
+    String ROLE_PREFIX = "ROLE_";
+
+    /**
+     * 缓存权限前缀
+     */
+    String AUTH_PREFIX = "AUTH:USER_PERMS:";
+
+    /**
+     * 权限
+     */
+    String AUTHORITIES_CLAIM_NAME = "authorities";
+
+    /**
      * 根部门ID
      */
     String ROOT_NODE_ID = "0";
