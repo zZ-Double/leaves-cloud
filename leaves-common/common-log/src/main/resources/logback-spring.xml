@@ -74,6 +74,7 @@
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
     <root level="INFO">
+        <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE"/>
     </root>
 

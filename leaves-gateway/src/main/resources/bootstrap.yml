@@ -1,6 +1,8 @@
 server:
-  port: 8801
+  port: 9999
 spring:
+  application:
+    name: leaves-gateway
   cloud:
     nacos:
       # 注册中心
@@ -12,11 +14,8 @@ spring:
         server-addr: http://localhost:8848
         file-extension: yaml
         namespace: leaves-cloud
-#dubbo:
-#  protocol:
-#    port: -1
-#    name: dubbo
-#  registry:
-#    address: spring-cloud://localhost:8848
-#  cloud:
-#    subscribed-services: dubbo-service
+        # 共享配置
+        shared-configs[0]:
+          data-id: leaves-common.yaml
+          namespace: leaves-cloud
+          refresh: true
