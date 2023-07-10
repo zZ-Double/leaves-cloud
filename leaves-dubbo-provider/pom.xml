@@ -9,16 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>leaves-web-test</artifactId>
+    <artifactId>leaves-dubbo-provider</artifactId>
 
     <dependencies>
-
-        <!-- Api文档 -->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-micro-spring-boot-starter</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.leaves</groupId>
             <artifactId>common-core</artifactId>
@@ -38,18 +31,7 @@
             <groupId>com.leaves</groupId>
             <artifactId>leaves-dubbo-api</artifactId>
         </dependency>
-
     </dependencies>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

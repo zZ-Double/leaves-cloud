@@ -4,6 +4,11 @@ spring:
   application:
     name: leaves-gateway
   cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 启用服务发现
+          lower-case-service-id: true
     nacos:
       # 注册中心
       discovery:

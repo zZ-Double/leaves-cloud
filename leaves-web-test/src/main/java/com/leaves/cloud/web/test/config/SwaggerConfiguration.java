@@ -71,7 +71,7 @@ public class SwaggerConfiguration {
                 .title("测试服务")
                 .description("<div style='font-size:14px;color:red;'>测试接口</div>")
                 .termsOfServiceUrl("http://127.0.0.1:9999")
-                .contact("测试服务")
+                .contact("leaves")
                 .license("Apache-2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .version("1.0.0")

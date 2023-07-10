@@ -1,10 +1,8 @@
 server:
-  port: 8801
+  port: 8802
 spring:
   application:
-    name: test-app
-    profiles:
-      active: dev
+    name: leaves-dubbo-test
   cloud:
     nacos:
       # 注册中心
@@ -21,11 +19,19 @@ spring:
           data-id: leaves-common.yaml
           namespace: leaves-cloud
           refresh: true
+
 dubbo:
+  # 扫描的包路径
+  scan:
+    base-packages: com.leaves.dubbo
   protocol:
     # 除了该协议外还有hessian、thrift等其他协议可选
     name: dubbo
     # -1默认为随机分配端口
     port: -1
+  registry:
+    # 注册中心地址，这里用nacos作为注册发现
+    address: spring-cloud://localhost:8848
   cloud:
     subscribed-services: leaves-dubbo-test
+
