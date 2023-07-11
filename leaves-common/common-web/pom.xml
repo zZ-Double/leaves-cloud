@@ -84,12 +84,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-
-        <dependency>
-            <groupId>com.leaves</groupId>
-            <artifactId>common-core</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.leaves</groupId>
             <artifactId>common-log</artifactId>

@@ -18,6 +18,7 @@
         <module>leaves-auth</module>
         <module>leaves-dubbo-api</module>
         <module>leaves-dubbo-provider</module>
+        <module>leaves-system</module>
     </modules>
 
     <groupId>com.leaves</groupId>
@@ -184,6 +185,18 @@
             <dependency>
                 <groupId>com.leaves</groupId>
                 <artifactId>common-security</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>system-model</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>system-api</artifactId>
                 <version>${project-version}</version>
             </dependency>
 
