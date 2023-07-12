@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaves.system.mapper.SysMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.leaves.system.model.entity.SysMenu">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="perm" column="perm" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="redirect" column="redirect" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,parent_id,`type`,
+        `name`,`path`,component,
+        perm,icon,sort,
+        redirect,status,del_flag,
+        create_user,create_time,update_time,
+        update_user,remark
+    </sql>
+
+
+    <!-- 获取角色拥有的权限集合 -->
+    <select id="listRolePerms" resultType="java.lang.String">
+        SELECT
+        DISTINCT t1.perm
+        FROM
+        sys_menu t1
+        LEFT JOIN sys_role_menu t2 ON t2.menu_id = t1.id
+        LEFT JOIN sys_user_role t3 ON t2.role_id = t3.role_id
+        WHERE
+        t1.type = '${@com.leaves.system.model.enums.MenuTypeEnum@BUTTON.getValue()}'
+        AND t1.perm IS NOT NULL
+        <choose>
+            <when test="userId!=null and userId != ''">
+                AND t3.user_id = #{userId}
+            </when>
+            <otherwise>
+                AND t1.id = -1
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

@@ -12,6 +12,8 @@ import com.leaves.system.mapper.SysUserMapper;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
+import com.leaves.system.service.SysMenuService;
+import com.leaves.system.service.SysRoleService;
 import com.leaves.system.service.SysUserRoleService;
 import com.leaves.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author leaves
@@ -33,6 +37,8 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserRoleService userRoleService;
+    private final SysMenuService menuService;
+    private final SysRoleService roleService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -109,6 +115,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().in(CollectionUtil.isNotEmpty(deptIds), SysUser::getDeptId, deptIds);
         return this.baseMapper.selectCount(queryWrapper);
+    }
+
+    @Override
+    public UserVO getUserAuthInfo(String userName) {
+        // 用户名查询用户信息
+        SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda().
+                eq(SysUser::getUserName, userName));
+        Assert.isTrue(Objects.isNull(dbUser), "查询的数据不存在");
+        UserVO userVO = new UserVO();
+        BeanUtil.copyProperties(dbUser, userVO, true);
+
+        // 获取权限
+        Set<String> perms = menuService.listRolePerms(dbUser.getId());
+        userVO.setPerms(perms);
+        // 获取数据权限
+        Integer dataScope = roleService.getMaximumDataScope(dbUser.getId());
+        userVO.setDataScope(dataScope);
+        return userVO;
+
     }
 }
 

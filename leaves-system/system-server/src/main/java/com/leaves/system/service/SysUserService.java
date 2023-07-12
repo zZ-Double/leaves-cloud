@@ -26,4 +26,11 @@ public interface SysUserService extends IService<SysUser> {
 
     Integer listUserByDeptId(List<String> deptIds);
 
+    /**
+     * 获取用户认证信息
+     * @param userName
+     * @return
+     */
+    UserVO getUserAuthInfo(String userName);
+
 }

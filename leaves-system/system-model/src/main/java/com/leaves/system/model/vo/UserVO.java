@@ -4,6 +4,8 @@ import com.leaves.system.model.entity.SysUser;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 /**
  * @author leaves
  * @version 1.0
@@ -13,4 +15,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserVO extends SysUser {
+
+    private Set<String> perms;
+
+    private Integer dataScope;
 }

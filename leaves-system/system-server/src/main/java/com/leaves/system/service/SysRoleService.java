@@ -1,10 +1,13 @@
 package com.leaves.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.leaves.system.model.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.leaves.system.model.param.RoleParam;
 
 import java.util.List;
+import java.util.Set;
 
 /**
 * @author leaves
@@ -20,7 +23,6 @@ public interface SysRoleService extends IService<SysRole> {
      */
     Boolean saveRole(RoleParam param);
 
-
     /**
      * 移除角色
      * @param ids
@@ -29,18 +31,12 @@ public interface SysRoleService extends IService<SysRole> {
     Boolean removeRole(String ids);
 
     /**
-     * 修改角色
+     * 角色分页列表
+     *
      * @param param
      * @return
      */
-    Boolean updateRole(RoleParam param);
-
-    /**
-     * 角色详情
-     * @param id
-     * @return
-     */
-    SysRole getRole(String id);
+    IPage<SysRole> listRolePages(RoleParam param);
 
     /**
      * 角色列表
@@ -48,4 +44,29 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     List<SysRole> listRole(RoleParam param);
+
+    /**
+     * 获取最大范围的数据权限
+     *
+     * @param userId
+     * @return
+     */
+    Integer getMaximumDataScope(String userId);
+
+    /**
+     * 获取角色的资源ID集合,资源包括菜单和权限
+     *
+     * @param roleId
+     * @return
+     */
+    List<String> getRoleMenuIds(String roleId);
+
+    /**
+     * 修改角色的资源权限
+     *
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    Boolean updateRoleMenus(String roleId, List<String> menuIds);
 }

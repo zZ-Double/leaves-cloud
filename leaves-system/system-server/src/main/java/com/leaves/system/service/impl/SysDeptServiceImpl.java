@@ -15,7 +15,6 @@ import com.leaves.system.service.SysDeptService;
 import com.leaves.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;

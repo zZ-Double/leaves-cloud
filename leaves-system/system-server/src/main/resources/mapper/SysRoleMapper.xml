@@ -25,4 +25,24 @@
         create_user,create_time,update_user,
         update_time,remark
     </sql>
+
+    <!-- 获取最大范围的数据权限 -->
+    <select id="getMaximumDataScope" resultType="java.lang.Integer">
+        SELECT
+        min(data_scope)
+        FROM
+        sys_role r LEFT JOIN sys_user_role ur on r.id = ur.role_id
+        <where>
+            <choose>
+                <when test="userId != null and userid != ''">
+                    ur.user_id = #{userId}
+                </when>
+                <otherwise>
+                    r.id = -1
+                </otherwise>
+            </choose>
+        </where>
+
+    </select>
+
 </mapper>

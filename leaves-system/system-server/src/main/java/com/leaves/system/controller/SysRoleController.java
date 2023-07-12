@@ -1,6 +1,7 @@
 package com.leaves.system.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.param.RoleParam;
 import com.leaves.system.service.SysRoleService;
@@ -48,7 +49,7 @@ public class SysRoleController {
     @ApiOperation(value = "修改角色信息")
 //    @Log(title = "修改角色信息")
     public Boolean updateRole(@RequestBody @Validated(RoleParam.edit.class) RoleParam param) {
-        return roleService.updateRole(param);
+        return roleService.saveRole(param);
     }
 
 
@@ -56,9 +57,15 @@ public class SysRoleController {
     @GetMapping(value = "/query/{id}")
     @ApiOperation(value = "角色ID查询角色")
     public SysRole getRole(@PathVariable String id) {
-        return roleService.getRole(id);
+        return roleService.getById(id);
     }
 
+
+    @ApiOperation(value = "角色分页列表")
+    @GetMapping("/pages")
+    public IPage<SysRole> listRolePages(RoleParam param) {
+        return roleService.listRolePages(param);
+    }
 
     //    @PreAuthorize("hasAuthority('sys:role:list')")
     @GetMapping(value = "/list")

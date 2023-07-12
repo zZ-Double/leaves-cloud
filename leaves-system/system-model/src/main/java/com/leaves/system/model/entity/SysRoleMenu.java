@@ -6,20 +6,17 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 角色和权限关联表
+ * 角色和资源关联表
  *
- * @TableName sys_role_permission
+ * @TableName sys_role_menu
  */
-@TableName(value = "sys_role_permission")
+@TableName(value = "sys_role_menu")
 @Data
-public class SysRolePermission implements Serializable {
+public class SysRoleMenu implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
@@ -29,12 +26,20 @@ public class SysRolePermission implements Serializable {
     private String roleId;
 
     /**
-     * 权限ID
+     * 菜单ID
      */
-    private String perId;
+    private String menuId;
 
+    /**
+     * 删除标志位
+     */
     @TableLogic
-    private Boolean delFlag;
+    private Integer delFlag;
+
+    public SysRoleMenu(String roleId, String menuId) {
+        this.roleId = roleId;
+        this.menuId = menuId;
+    }
 
 
 }
