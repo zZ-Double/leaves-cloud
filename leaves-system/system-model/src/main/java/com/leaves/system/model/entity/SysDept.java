@@ -1,5 +1,6 @@
 package com.leaves.system.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.leaves.common.base.BaseEntity;
 import lombok.Data;
@@ -53,9 +54,5 @@ public class SysDept extends BaseEntity {
      */
     private Boolean status;
 
-    /**
-     * 删除标志
-     */
-    private Boolean delFlag;
 
 }

@@ -45,7 +45,7 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
                 String host = routeDefinition.getUri().getHost();
                 routeHosts.add(host);
                 String url = "/" + host + "/v2/api-docs";
-                if (!existsServer.contains(url) && !host.contains("dubbo")) {
+                if (!existsServer.contains(url)) {
                     existsServer.add(url);
                     resources.add(swaggerResource(host, url));
                 }

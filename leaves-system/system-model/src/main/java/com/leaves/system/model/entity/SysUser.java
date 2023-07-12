@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.leaves.common.base.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * 用户信息表
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @TableName(value = "sys_user")
 @Data
-public class SysUser extends BaseEntity implements Serializable {
+public class SysUser extends BaseEntity {
 
     /**
      * 登录账号
@@ -79,11 +77,6 @@ public class SysUser extends BaseEntity implements Serializable {
      * 状态
      */
     private Boolean status;
-
-    /**
-     * 删除标志
-     */
-    private Boolean delFlag;
 
     /**
      * 备注

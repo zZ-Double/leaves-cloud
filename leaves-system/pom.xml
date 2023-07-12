@@ -12,7 +12,7 @@
     <artifactId>leaves-system</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>system-service</module>
+        <module>system-server</module>
         <module>system-api</module>
         <module>system-model</module>
     </modules>

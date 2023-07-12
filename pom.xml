@@ -202,6 +202,12 @@
 
             <dependency>
                 <groupId>com.leaves</groupId>
+                <artifactId>system-server</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
                 <artifactId>leaves-dubbo-api</artifactId>
                 <version>${project-version}</version>
             </dependency>

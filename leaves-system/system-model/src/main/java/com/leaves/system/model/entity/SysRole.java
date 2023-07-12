@@ -1,5 +1,6 @@
 package com.leaves.system.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
@@ -12,7 +13,7 @@ import lombok.Data;
  */
 @TableName(value ="sys_role")
 @Data
-public class SysRole extends BaseEntity implements Serializable {
+public class SysRole extends BaseEntity {
 
     /**
      * 角色名称
@@ -33,11 +34,6 @@ public class SysRole extends BaseEntity implements Serializable {
      * 状态
      */
     private Boolean status;
-
-    /**
-     * 删除标志
-     */
-    private Boolean delFlag;
 
     /**
      * 备注

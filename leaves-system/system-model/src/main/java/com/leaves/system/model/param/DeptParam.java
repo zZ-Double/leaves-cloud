@@ -2,6 +2,7 @@ package com.leaves.system.model.param;
 
 import com.leaves.common.base.BaseParam;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
