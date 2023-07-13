@@ -26,6 +26,11 @@
 
         <dependency>
             <groupId>com.leaves</groupId>
+            <artifactId>common-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.leaves</groupId>
             <artifactId>system-api</artifactId>
         </dependency>
 
