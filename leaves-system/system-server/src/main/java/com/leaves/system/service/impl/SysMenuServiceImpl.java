@@ -36,7 +36,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         MenuTypeEnum menuType = menu.getType();  // 菜单类型
         switch (menuType) {
             case CATALOG: // 目录
-                Assert.isTrue(path.startsWith("/"), "目录路由路径格式错误，必须以/开始");
+                Assert.isTrue(!path.startsWith("/"), "目录路由路径格式错误，必须以/开始");
                 menu.setComponent("Layout");
                 break;
             case EXT_LINK: // 外链

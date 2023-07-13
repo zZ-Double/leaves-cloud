@@ -47,7 +47,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                         wrapper.eq(SysRole::getRoleCode, param.getRoleCode())
                                 .or().eq(SysRole::getRoleName, param.getRoleName())
                 ));
-        Assert.isTrue(count > 0, "角色名称或角色编码重复，请检查！");
+        Assert.isTrue(count <= 0, "角色名称或角色编码重复，请检查！");
 
         SysRole sysRole = new SysRole();
         BeanUtil.copyProperties(param, sysRole, true);
@@ -57,14 +57,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean removeRole(String ids) {
-        Assert.isTrue(StrUtil.isBlank(ids), "删除的数据不存在");
+        Assert.isTrue(StrUtil.isNotBlank(ids), "删除的数据不存在");
         List<String> roleIds = Arrays.asList(ids.split(","));
 
         Optional.ofNullable(roleIds)
                 .orElse(new ArrayList<>())
                 .forEach(id -> {
                     long count = userRoleService.count(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, id));
-                    Assert.isTrue(count > 0, "该角色已分配用户，无法删除");
+                    Assert.isTrue(count <= 0, "该角色已分配用户，无法删除");
                     roleMenuService.remove(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, id));
                 });
 

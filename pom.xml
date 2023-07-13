@@ -13,11 +13,8 @@
 
     <modules>
         <module>leaves-common</module>
-        <module>leaves-web-test</module>
         <module>leaves-gateway</module>
         <module>leaves-auth</module>
-        <module>leaves-dubbo-api</module>
-        <module>leaves-dubbo-provider</module>
         <module>leaves-system</module>
     </modules>
 
@@ -203,12 +200,6 @@
             <dependency>
                 <groupId>com.leaves</groupId>
                 <artifactId>system-server</artifactId>
-                <version>${project-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.leaves</groupId>
-                <artifactId>leaves-dubbo-api</artifactId>
                 <version>${project-version}</version>
             </dependency>
 

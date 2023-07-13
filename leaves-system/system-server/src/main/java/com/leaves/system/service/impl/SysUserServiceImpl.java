@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //以登录账户查询是否存在记录 存在则抛出异常
         SysUser dbSysUser = this.baseMapper.selectOne(new QueryWrapper<SysUser>()
                 .lambda().eq(SysUser::getUserName, param.getUserName()));
-        Assert.isTrue(ObjectUtil.isNotNull(dbSysUser), "新增用户失败,登录账号已存在");
+        Assert.isTrue(ObjectUtil.isNull(dbSysUser), "新增用户失败,登录账号已存在");
 
         SysUser sysUser = new SysUser();
         //利用huTool BeanUtil 进行Bean拷贝, 忽略null
@@ -65,7 +65,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean removeUser(String ids) {
-        Assert.isTrue(StrUtil.isBlank(ids), "删除的数据为空");
+        Assert.isTrue(StrUtil.isNotBlank(ids), "删除的数据为空");
         List<String> userIds = Arrays.asList(ids.split(","));
         // 移除用户角色
         userRoleService.removeUserRoles(userIds);
@@ -78,7 +78,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean updateUser(UserParam param) {
         //查询用户是否存在 不存在则抛出自定义异常
         SysUser dbSysUser = this.baseMapper.selectById(param.getId());
-        Assert.isTrue(ObjectUtils.isEmpty(dbSysUser), "当前用户不存在，请重试");
+        Assert.isTrue(Objects.nonNull(dbSysUser), "当前用户不存在，请重试");
 
         BeanUtil.copyProperties(param, dbSysUser, true);
         boolean flag = this.baseMapper.updateById(dbSysUser) > 0;
@@ -92,7 +92,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public UserVO getUser(String id) {
         SysUser dbSysUser = this.baseMapper.selectById(id);
-        Assert.isTrue(ObjectUtils.isEmpty(dbSysUser), "当前用户不存在，请重试");
+        Assert.isTrue(Objects.nonNull(dbSysUser), "当前用户不存在，请重试");
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(dbSysUser, userVO);
         return userVO;
@@ -111,7 +111,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Integer listUserByDeptId(List<String> deptIds) {
-        Assert.isTrue(CollectionUtil.isEmpty(deptIds), "查询的数据不存在");
+        Assert.isTrue(CollectionUtil.isNotEmpty(deptIds), "查询的数据不存在");
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().in(CollectionUtil.isNotEmpty(deptIds), SysUser::getDeptId, deptIds);
         return this.baseMapper.selectCount(queryWrapper);
@@ -122,7 +122,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 用户名查询用户信息
         SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda().
                 eq(SysUser::getUserName, userName));
-        Assert.isTrue(Objects.isNull(dbUser), "查询的数据不存在");
+        Assert.isTrue(Objects.nonNull(dbUser), "查询的数据不存在");
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(dbUser, userVO, true);
 

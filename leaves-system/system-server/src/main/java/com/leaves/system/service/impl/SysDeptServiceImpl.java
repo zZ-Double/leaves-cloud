@@ -36,11 +36,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
         // 重名判断
         Integer exist = this.baseMapper.checkUniqueName(param.getDeptName(), param.getParentId());
-        Assert.isTrue(exist > 0, "部门名称" + param.getDeptName() + "已存在");
+        Assert.isTrue(exist <= 0, "部门名称" + param.getDeptName() + "已存在");
 
         // 判断父节点状态
         SysDept parentDept = this.baseMapper.selectById(param.getParentId());
-        Assert.isTrue(parentDept.getStatus().equals(StatusEnum.DISABLE.getValue()), "部门已停用，不允许新增");
+        Assert.isTrue(!parentDept.getStatus().equals(StatusEnum.DISABLE.getValue()), "部门已停用，不允许新增");
 
         SysDept sysDept = new SysDept();
         BeanUtil.copyProperties(param, sysDept, true);
@@ -58,11 +58,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         QueryWrapper<SysDept> deptQueryWrapper = new QueryWrapper();
         deptQueryWrapper.lambda().in(CollectionUtil.isNotEmpty(deptIds), SysDept::getParentId, deptIds);
         Integer count = this.baseMapper.selectCount(deptQueryWrapper);
-        Assert.isTrue(count > 0, "当前节点存在下级节点，不能删除");
+        Assert.isTrue(count == 0, "当前节点存在下级节点，不能删除");
 
         // 判断当前节点是否存在用户
         Integer integer = userService.listUserByDeptId(deptIds);
-        Assert.isTrue(integer > 0, "当前节点存在用户，不能删除");
+        Assert.isTrue(integer == 0, "当前节点存在用户，不能删除");
 
         return this.baseMapper.deleteBatchIds(deptIds) > 0;
     }
@@ -70,7 +70,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public Boolean updateDept(DeptParam param) {
         SysDept dbSysDept = this.baseMapper.selectById(param.getId());
-        Assert.isTrue(Objects.isNull(dbSysDept), "未查询到当前记录,请重试");
+        Assert.isTrue(Objects.nonNull(dbSysDept), "未查询到当前记录,请重试");
 
         BeanUtil.copyProperties(param, dbSysDept, true);
         return this.baseMapper.updateById(dbSysDept) > 0;
@@ -79,7 +79,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public DeptVO getDept(String id) {
         SysDept dbSysDept = this.baseMapper.selectById(id);
-        Assert.isTrue(Objects.isNull(dbSysDept), "未查询到当前记录,请重试");
+        Assert.isTrue(Objects.nonNull(dbSysDept), "未查询到当前记录,请重试");
         DeptVO vo = new DeptVO();
         BeanUtil.copyProperties(dbSysDept, vo, true);
         return vo;

@@ -1,13 +1,10 @@
-package com.leaves.cloud.web.test.config;
+package com.leaves.auth.config;
 
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -21,13 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Kni4j配置类
- */
 @Configuration
 @EnableSwagger2WebMvc
-@Import(BeanValidatorPluginsConfiguration.class)
-@Slf4j
 public class SwaggerConfiguration {
 
     @Value("${knife4j.password_token_url}")
@@ -67,9 +59,8 @@ public class SwaggerConfiguration {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("测试服务")
-                .description("<div style='font-size:14px;color:red;'>测试接口</div>")
+        return new ApiInfoBuilder().title("OAuth2认证中心")
+                .description("<div style='font-size:14px;color:red;'>OAuth2认证、注销、获取验签公钥接口</div>")
                 .termsOfServiceUrl("http://127.0.0.1:9999")
                 .contact("leaves")
                 .license("Apache-2.0")

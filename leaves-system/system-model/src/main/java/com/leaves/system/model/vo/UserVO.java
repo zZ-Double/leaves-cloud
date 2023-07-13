@@ -16,7 +16,18 @@ import java.util.Set;
 @Getter
 public class UserVO extends SysUser {
 
+    /**
+     * 角色ID集合
+     */
+    private Set<String> roles;
+
+    /**
+     * 权限编码集合
+     */
     private Set<String> perms;
 
+    /**
+     * 数据权限范围
+     */
     private Integer dataScope;
 }
