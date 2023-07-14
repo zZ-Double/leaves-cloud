@@ -2,6 +2,7 @@ package com.leaves.auth.config;
 
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
+import com.leaves.auth.extension.refresh.PreAuthenticatedUserDetailsService;
 import com.leaves.auth.userdetails.SysUserDetailsServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.result.Result;
@@ -14,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,6 +31,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -129,9 +132,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        clientUserDetailsServiceMap.put(SecurityConstants.WEAPP_CLIENT_ID, memberUserDetailsService); // 微信小程序客户端
 
         // 刷新token模式下，重写预认证提供者替换其AuthenticationManager，可自定义根据客户端ID和认证方式区分用户体系获取认证用户信息
-//        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-//        provider.setPreAuthenticatedUserDetailsService(new PreAuthenticatedUserDetailsService<>(clientUserDetailsServiceMap));
-//        tokenServices.setAuthenticationManager(new ProviderManager(Arrays.asList(provider)));
+        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+        provider.setPreAuthenticatedUserDetailsService(new PreAuthenticatedUserDetailsService<>(clientUserDetailsServiceMap));
+        tokenServices.setAuthenticationManager(new ProviderManager(Arrays.asList(provider)));
 
         /**
          * refresh_token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
