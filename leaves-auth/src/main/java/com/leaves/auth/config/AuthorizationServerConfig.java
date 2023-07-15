@@ -2,6 +2,7 @@ package com.leaves.auth.config;
 
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
+import com.leaves.auth.extension.captcha.CaptchaTokenGranter;
 import com.leaves.auth.extension.refresh.PreAuthenticatedUserDetailsService;
 import com.leaves.auth.userdetails.SysUserDetailsServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
@@ -79,10 +80,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // 获取原有默认授权模式(授权码模式、密码模式、客户端模式、简化模式)的授权者
         List<TokenGranter> granterList = new ArrayList<>(Arrays.asList(endpoints.getTokenGranter()));
 
-//        // 添加验证码授权模式授权者
-//        granterList.add(new CaptchaTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(),
-//                endpoints.getOAuth2RequestFactory(), authenticationManager, stringRedisTemplate
-//        ));
+        // 添加验证码授权模式授权者
+        granterList.add(new CaptchaTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(),
+                endpoints.getOAuth2RequestFactory(), authenticationManager, stringRedisTemplate
+        ));
 //
 //        // 添加手机短信验证码授权模式的授权者
 //        granterList.add(new SmsCodeTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(),
