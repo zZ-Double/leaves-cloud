@@ -22,9 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码处理器
- *
- * @author haoxr
- * @date 2021/10/4
  */
 @Component
 @RequiredArgsConstructor

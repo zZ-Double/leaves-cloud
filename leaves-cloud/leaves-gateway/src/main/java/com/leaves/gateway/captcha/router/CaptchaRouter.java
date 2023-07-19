@@ -11,9 +11,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 /**
  * 验证码路由
- *
- * @author haoxr
- * @date 2022/5/17 12:10
  */
 @Configuration
 public class CaptchaRouter {
