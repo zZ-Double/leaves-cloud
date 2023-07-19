@@ -1,6 +1,6 @@
 package com.leaves.gateway.captcha.router;
 
-import com.youlai.gateway.captcha.handler.CaptchaHandler;
+import com.leaves.gateway.captcha.handler.CaptchaHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
