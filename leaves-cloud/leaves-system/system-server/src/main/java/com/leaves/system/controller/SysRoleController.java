@@ -11,14 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * <p>
- * 角色信息表 前端控制器
- * </p>
- *
- * @author leaves
- * @since 2022-03-16
- */
 @Api(tags = "角色管理")
 @RestController
 @RequestMapping("/api/v1/role")

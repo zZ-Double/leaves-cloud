@@ -15,14 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * <p>
- * 部门表 前端控制器
- * </p>
- *
- * @author leaves
- * @since 2022-05-15
- */
 @Api(tags = "部门管理")
 @RestController
 @RequestMapping("/api/v1/dept")

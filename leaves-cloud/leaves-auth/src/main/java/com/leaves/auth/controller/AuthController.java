@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -31,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthController {
     private final TokenEndpoint tokenEndpoint;
     private final RedisTemplate redisTemplate;
+    private final TokenStore tokenStore;
 
     @ApiOperation(value = "OAuth2认证", notes = "登录入口")
     @ApiImplicitParams({
@@ -74,23 +77,38 @@ public class AuthController {
     @ApiOperation(value = "注销")
     @DeleteMapping("/logout")
     public Result logout() {
-        String payload = RequestUtils.getJwtPayload();
+        String token = RequestUtils.getJwtToken();
 
-        if (StrUtil.isNotBlank(payload)) {
-            JSONObject entries = JSONUtil.parseObj(payload);
-            if (entries != null) {
-                String jti = entries.getStr("jti"); // JWT唯一标识
-                Long expireTime = entries.getLong("exp"); // JWT过期时间戳(单位：秒)
-                if (expireTime != null) {
-                    long currentTime = System.currentTimeMillis() / 1000;// 当前时间（单位：秒）
-                    if (expireTime > currentTime) { // token未过期，添加至缓存作为黑名单限制访问，缓存时间为token过期剩余时间
-                        redisTemplate.opsForValue().set(GlobalConstants.BLACKLIST_TOKEN_PREFIX + jti, null, (expireTime - currentTime), TimeUnit.SECONDS);
-                    }
-                } else { // token 永不过期则永久加入黑名单
-                    redisTemplate.opsForValue().set(GlobalConstants.BLACKLIST_TOKEN_PREFIX + jti, null);
-                }
-            }
+        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+        if (oAuth2AccessToken != null) {
+            OAuth2RefreshToken oAuth2RefreshToken = tokenStore.readRefreshToken(token);
+            //从tokenStore中移除token
+            tokenStore.removeAccessToken(oAuth2AccessToken);
+            tokenStore.removeRefreshToken(oAuth2RefreshToken);
+            tokenStore.removeAccessTokenUsingRefreshToken(oAuth2RefreshToken);
+            return Result.success("注销成功");
+        } else {
+            return Result.failed("token已失效，请勿重复登出");
         }
-        return Result.success("注销成功");
+
+
+//        String payload = RequestUtils.getJwtPayload();
+//
+//        if (StrUtil.isNotBlank(payload)) {
+//            JSONObject entries = JSONUtil.parseObj(payload);
+//            if (entries != null) {
+//                String jti = entries.getStr("jti"); // JWT唯一标识
+//                Long expireTime = entries.getLong("exp"); // JWT过期时间戳(单位：秒)
+//                if (expireTime != null) {
+//                    long currentTime = System.currentTimeMillis() / 1000;// 当前时间（单位：秒）
+//                    if (expireTime > currentTime) { // token未过期，添加至缓存作为黑名单限制访问，缓存时间为token过期剩余时间
+//                        redisTemplate.opsForValue().set(GlobalConstants.BLACKLIST_TOKEN_PREFIX + jti, null, (expireTime - currentTime), TimeUnit.SECONDS);
+//                    }
+//                } else { // token 永不过期则永久加入黑名单
+//                    redisTemplate.opsForValue().set(GlobalConstants.BLACKLIST_TOKEN_PREFIX + jti, null);
+//                }
+//            }
+//        }
+//        return Result.success("注销成功");
     }
 }

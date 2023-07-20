@@ -12,14 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * <p>
- * 用户信息表 前端控制器
- * </p>
- *
- * @author leaves
- * @since 2022-03-16
- */
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping("/api/v1/user")

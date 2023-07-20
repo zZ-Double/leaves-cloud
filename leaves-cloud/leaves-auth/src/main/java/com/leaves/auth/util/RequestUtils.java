@@ -43,6 +43,20 @@ public class RequestUtils {
         return clientId;
     }
 
+    /**
+     * 获取JWT Payload
+     *
+     * @return
+     */
+    public static String getJwtToken() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String authorization = request.getHeader("Authorization");
+        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, "Bearer ")) {
+            authorization = StrUtil.replaceIgnoreCase(authorization, "Bearer ", "");
+        }
+        return authorization;
+    }
+
 
     /**
      * 获取JWT Payload
