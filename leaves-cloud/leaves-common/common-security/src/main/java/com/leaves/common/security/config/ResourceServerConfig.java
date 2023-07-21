@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONUtil;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.security.filter.BlackListTokenFilter;
 import com.leaves.common.security.handler.MyMethodSecurityExpressionHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +57,7 @@ public class ResourceServerConfig {
 
         http
                 .csrf().disable()
+                .addFilterBefore(new BlackListTokenFilter(redisTemplate), AbstractPreAuthenticatedProcessingFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()

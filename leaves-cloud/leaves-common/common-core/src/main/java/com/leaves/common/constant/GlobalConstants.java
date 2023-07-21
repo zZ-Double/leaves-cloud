@@ -25,6 +25,17 @@ public interface GlobalConstants {
      */
     String AUTHORITIES_CLAIM_NAME = "authorities";
 
+
+    /**
+     * Token 请求头
+     */
+    String AUTH_REQUEST_HEARD = "Authorization";
+
+    /**
+     * Token 前缀
+     */
+    String JWT_TOKEN_PREFIX = "Bearer";
+
     /**
      * 根部门ID
      */
