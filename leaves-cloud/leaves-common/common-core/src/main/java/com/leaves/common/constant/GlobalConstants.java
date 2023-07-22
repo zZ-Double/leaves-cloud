@@ -34,7 +34,7 @@ public interface GlobalConstants {
     /**
      * Token 前缀
      */
-    String JWT_TOKEN_PREFIX = "Bearer";
+    String JWT_TOKEN_PREFIX = "Bearer ";
 
     /**
      * 根部门ID

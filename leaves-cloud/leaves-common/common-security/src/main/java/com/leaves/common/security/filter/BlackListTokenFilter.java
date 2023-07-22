@@ -9,19 +9,14 @@ import com.leaves.common.result.Result;
 import com.leaves.common.result.ResultCode;
 import com.nimbusds.jose.JWSObject;
 import lombok.SneakyThrows;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
-import reactor.core.publisher.Mono;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * @author leaves
@@ -46,8 +41,11 @@ public class BlackListTokenFilter extends OncePerRequestFilter {
         String token = request.getHeader(GlobalConstants.AUTH_REQUEST_HEARD);
         if (StrUtil.isBlank(token)) {
             filterChain.doFilter(request, response);
+            return;
         }
-        token = token.replace(GlobalConstants.JWT_TOKEN_PREFIX, Strings.EMPTY);
+        if (StrUtil.startWithIgnoreCase(token, GlobalConstants.JWT_TOKEN_PREFIX)) {
+            token = StrUtil.replaceIgnoreCase(token, GlobalConstants.JWT_TOKEN_PREFIX, "");
+        }
         JWSObject jwsObject = JWSObject.parse(token);
         String payload = jwsObject.getPayload().toString();
 
