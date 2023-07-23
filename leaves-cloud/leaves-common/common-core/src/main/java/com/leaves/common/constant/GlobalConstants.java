@@ -37,6 +37,16 @@ public interface GlobalConstants {
     String JWT_TOKEN_PREFIX = "Bearer ";
 
     /**
+     * Jwt 唯一标识
+     */
+    String JWT_JTI = "jti";
+
+    /**
+     * Jwt 过期时间
+     */
+    String JWT_EXP = "exp";
+
+    /**
      * 根部门ID
      */
     String ROOT_NODE_ID = "0";

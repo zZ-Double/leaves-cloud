@@ -51,7 +51,7 @@ public class BlackListTokenFilter extends OncePerRequestFilter {
 
         // 黑名单token(登出、修改密码)校验
         JSONObject jsonObject = JSONUtil.parseObj(payload);
-        String jti = jsonObject.getStr("jti"); // JWT唯一标识
+        String jti = jsonObject.getStr(GlobalConstants.JWT_JTI); // JWT唯一标识
 
         Boolean isBlack = redisTemplate.hasKey(GlobalConstants.BLACKLIST_TOKEN_PREFIX + jti);
         if (isBlack) {

@@ -1,6 +1,7 @@
 package com.leaves.auth.util;
 
 import cn.hutool.core.util.StrUtil;
+import com.leaves.common.constant.GlobalConstants;
 import com.nimbusds.jose.JWSObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -51,8 +52,8 @@ public class RequestUtils {
     public static String getJwtToken() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String authorization = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, "Bearer ")) {
-            authorization = StrUtil.replaceIgnoreCase(authorization, "Bearer ", "");
+        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX)) {
+            authorization = StrUtil.replaceIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX, "");
         }
         return authorization;
     }
@@ -67,8 +68,8 @@ public class RequestUtils {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String payload = null;
         String authorization = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, "Bearer ")) {
-            authorization = StrUtil.replaceIgnoreCase(authorization, "Bearer ", "");
+        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX)) {
+            authorization = StrUtil.replaceIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX, "");
             try {
                 payload = JWSObject.parse(authorization).getPayload().toString();
             } catch (ParseException e) {

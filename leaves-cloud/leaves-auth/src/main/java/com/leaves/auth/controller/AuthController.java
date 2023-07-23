@@ -82,8 +82,8 @@ public class AuthController {
         if (StrUtil.isNotBlank(payload)) {
             JSONObject entries = JSONUtil.parseObj(payload);
             if (entries != null) {
-                String jti = entries.getStr("jti"); // JWT唯一标识
-                Long expireTime = entries.getLong("exp"); // JWT过期时间戳(单位：秒)
+                String jti = entries.getStr(GlobalConstants.JWT_JTI); // JWT唯一标识
+                Long expireTime = entries.getLong(GlobalConstants.JWT_EXP); // JWT过期时间戳(单位：秒)
                 if (expireTime != null) {
                     long currentTime = System.currentTimeMillis() / 1000;// 当前时间（单位：秒）
                     if (expireTime > currentTime) { // token未过期，添加至缓存作为黑名单限制访问，缓存时间为token过期剩余时间
