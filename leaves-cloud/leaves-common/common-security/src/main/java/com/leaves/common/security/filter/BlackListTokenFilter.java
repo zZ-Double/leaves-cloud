@@ -43,6 +43,9 @@ public class BlackListTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (StrUtil.startWithIgnoreCase(token, GlobalConstants.JWT_TOKEN_PREFIX)) {
+            token = StrUtil.replaceIgnoreCase(token, GlobalConstants.JWT_TOKEN_PREFIX, "");
+        }
         JWSObject jwsObject = JWSObject.parse(token);
         String payload = jwsObject.getPayload().toString();
 
