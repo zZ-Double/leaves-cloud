@@ -1,4 +1,4 @@
-package com.leaves.gateway.captcha.enums;
+package com.leaves.auth.captcha.enums;
 
 /**
  * 验证码类型枚举

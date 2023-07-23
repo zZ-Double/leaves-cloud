@@ -1,6 +1,7 @@
-package com.leaves.gateway.captcha.producer;
+package com.leaves.auth.captcha.producer;
 
-import com.leaves.gateway.captcha.enums.CaptchaTypeEnum;
+
+import com.leaves.auth.captcha.enums.CaptchaTypeEnum;
 import com.wf.captcha.*;
 import com.wf.captcha.base.Captcha;
 import org.springframework.stereotype.Component;

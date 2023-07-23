@@ -1,31 +1,30 @@
-package com.leaves.gateway.captcha.handler;
+package com.leaves.auth.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.leaves.auth.captcha.enums.CaptchaTypeEnum;
+import com.leaves.auth.captcha.producer.CaptchaProducer;
 import com.leaves.common.constant.GlobalConstants;
-import com.leaves.common.result.Result;
-import com.leaves.gateway.captcha.enums.CaptchaTypeEnum;
-import com.leaves.gateway.captcha.producer.CaptchaProducer;
 import com.wf.captcha.base.Captcha;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.HandlerFunction;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 验证码处理器
- */
-@Component
+@Api(tags = "验证码管理")
+@RestController
+@RequestMapping("/captcha")
 @RequiredArgsConstructor
-public class CaptchaHandler implements HandlerFunction<ServerResponse> {
+@Slf4j
+public class CaptchaController {
 
     private final CaptchaProducer captchaProducer;
     private final StringRedisTemplate stringRedisTemplate;
@@ -42,8 +41,9 @@ public class CaptchaHandler implements HandlerFunction<ServerResponse> {
     @Value("${captcha.ttl:120}")
     long captchaValueTtl;
 
-    @Override
-    public Mono<ServerResponse> handle(ServerRequest request) {
+    @ApiOperation("生成图形验证码")
+    @GetMapping("/image")
+    public Map<String, String> imageHandle() {
 
         Captcha captcha = captchaProducer.getCaptcha(captchaType);
         String captchaValue = captcha.text();
@@ -64,6 +64,6 @@ public class CaptchaHandler implements HandlerFunction<ServerResponse> {
         result.put("verifyCodeKey", uuid);
         result.put("verifyCodeImg", captchaBase64);
 
-        return ServerResponse.ok().body(BodyInserters.fromValue(Result.success(result)));
+        return result;
     }
 }
