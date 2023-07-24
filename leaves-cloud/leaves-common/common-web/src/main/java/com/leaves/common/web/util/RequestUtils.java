@@ -1,4 +1,4 @@
-package com.leaves.auth.util;
+package com.leaves.common.web.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.leaves.common.constant.GlobalConstants;
@@ -49,34 +49,30 @@ public class RequestUtils {
      *
      * @return
      */
-    public static String getJwtToken() {
+    public static String getJwtPayload() {
+        String payload = null;
+        String authorization = getAuthorization();
+        try {
+            JWSObject.parse(authorization).getHeader();
+            payload = JWSObject.parse(authorization).getPayload().toString();
+        } catch (ParseException e) {
+            log.error(e.getMessage());
+        }
+        return payload;
+    }
+
+    /**
+     * 获取JWT Token
+     *
+     * @return
+     */
+    public static String getAuthorization() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String authorization = request.getHeader("Authorization");
+        String authorization = request.getHeader(GlobalConstants.AUTH_REQUEST_HEARD);
         if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX)) {
             authorization = StrUtil.replaceIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX, "");
         }
         return authorization;
-    }
-
-
-    /**
-     * 获取JWT Payload
-     *
-     * @return
-     */
-    public static String getJwtPayload() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String payload = null;
-        String authorization = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(authorization) && StrUtil.startWithIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX)) {
-            authorization = StrUtil.replaceIgnoreCase(authorization, GlobalConstants.JWT_TOKEN_PREFIX, "");
-            try {
-                payload = JWSObject.parse(authorization).getPayload().toString();
-            } catch (ParseException e) {
-                log.error(e.getMessage());
-            }
-        }
-        return payload;
     }
 
 

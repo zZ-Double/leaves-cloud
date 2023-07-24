@@ -6,6 +6,16 @@ package com.leaves.common.constant;
 public interface GlobalConstants {
 
     /**
+     * UTF-8 字符集
+     */
+    String UTF8 = "UTF-8";
+
+    /**
+     * GBK 字符集
+     */
+    String GBK = "GBK";
+
+    /**
      * 超级管理员角色编码
      */
     String ROOT_ROLE_CODE = "ROOT";
@@ -45,6 +55,11 @@ public interface GlobalConstants {
      * Jwt 过期时间
      */
     String JWT_EXP = "exp";
+
+    /**
+     * Jwt 用户ID
+     */
+    String USER_ID = "userId";
 
     /**
      * 根部门ID

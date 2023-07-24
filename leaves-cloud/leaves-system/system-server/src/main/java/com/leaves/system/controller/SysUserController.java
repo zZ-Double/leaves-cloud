@@ -1,6 +1,7 @@
 package com.leaves.system.controller;
 
 
+import com.leaves.common.annotation.OperaLog;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
 import com.leaves.system.service.SysUserService;
@@ -51,6 +52,7 @@ public class SysUserController {
 
     @GetMapping(value = "/list")
     @ApiOperation(value = "查询用户列表")
+    @OperaLog(title = "查询用户列表")
     public List<UserVO> queryUserList(UserParam param) {
         return userService.listUser(param);
     }

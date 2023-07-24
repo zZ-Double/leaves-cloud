@@ -1,7 +1,7 @@
 package com.leaves.auth.extension.refresh;
 
 import com.leaves.auth.config.AuthorizationServerConfig;
-import com.leaves.auth.util.RequestUtils;
+import com.leaves.common.web.util.RequestUtils;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.Authentication;

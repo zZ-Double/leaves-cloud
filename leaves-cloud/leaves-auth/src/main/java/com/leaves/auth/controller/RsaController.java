@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
@@ -24,6 +25,7 @@ public class RsaController {
 
     @ApiOperation(value = "获取公钥")
     @GetMapping("/publicKey")
+    @ApiIgnore
     public Map<String, Object> getPublicKey() {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAKey key = new RSAKey.Builder(publicKey).build();

@@ -1,3 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.leaves.common.web.config.WebMvcConfig,\
-  com.leaves.common.web.exception.GlobalExceptionHandler
+  com.leaves.common.web.config.MyResponseBodyAdvice,\
+  com.leaves.common.web.exception.GlobalExceptionHandler,\
+  com.leaves.common.web.aspectj.LogAspect
