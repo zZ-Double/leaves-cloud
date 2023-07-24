@@ -1,6 +1,7 @@
 package com.leaves.system.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leaves.common.base.BaseEntity;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class SysUser extends BaseEntity {
     /**
      * 密码
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**

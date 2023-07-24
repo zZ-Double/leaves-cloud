@@ -8,6 +8,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.enums.StatusEnum;
+import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysUserMapper;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.param.UserParam;
@@ -17,6 +19,7 @@ import com.leaves.system.service.SysRoleService;
 import com.leaves.system.service.SysUserRoleService;
 import com.leaves.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +41,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysUserRoleService userRoleService;
     private final SysMenuService menuService;
     private final SysRoleService roleService;
+    private final RedisTemplate redisTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -133,6 +137,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userVO.setDataScope(dataScope);
         return userVO;
 
+    }
+
+    @Override
+    public UserVO getLoginUserInfo() {
+        SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda().
+                eq(SysUser::getStatus, StatusEnum.ENABLE.getValue())
+                .eq(SysUser::getId, SecurityUtils.getUserId())
+                .select(
+                        SysUser::getId,
+                        SysUser::getNickName,
+                        SysUser::getAvatar
+                )
+        );
+        UserVO vo = new UserVO();
+        BeanUtil.copyProperties(dbUser, vo, true);
+        // 用户角色集合
+        Set<String> roles = SecurityUtils.getRoles();
+        vo.setRoles(roles);
+
+        // 用户权限集合
+        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get("AUTH:USER_PERMS:" + vo.getId());
+        vo.setPerms(perms);
+
+        return vo;
     }
 }
 

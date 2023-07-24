@@ -57,4 +57,11 @@ public class SysUserController {
         return userService.listUser(param);
     }
 
+    @GetMapping(value = "/me")
+    @ApiOperation(value = "获取当前登陆用户信息")
+    @OperaLog(title = "获取当前登陆用户信息")
+    public UserVO me() {
+        return userService.getLoginUserInfo();
+    }
+
 }

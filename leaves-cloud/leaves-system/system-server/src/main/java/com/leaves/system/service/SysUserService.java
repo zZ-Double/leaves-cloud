@@ -33,4 +33,10 @@ public interface SysUserService extends IService<SysUser> {
      */
     UserVO getUserAuthInfo(String userName);
 
+    /**
+     * 获取当前登陆用户信息
+     * @return
+     */
+    UserVO getLoginUserInfo();
+
 }
