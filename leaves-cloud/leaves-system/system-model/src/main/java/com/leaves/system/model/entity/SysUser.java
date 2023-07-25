@@ -3,6 +3,7 @@ package com.leaves.system.model.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leaves.common.base.BaseEntity;
+import com.leaves.common.enums.GenderEnum;
 import lombok.Data;
 
 /**
@@ -63,7 +64,7 @@ public class SysUser extends BaseEntity {
     /**
      * 用户性别（0男 1女 2未知）
      */
-    private Integer sex;
+    private GenderEnum sex;
 
     /**
      * 头像路径

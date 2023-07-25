@@ -28,6 +28,7 @@ mybatis-plus:
       logic-delete-field: del_flag #字段名
       logic-delete-value: 0 #删除的
       logic-not-delete-value: 1 #未删除的
+  type-enums-package: com.leaves.*.enums
 dubbo:
   # 扫描的包路径
   scan:
