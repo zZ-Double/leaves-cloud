@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leaves.common.base.BaseEntity;
 import com.leaves.common.enums.GenderEnum;
+import com.leaves.common.enums.StatusEnum;
 import lombok.Data;
 
 /**
@@ -79,7 +80,7 @@ public class SysUser extends BaseEntity {
     /**
      * 状态
      */
-    private Boolean status;
+    private StatusEnum status;
 
     /**
      * 备注

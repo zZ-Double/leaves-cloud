@@ -1,9 +1,11 @@
 package com.leaves.system.model.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leaves.common.base.IBaseEnum;
 import lombok.Getter;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MenuTypeEnum implements IBaseEnum<Integer> {
 
     NULL(0, null),
@@ -19,7 +21,6 @@ public enum MenuTypeEnum implements IBaseEnum<Integer> {
     private Integer value;
 
     @Getter
-    // @JsonValue //  表示对枚举序列化时返回此字段
     private String name;
 
     MenuTypeEnum(Integer value, String name) {

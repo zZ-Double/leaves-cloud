@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.leaves.common.enums.StatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -71,7 +72,7 @@ public class SysOperationLog implements Serializable {
     /**
      * 操作状态
      */
-    private Integer status;
+    private StatusEnum status;
 
     /**
      * 错误消息

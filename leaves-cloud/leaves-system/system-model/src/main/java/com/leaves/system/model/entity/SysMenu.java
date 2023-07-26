@@ -2,6 +2,7 @@ package com.leaves.system.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.leaves.common.base.BaseEntity;
+import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.model.enums.MenuTypeEnum;
 import lombok.Data;
 
@@ -63,7 +64,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 状态（1正常 0停用）
      */
-    private Integer status;
+    private StatusEnum status;
 
     /**
      * 备注

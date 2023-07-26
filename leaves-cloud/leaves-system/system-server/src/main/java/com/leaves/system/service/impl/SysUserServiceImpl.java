@@ -141,8 +141,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public UserVO getLoginUserInfo() {
-        SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda().
-                eq(SysUser::getStatus, StatusEnum.ENABLE.getValue())
+        SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda()
+                .eq(SysUser::getStatus, StatusEnum.ENABLE.getValue())
                 .eq(SysUser::getId, SecurityUtils.getUserId())
                 .select(
                         SysUser::getId,

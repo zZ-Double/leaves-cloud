@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @version v1.0.0
@@ -29,9 +30,9 @@ public class UserParam extends BaseParam {
     @NotBlank(message = "手机号码不能为空", groups = {add.class, edit.class})
     private String phoneNumber;
 
-    @ApiModelProperty(value = "用户性别（0男 1女 2未知）")
-    @NotBlank(message = "用户性别不能为空", groups = {add.class, edit.class})
-    private String sex;
+    @ApiModelProperty(value = "用户性别（0女 1男 2未知）")
+    @NotNull(message = "用户性别不能为空", groups = {add.class, edit.class})
+    private Integer sex;
 
     @ApiModelProperty(value = "头像路径")
     private String avatar;
