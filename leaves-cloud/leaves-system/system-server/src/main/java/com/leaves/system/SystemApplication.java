@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author leaves
  * @version 1.0
  * @description
- * @date 2023/7/12 测试分支保护
+ * @date 2023/7/12
  */
 @SpringBootApplication
 @EnableDiscoveryClient
