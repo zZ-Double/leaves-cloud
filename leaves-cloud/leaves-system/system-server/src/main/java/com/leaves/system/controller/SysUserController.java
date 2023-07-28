@@ -7,7 +7,7 @@ import com.leaves.system.model.vo.UserVO;
 import com.leaves.system.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +15,11 @@ import java.util.List;
 
 @Api(tags = "用户管理")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 public class SysUserController {
 
-    @Autowired
-    private SysUserService userService;
+    private final SysUserService userService;
 
 
     @PostMapping(value = "/save")
