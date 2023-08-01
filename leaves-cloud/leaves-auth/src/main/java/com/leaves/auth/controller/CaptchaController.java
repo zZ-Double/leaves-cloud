@@ -3,13 +3,13 @@ package com.leaves.auth.controller;
 import cn.hutool.core.util.IdUtil;
 import com.leaves.auth.captcha.enums.CaptchaTypeEnum;
 import com.leaves.auth.captcha.producer.CaptchaProducer;
+import com.leaves.auth.captcha.properties.CaptchaProperties;
 import com.leaves.common.constant.GlobalConstants;
 import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,22 +28,15 @@ public class CaptchaController {
 
     private final CaptchaProducer captchaProducer;
     private final StringRedisTemplate stringRedisTemplate;
-
-    /**
-     * 验证码类型，默认:ARITHMETIC
-     */
-    @Value("${captcha.type:ARITHMETIC}")
-    CaptchaTypeEnum captchaType;
-
-    /**
-     * 验证码值的有效期(单位:秒)，默认:120
-     */
-    @Value("${captcha.ttl:120}")
-    long captchaValueTtl;
+    private final CaptchaProperties properties;
 
     @ApiOperation("生成图形验证码")
     @GetMapping("/image")
-    public Map<String, String> imageHandle() {
+    public Map<String, Object> imageHandle() {
+
+        CaptchaTypeEnum captchaType = properties.getType();
+        Long captchaValueTtl = properties.getTtl();
+        Boolean captchaOnOff = properties.getCaptchaOnOff();
 
         Captcha captcha = captchaProducer.getCaptcha(captchaType);
         String captchaValue = captcha.text();
@@ -60,9 +53,10 @@ public class CaptchaController {
 
         // 获取到验证码Base64编码字符串
         String captchaBase64 = captcha.toBase64();
-        Map<String, String> result = new HashMap<>(2);
+        Map<String, Object> result = new HashMap<>(3);
         result.put("verifyCodeKey", uuid);
         result.put("verifyCodeImg", captchaBase64);
+        result.put("captchaOnOff", captchaOnOff);
 
         return result;
     }
