@@ -1,38 +1,37 @@
 <template>
-    <!-- svg:图标外层容器节点,内部需要与use标签结合使用 -->
-    <svg :style="{ width, height }">
-        <!-- xlink:href执行用哪一个图标,属性值务必#icon-图标名字 -->
-        <!-- use标签fill属性可以设置图标的颜色 -->
-        <use :xlink:href="prefix + name" :fill="color"></use>
+    <svg aria-hidden="true" class="svg-icon">
+      <use :xlink:href="symbolId" :fill="color" />
     </svg>
-</template>
-
-<script setup lang="ts">
-//接受父组件传递过来的参数
-defineProps({
-    //xlink:href属性值前缀
+  </template>
+  
+  <script setup lang="ts">
+  import { computed } from 'vue';
+  
+  const props = defineProps({
     prefix: {
-        type: String,
-        default: '#icon-'
+      type: String,
+      default: 'icon',
     },
-    //提供使用的图标名字
-    name: String,
-    //接受父组件传递颜色
+    iconClass: {
+      type: String,
+      required: false,
+    },
     color: {
-        type: String,
-        default: ''
+      type: String,
+      default: '',
     },
-    //接受父组件传递过来的图标的宽度
-    width: {
-        type: String,
-        default: '16px'
-    },
-    //接受父组件传递过来的图标的高度
-    height: {
-        type: String,
-        default: '16px'
-    }
-})
-</script>
-
-<style scoped></style>
+  });
+  
+  const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`);
+  </script>
+  
+  <style scoped>
+  .svg-icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em; /* 因icon大小被设置为和字体大小一致，而span等标签的下边缘会和字体的基线对齐，故需设置一个往下的偏移比例，来纠正视觉上的未对齐效果 */
+    fill: currentColor; /* 定义元素的颜色，currentColor是一个变量，这个变量的值就表示当前元素的color值，如果当前元素未设置color值，则从父元素继承 */
+    overflow: hidden;
+  }
+  </style>
+  

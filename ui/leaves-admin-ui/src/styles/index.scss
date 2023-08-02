@@ -1,17 +1,75 @@
-//引入清除默认样式
-@import './reset.scss';
+@import 'src/styles/variables.module';
+@import './mixin.scss';
+@import 'src/styles/element-plus';
+@import './sidebar.scss';
 
-//滚动条外观设置
-::-webkit-scrollbar {
-    width: 10px;
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
 }
 
-::-webkit-scrollbar-track {
-    background: $base-menu-background;
+label {
+  font-weight: 700;
 }
 
-::-webkit-scrollbar-thumb{
-    width: 10px;
-    background-color: yellowgreen;
-    border-radius: 10px;
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ' ';
+    clear: both;
+    height: 0;
+  }
+}
+
+// main-container global css
+.app-container {
+  padding: 20px;
+}
+
+.search{
+  padding:18px  0 0  10px;
+  margin-bottom: 10px;
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--el-card-border-radius);
+  border: 1px solid var(--el-card-border-color);
 }
