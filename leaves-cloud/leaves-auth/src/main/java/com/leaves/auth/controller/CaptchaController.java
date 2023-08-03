@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Api(tags = "验证码管理")
@@ -34,14 +35,16 @@ public class CaptchaController {
     @GetMapping("/image")
     public Map<String, Object> imageHandle() {
 
-        CaptchaTypeEnum captchaType = properties.getType();
-        Long captchaValueTtl = properties.getTtl();
-        Boolean captchaOnOff = properties.getCaptchaOnOff();
+        Map<String, Object> result = new HashMap<>(3);
+        result.put("captchaOnOff", properties.getCaptchaOnOff());
+        if (!properties.getCaptchaOnOff()) {
+            return result;
+        }
 
-        Captcha captcha = captchaProducer.getCaptcha(captchaType);
+        Captcha captcha = captchaProducer.getCaptcha(properties.getType());
         String captchaValue = captcha.text();
         // 对于数学类型的需要进行处理
-        if (captchaType == null || captchaType == CaptchaTypeEnum.ARITHMETIC) {
+        if (Objects.isNull(properties.getType()) || properties.getType() == CaptchaTypeEnum.ARITHMETIC) {
             if (captcha.getCharType() - 1 == CaptchaTypeEnum.ARITHMETIC.ordinal() && captchaValue.contains(".")) {
                 captchaValue = captchaValue.split("\\.")[0];
             }
@@ -49,14 +52,13 @@ public class CaptchaController {
 
         // 缓存验证码至Redis
         String uuid = IdUtil.simpleUUID();
-        stringRedisTemplate.opsForValue().set(GlobalConstants.VERIFY_CODE_KEY_PREFIX + uuid, captchaValue, captchaValueTtl, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(GlobalConstants.VERIFY_CODE_KEY_PREFIX + uuid, captchaValue, properties.getTtl(), TimeUnit.SECONDS);
 
         // 获取到验证码Base64编码字符串
         String captchaBase64 = captcha.toBase64();
-        Map<String, Object> result = new HashMap<>(3);
+
         result.put("verifyCodeKey", uuid);
         result.put("verifyCodeImg", captchaBase64);
-        result.put("captchaOnOff", captchaOnOff);
 
         return result;
     }

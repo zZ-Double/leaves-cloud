@@ -17,9 +17,30 @@
         </span>
         <el-input v-model="loginForm.password" name="password" type="password" tabindex="1" auto-complete="on"/>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary">Submit</el-button>
+      <!-- 验证码 -->
+      <el-form-item prop="code">
+        <span class="svg-container">
+          <svg-icon icon-class="valid_code" />
+        </span>
+        <el-input
+          v-model="loginForm.verifyCode"
+          auto-complete="off"
+          style="width: 65%"
+        />
+
+        <div class="captcha">
+          <img
+            :src="verifyCodeImgUrl"
+            height="38px"
+          />
+        </div>
       </el-form-item>
+      <el-button
+        size="default"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        >登录
+      </el-button>
     </el-form>
   </div>
 </template>
@@ -28,9 +49,10 @@
 import { ref, reactive } from 'vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
-let loginFormRef = ref();
+let loginFormRef = ref()
 //收集账号与密码的数据
-let loginForm = reactive({ userName: 'admin', password: 'atguigu123' });
+let loginForm = reactive({ userName: 'admin', password: '123456', verifyCode: '' })
+let verifyCodeImgUrl = ref('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAkCAIAAADNSmkJAAADVklEQVR42u3Y30uTURgH8P0JXXTRfV1254V4YUqRKGRXEninF774o+mamV4oLVZ6YRBJFw1Nc2ogOpLBktpUUsTAH9HyBzN1YrgYTq3pyunm6Xt6RWh7tfed75yL5+Eg7pxXd/jw8JznvBpGcSqhIQKCJmgKgiZogqYgaIKmIOhjY+Tjl7x7zy9k3dWkCOcyddnapx22D3uhMEGrGQ1t/SB+0uX46t3AR/eqr806mik8vnzL8HlhlaBVy2UoAzd6CUmNpbXNrURDLy+z5mZWXs5KSphez1pbmcdzFuxy7zxDBZD5MCoGcvmoVWOLrcDwMoY9WGYtVe+q0lvTU5tT8VP/Vu/yuWKCdjiYIEQOiE9NJZDYs/b94QsblOVDI2fFiiEZyPTz1/Qx7CTFlBIxID7pmVQIPT/PWbVaNjjIgkE+4/Wy9nY+WVbGfL7EHN9/fA+H/L864QOSUdhXaF+0B0McZ+XHSkV/BawLXhcohG5q4qbDw5HzJhOf7+2NHUuYwDhN6KMKtBhO9+Il/c2czhwwZXVkad9oh9xDMextO7gtJrVCaKQtQMNR3c/SEp83GhMCHSEuv0ajx5Bc2vy1ecV0/eojwRfwhcIhJGaXswvodYN1+KhoS+H9MKAz2jIUQqMWA3R/P3IeM2L1SB5otBbo5CSXHjjqL97Oi+jwArsBVIDu6W5FW+qb6wN0w0iDQujaWg46MyOxJB6JyQONWwn6ZXAfFD9B88/h9DpzX+XK349t3pbWkpbdkb3+c10htNXKQSsr2dgY29s7yGWXi1ksSZfRiDn3N7QW901W/CIHGkcc0lPOf55dmy2yFuHh/N58z5ZHeXu3u8saGyXaO3HU1CiVPX7EG5qXY3+guL7z8Ap+Q/cMFQOn38L6QvTDmJSZ0WJjZ5owoUbHemFBCtvt/NwrLWXFxRzXbGbT0xwavUeyQUsGegzzJ7PELea9EXbyoeNwBQe9ZNt3tkvHXw2qjNKBdPYH/YmDxp1Fp+NjZ+f/hl71q/mmSQn0xgYbGOCvO5DO4+Mn+tZEQ0cHOjmkMBITP1ExZOayqtARZyCK9ejoSb9VvZuh0itiPEKl0lFdzY9B+BoMrKdHlVccBE0Rt3dhREDQBE1B0ARN0BQETdAUiuM3Y+w4iESZY5EAAAAASUVORK5CYII=')
 
 </script>
 
