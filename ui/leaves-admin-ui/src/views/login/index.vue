@@ -1,59 +1,157 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginFormRef" :model="loginForm" class="login-form" auto-complete="on"
-      label-position="left">
+    <el-form ref="loginFormRef" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
+      <!-- 管理后台名称 -->
       <div class="title-container">
         <h3 class="title">后台管理</h3>
       </div>
+
+      <!-- 用户名 -->
       <el-form-item prop="userName">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.userName" name="username" type="text" tabindex="1" auto-complete="on"/>
+        <el-input v-model="loginForm.userName" name="username" type="text" tabindex="1" auto-complete="on" />
       </el-form-item>
+
+      <!-- 密码 -->
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input v-model="loginForm.password" name="password" type="password" tabindex="1" auto-complete="on"/>
+        <el-input v-model="loginForm.password" name="password" type="password" tabindex="1" auto-complete="on"
+          show-password />
       </el-form-item>
+
       <!-- 验证码 -->
-      <el-form-item prop="code">
+      <el-form-item prop="code" v-if="state.captchaOnOff">
         <span class="svg-container">
           <svg-icon icon-class="valid_code" />
         </span>
-        <el-input
-          v-model="loginForm.verifyCode"
-          auto-complete="off"
-          style="width: 65%"
-        />
-
+        <el-input v-model="loginForm.verifyCode" auto-complete="off" style="width: 65%" />
         <div class="captcha">
-          <img
-            :src="verifyCodeImgUrl"
-            height="38px"
-          />
+          <img :src="state.verifyCodeImgUrl" height="38px" @click="handleCaptchaGenerate" />
         </div>
       </el-form-item>
-      <el-button
-        size="default"
-        type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        >登录
-      </el-button>
+
+      <!-- 登录按钮 -->
+      <el-button @click="handleLogin" size="default" type="primary"
+        style="width: 100%; margin-bottom: 30px">登录</el-button>
     </el-form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { onMounted, ref, reactive, watch } from 'vue'
+
+// 组件依赖
+import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
-let loginFormRef = ref()
-//收集账号与密码的数据
-let loginForm = reactive({ userName: 'admin', password: '123456', verifyCode: '' })
-let verifyCodeImgUrl = ref('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAkCAIAAADNSmkJAAADVklEQVR42u3Y30uTURgH8P0JXXTRfV1254V4YUqRKGRXEninF774o+mamV4oLVZ6YRBJFw1Nc2ogOpLBktpUUsTAH9HyBzN1YrgYTq3pyunm6Xt6RWh7tfed75yL5+Eg7pxXd/jw8JznvBpGcSqhIQKCJmgKgiZogqYgaIKmIOhjY+Tjl7x7zy9k3dWkCOcyddnapx22D3uhMEGrGQ1t/SB+0uX46t3AR/eqr806mik8vnzL8HlhlaBVy2UoAzd6CUmNpbXNrURDLy+z5mZWXs5KSphez1pbmcdzFuxy7zxDBZD5MCoGcvmoVWOLrcDwMoY9WGYtVe+q0lvTU5tT8VP/Vu/yuWKCdjiYIEQOiE9NJZDYs/b94QsblOVDI2fFiiEZyPTz1/Qx7CTFlBIxID7pmVQIPT/PWbVaNjjIgkE+4/Wy9nY+WVbGfL7EHN9/fA+H/L864QOSUdhXaF+0B0McZ+XHSkV/BawLXhcohG5q4qbDw5HzJhOf7+2NHUuYwDhN6KMKtBhO9+Il/c2czhwwZXVkad9oh9xDMextO7gtJrVCaKQtQMNR3c/SEp83GhMCHSEuv0ajx5Bc2vy1ecV0/eojwRfwhcIhJGaXswvodYN1+KhoS+H9MKAz2jIUQqMWA3R/P3IeM2L1SB5otBbo5CSXHjjqL97Oi+jwArsBVIDu6W5FW+qb6wN0w0iDQujaWg46MyOxJB6JyQONWwn6ZXAfFD9B88/h9DpzX+XK349t3pbWkpbdkb3+c10htNXKQSsr2dgY29s7yGWXi1ksSZfRiDn3N7QW901W/CIHGkcc0lPOf55dmy2yFuHh/N58z5ZHeXu3u8saGyXaO3HU1CiVPX7EG5qXY3+guL7z8Ap+Q/cMFQOn38L6QvTDmJSZ0WJjZ5owoUbHemFBCtvt/NwrLWXFxRzXbGbT0xwavUeyQUsGegzzJ7PELea9EXbyoeNwBQe9ZNt3tkvHXw2qjNKBdPYH/YmDxp1Fp+NjZ+f/hl71q/mmSQn0xgYbGOCvO5DO4+Mn+tZEQ0cHOjmkMBITP1ExZOayqtARZyCK9ejoSb9VvZuh0itiPEKl0lFdzY9B+BoMrKdHlVccBE0Rt3dhREDQBE1B0ARN0BQETdAUiuM3Y+w4iESZY5EAAAAASUVORK5CYII=')
+// 依赖
+import useStore from '@/store';
+import { getCaptcha } from '@/api/auth';
 
+const { user } = useStore();
+
+//获取路由器
+let $router = useRouter();
+//路由对象
+let $route = useRoute();
+// 获取form组件
+let loginFormRef = ref();
+
+
+
+// 数据定义
+const state = reactive({
+  redirect: '',
+  otherQuery: {},
+  loading: false,
+  captchaOnOff: false,// 是否显示验证码
+  verifyCodeImgUrl: '', //验证码url
+});
+
+const loginForm = reactive({
+  userName: 'admin', // 账户
+  password: '123456', // 密码
+  verifyCode: '', // 验证码
+  verifyCodeKey: '',// 验证码key
+  grant_type: ''
+});
+
+
+// 获取验证码
+function handleCaptchaGenerate() {
+  getCaptcha().then(({ data }) => {
+    const { captchaOnOff, verifyCodeImg, verifyCodeKey } = data;
+    state.captchaOnOff = captchaOnOff;
+    loginForm.verifyCodeKey = verifyCodeKey;
+    state.verifyCodeImgUrl = verifyCodeImg;
+  });
+}
+
+// 登录
+function handleLogin() {
+  loginFormRef.value.validate((valid: boolean) => {
+    if (valid) {
+      state.loading = true;
+      user
+        .login(loginForm)
+        .then(() => {
+          $router.push({ path: state.redirect || '/', query: state.otherQuery });
+          state.loading = false;
+        })
+        .catch(() => {
+          state.loading = false;
+          handleCaptchaGenerate();
+        });
+    } else {
+      return false;
+    }
+  });
+};
+// 判断登录的组件URL：是否有query参数【即为用户未登录时候，想去而没有去成的路由】
+function getOtherQuery(query: any) {
+  return Object.keys(query).reduce((acc: any, cur: any) => {
+    if (cur !== 'redirect') {
+      acc[cur] = query[cur];
+    }
+    return acc;
+  }, {});
+};
+// 组件挂载加载方法
+onMounted(() => {
+  handleCaptchaGenerate();
+});
+// 监听登录方式
+watch(
+  () => state.captchaOnOff,
+  () => {
+    if (state.captchaOnOff) {
+      loginForm.grant_type = 'captcha'
+    } else {
+      loginForm.grant_type = 'password'
+    }
+  },
+  {
+    immediate: true,
+  }
+);
+// 监听路由跳转
+watch(
+  $route,
+  () => {
+    const query = $route.query;
+    if (query) {
+      state.redirect = query.redirect as string;
+      state.otherQuery = getOtherQuery(query);
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <style lang="scss">
@@ -80,17 +178,18 @@ $cursor: #fff;
   .el-input {
     display: inline-block;
     height: 36px;
-    width: 85%;
+    width: 90%;
 
     .el-input__wrapper {
       padding: 0;
+      width: 100%;
       background: transparent;
       box-shadow: none;
 
       .el-input__inner {
         background: transparent;
         border: 0px;
-        -webkit-appearance: none;
+        // -webkit-appearance: none;
         border-radius: 0px;
         color: $light_gray;
         height: 36px;
