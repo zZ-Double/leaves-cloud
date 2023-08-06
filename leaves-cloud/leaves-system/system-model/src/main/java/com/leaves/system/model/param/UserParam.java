@@ -24,7 +24,7 @@ public class UserParam extends BaseParam {
 
     @ApiModelProperty(value = "登录账号")
     @NotBlank(message = "用户登录帐号不能为空", groups = {add.class, edit.class})
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "手机号码")
     @NotBlank(message = "手机号码不能为空", groups = {add.class, edit.class})

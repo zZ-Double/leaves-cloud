@@ -19,6 +19,7 @@
           below to return to the homepage.
         </div>
         <a href="" class="bullshit__return-home">Back to home</a>
+        <!-- <button @click="update">修改flag</button> -->
       </div>
     </div>
   </div>
@@ -32,6 +33,15 @@ export default {
 </script>
 
 <script setup lang="ts">
+// import {ref} from 'vue'
+// let flag:any = ref(false);
+// console.log(flag);
+
+// function update() {
+//   flag = !flag
+//   alert(flag);
+//   console.log(flag);
+// }
 
 function message() {
   return 'The webmaster said that you can not enter this page...';

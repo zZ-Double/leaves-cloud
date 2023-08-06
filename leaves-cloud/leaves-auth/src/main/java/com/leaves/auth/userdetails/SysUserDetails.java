@@ -51,7 +51,7 @@ public class SysUserDetails implements UserDetails {
      */
     public SysUserDetails(UserVO user) {
         this.setUserId(user.getId());
-        this.setUsername(user.getUserName());
+        this.setUsername(user.getUsername());
         this.setDeptId(user.getDeptId());
         this.setDataScope(user.getDataScope());
         this.setPassword(PasswordEncoderTypeEnum.BCRYPT.getPrefix() + user.getPassword());

@@ -49,7 +49,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         //以登录账户查询是否存在记录 存在则抛出异常
         SysUser dbSysUser = this.baseMapper.selectOne(new QueryWrapper<SysUser>()
-                .lambda().eq(SysUser::getUserName, param.getUserName()));
+                .lambda().eq(SysUser::getUsername, param.getUsername()));
         Assert.isTrue(ObjectUtil.isNull(dbSysUser), "新增用户失败,登录账号已存在");
 
         SysUser sysUser = new SysUser();
@@ -105,7 +105,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public List<UserVO> listUser(UserParam param) {
         QueryWrapper<SysUser> sysUserQueryWrapper = new QueryWrapper();
         sysUserQueryWrapper.lambda().
-                eq(StrUtil.isNotBlank(param.getUserName()), SysUser::getUserName, param.getUserName()).
+                eq(StrUtil.isNotBlank(param.getUsername()), SysUser::getUsername, param.getUsername()).
                 eq(StrUtil.isNotBlank(param.getPhoneNumber()), SysUser::getPhoneNumber, param.getPhoneNumber());
         List<SysUser> sysUsers = this.baseMapper.selectList(sysUserQueryWrapper);
         List<UserVO> userVOS = BeanUtil.copyToList(sysUsers, UserVO.class);
@@ -121,10 +121,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public UserVO getUserAuthInfo(String userName) {
+    public UserVO getUserAuthInfo(String username) {
         // 用户名查询用户信息
         SysUser dbUser = this.getOne(new QueryWrapper<SysUser>().lambda().
-                eq(SysUser::getUserName, userName));
+                eq(SysUser::getUsername, username));
         Assert.isTrue(Objects.nonNull(dbUser), "查询的数据不存在");
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(dbUser, userVO, true);
