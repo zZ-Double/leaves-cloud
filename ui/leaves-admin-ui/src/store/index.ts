@@ -1,7 +1,7 @@
-import useUserStore from './modules/user';
+import useUserStore from './modules/user'
 
 const useStore = () => ({
-  user: useUserStore()
-});
+  user: useUserStore(),
+})
 
-export default useStore;
+export default useStore

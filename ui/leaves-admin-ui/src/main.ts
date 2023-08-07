@@ -6,7 +6,7 @@ import '@/styles/index.scss'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 // 配置element-plus国际化
-// @ts-ignore
+// @ts-expect-error
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // svg插件需要配置代码
@@ -21,13 +21,12 @@ import { createPinia } from 'pinia'
 // 获取应用实例对象
 const app = createApp(App)
 
-
 app
-    .use(gloalComponent)
-    .use(router)
-    .use(ElementPlus, {
-        locale: zhCn// element-plus国际化配置
-    })
-    .use(createPinia())
-    
-    .mount('#app')
+  .use(gloalComponent)
+  .use(router)
+  .use(ElementPlus, {
+    locale: zhCn, // element-plus国际化配置
+  })
+  .use(createPinia())
+
+  .mount('#app')

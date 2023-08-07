@@ -7,11 +7,11 @@
       </div>
 
       <!-- 用户名 -->
-      <el-form-item prop="userName">
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.userName" name="username" type="text" tabindex="1" auto-complete="on" />
+        <el-input v-model="loginForm.username" name="username" type="text" tabindex="1" auto-complete="on" />
       </el-form-item>
 
       <!-- 密码 -->
@@ -35,7 +35,7 @@
       </el-form-item>
 
       <!-- 登录按钮 -->
-      <el-button @click="handleLogin" size="default" type="primary"
+      <el-button @click="handleLogin" :loading="state.loading" size="default" type="primary"
         style="width: 100%; margin-bottom: 30px">登录</el-button>
     </el-form>
   </div>
@@ -45,85 +45,82 @@
 import { onMounted, ref, reactive, watch } from 'vue'
 
 // 组件依赖
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
 // 依赖
-import useStore from '@/store';
-import { getCaptcha } from '@/api/auth';
+import useStore from '@/store'
+import { getCaptcha } from '@/api/auth'
 
-const { user } = useStore();
+const { user } = useStore()
 
 //获取路由器
-let $router = useRouter();
+let $router = useRouter()
 //路由对象
-let $route = useRoute();
+let $route = useRoute()
 // 获取form组件
-let loginFormRef = ref();
-
-
+let loginFormRef = ref()
 
 // 数据定义
 const state = reactive({
   redirect: '',
   otherQuery: {},
   loading: false,
-  captchaOnOff: false,// 是否显示验证码
+  captchaOnOff: false, // 是否显示验证码
   verifyCodeImgUrl: '', //验证码url
-});
+})
 
 const loginForm = reactive({
-  userName: 'admin', // 账户
+  username: 'admin', // 账户
   password: '123456', // 密码
   verifyCode: '', // 验证码
-  verifyCodeKey: '',// 验证码key
-  grant_type: ''
-});
-
+  verifyCodeKey: '', // 验证码key
+  grant_type: '',
+})
 
 // 获取验证码
 function handleCaptchaGenerate() {
   getCaptcha().then(({ data }) => {
-    const { captchaOnOff, verifyCodeImg, verifyCodeKey } = data;
-    state.captchaOnOff = captchaOnOff;
-    loginForm.verifyCodeKey = verifyCodeKey;
-    state.verifyCodeImgUrl = verifyCodeImg;
-  });
+    const { captchaOnOff, verifyCodeImg, verifyCodeKey } = data
+    state.captchaOnOff = captchaOnOff
+    loginForm.verifyCodeKey = verifyCodeKey
+    state.verifyCodeImgUrl = verifyCodeImg
+  })
 }
 
 // 登录
 function handleLogin() {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
-      state.loading = true;
+      state.loading = true
       user
         .login(loginForm)
         .then(() => {
-          $router.push({ path: state.redirect || '/', query: state.otherQuery });
-          state.loading = false;
+          $router.push({ path: state.redirect || '/', query: state.otherQuery })
+          state.loading = false
         })
         .catch(() => {
-          state.loading = false;
-          handleCaptchaGenerate();
-        });
+          state.loading = false
+          handleCaptchaGenerate()
+        })
     } else {
-      return false;
+      return false
     }
-  });
-};
+  })
+}
 // 判断登录的组件URL：是否有query参数【即为用户未登录时候，想去而没有去成的路由】
 function getOtherQuery(query: any) {
   return Object.keys(query).reduce((acc: any, cur: any) => {
     if (cur !== 'redirect') {
-      acc[cur] = query[cur];
+      acc[cur] = query[cur]
     }
-    return acc;
-  }, {});
-};
+    return acc
+  }, {})
+}
 // 组件挂载加载方法
 onMounted(() => {
-  handleCaptchaGenerate();
-});
+  handleCaptchaGenerate()
+})
 // 监听登录方式
 watch(
   () => state.captchaOnOff,
@@ -136,22 +133,22 @@ watch(
   },
   {
     immediate: true,
-  }
-);
+  },
+)
 // 监听路由跳转
 watch(
   $route,
   () => {
-    const query = $route.query;
+    const query = $route.query
     if (query) {
-      state.redirect = query.redirect as string;
-      state.otherQuery = getOtherQuery(query);
+      state.redirect = query.redirect as string
+      state.otherQuery = getOtherQuery(query)
     }
   },
   {
     immediate: true,
-  }
-);
+  },
+)
 </script>
 
 <style lang="scss">
@@ -161,7 +158,6 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-
   .title-container {
     position: relative;
 
@@ -172,7 +168,6 @@ $cursor: #fff;
       text-align: center;
       font-weight: bold;
     }
-
   }
 
   .el-input {

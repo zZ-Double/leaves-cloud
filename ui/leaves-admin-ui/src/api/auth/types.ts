@@ -2,32 +2,32 @@
  * 登录表单类型声明
  */
 export interface LoginForm {
-  userName: string;
-  password: string;
-  grant_type: string;
+  username: string
+  password: string
+  grant_type: string
   /**
    * 验证码Code
    */
-  verifyCode: string;
+  verifyCode: string
   /**
    * 验证码Code服务端缓存key(UUID)
    */
-  verifyCodeKey: string;
+  verifyCodeKey: string
 }
 
 /**
  * 登录响应类型声明
  */
 export interface LoginResult {
-  access_token: string;
-  token_type: string;
+  access_token: string
+  token_type: string
 }
 
 /**
  * 验证码类型声明
  */
 export interface VerifyCode {
-  captchaOnOff: boolean;
-  verifyCodeImg: string;
-  verifyCodeKey: string;
+  captchaOnOff: boolean
+  verifyCodeImg: string
+  verifyCodeKey: string
 }
