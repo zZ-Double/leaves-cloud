@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.leaves.system.model.entity.SysUser">
         <id property="id" column="id" jdbcType="VARCHAR"/>
-        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
         <result property="userType" column="user_type" jdbcType="VARCHAR"/>
@@ -29,7 +29,7 @@
 
     <sql id="Base_Column_List">
         id
-        ,user_name,password,
+        ,username,password,
         nick_name,user_type,email,
         phone_number,description,email_flag,
         phone_flag,sex,avatar,
