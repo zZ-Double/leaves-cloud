@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { UserState } from './types'
 
-import { GET_TOKEN, SET_TOKEN } from '@/utils/token'
+import { localStorage } from '@/utils/storage';
 import { loginApi } from '@/api/auth'
 import { LoginForm } from '@/api/auth/types'
 
 const useUserStore = defineStore({
   id: 'user',
   state: (): UserState => ({
-    token: GET_TOKEN() || '',
+    token: localStorage.get_token() || '',
     nickname: '',
     avatar: '',
     roles: [],
@@ -29,7 +29,7 @@ const useUserStore = defineStore({
             console.log(response)
             const { access_token, token_type } = response.data
             const accessToken = token_type + ' ' + access_token
-            SET_TOKEN(accessToken)
+            localStorage.set_token(accessToken)
             this.token = accessToken
             resolve(access_token)
           })

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { GET_TOKEN, CLEAR_ALL } from '@/utils/token'
+import { localStorage } from '@/utils/storage';
 import useStore from '@/store'
 
 // 创建 axios 实例
@@ -20,7 +20,7 @@ service.interceptors.request.use(
     }
     const { user } = useStore()
     if (user.token) {
-      config.headers.Authorization = GET_TOKEN()
+      config.headers.Authorization = localStorage.get_token()
     }
     return config
   },
@@ -57,7 +57,7 @@ service.interceptors.response.use(
           confirmButtonText: 'OK',
           type: 'warning',
         }).then(() => {
-          CLEAR_ALL()
+          localStorage.clear()
           window.location.href = '/'
         })
       } else {

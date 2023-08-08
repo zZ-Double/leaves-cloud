@@ -14,6 +14,17 @@ export const constantRoute = [
     component: () => import('@/views/404/index.vue'),
     name: '404',
   },
+  {
+    //登录成功以后展示数据的路由
+    path: '/',
+    component: () => import('@/layout/index.vue'),
+    name: 'layout',
+    meta: {
+      title: '',
+      hidden: false,
+      icon: ''
+    }
+  },
 ]
 
 //创建路由器
