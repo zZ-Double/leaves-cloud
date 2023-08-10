@@ -26,6 +26,7 @@ const cachedViews = computed(() => tagsView.cachedViews);
   width: 100%;
   position: relative;
   overflow: hidden;
+  background-color: var(--el-bg-color-page)
 }
 
 .fixed-header+.app-main {

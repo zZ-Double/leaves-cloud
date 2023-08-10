@@ -29,8 +29,9 @@ const state = reactive({
 
 const { isCollapse } = toRefs(state);
 
-const title = ref('youlai-mall');
-const logo = ref('https://www.youlai.tech/files/blog/logo.png');
+const title = ref('后台管理');
+// const logo = ref('https://www.youlai.tech/files/blog/logo.png');
+const logo = ref('https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif?imageView2/1/w/80/h/80"');
 </script>
   
 <style lang="scss" scoped>

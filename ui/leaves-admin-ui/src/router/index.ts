@@ -18,19 +18,17 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: { hidden: true },
   },
   {
-    //登录成功以后展示数据的路由
-    path: '/',
+    path: "/",
     component: () => import('@/layout/index.vue'),
-    name: 'layout',
-    meta: { title: '', hidden: false, icon: '' },
-    redirect: '/home',
+    redirect: "/dashboard",
     children: [
       {
-        path: '/home',
-        component: () => import('@/views/home/index.vue'),
-        meta: { title: '首页', hidden: false, icon: 'homepage' }
+        path: "dashboard",
+        component: () => import("@/views/dashboard/index.vue"),
+        name: "Dashboard",
+        meta: { title: "首页", icon: "homepage", affix: true },
       }
-    ]
+    ],
   },
   {
     path: '/sys',

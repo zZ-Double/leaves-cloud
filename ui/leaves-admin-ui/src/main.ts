@@ -17,9 +17,13 @@ import gloalComponent from '@/components'
 import router from './router'
 // 引入pinia
 import { createPinia } from 'pinia'
+// 引入自定义指令
+import { setupDirective } from '@/directive';
 
 // 获取应用实例对象
 const app = createApp(App)
+// 全局注册 自定义指令(directive)
+setupDirective(app);
 
 app
   .use(gloalComponent)
