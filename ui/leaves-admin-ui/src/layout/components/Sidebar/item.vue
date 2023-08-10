@@ -15,7 +15,7 @@
         </template>
 
         <!-- 有子菜单 -->
-        <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body>
+        <el-sub-menu v-else :index="resolvePath(item.path)" teleported>
             <template #title>
                 <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
                 <span v-if="item.meta && item.meta.title">{{ item.meta.title }}</span>

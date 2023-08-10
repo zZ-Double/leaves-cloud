@@ -11,6 +11,10 @@ export const localStorage = {
   get_token() {
     return window.localStorage.getItem('Authorization');
   },
+  // 移除token
+  remove_token() {
+    return window.localStorage.removeItem('Authorization');
+  },
 
   // 设置永久缓存
   set(key: string, val: any) {

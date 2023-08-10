@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@types/lodash": "^4.14.197",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vueuse/core": "^10.1.2",
     "@wangeditor/editor": "^5.1.23",
@@ -27,6 +28,7 @@
     "codemirror": "^5.65.13",
     "echarts": "^5.2.2",
     "element-plus": "^2.3.8",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
@@ -40,6 +42,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
+    "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
