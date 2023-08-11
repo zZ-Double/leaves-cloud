@@ -7,7 +7,7 @@ import { UserForm, UserInfo, UserPageResult, UserQuery } from './types';
  */
 export function getUserInfo(): AxiosPromise<UserInfo> {
   return request({
-    url: '/leaves-system/api/v1/users/me',
+    url: '/leaves-system/api/v1/user/me',
     method: 'get',
   });
 }
@@ -21,7 +21,7 @@ export function listUserPages(
   queryParams: UserQuery
 ): AxiosPromise<UserPageResult> {
   return request({
-    url: '/youlai-system/api/v1/users/pages',
+    url: '/leaves-system/api/v1/user/list',
     method: 'get',
     params: queryParams,
   });
@@ -34,7 +34,7 @@ export function listUserPages(
  */
 export function getUserForm(userId: number): AxiosPromise<UserForm> {
   return request({
-    url: '/youlai-system/api/v1/users/' + userId + '/form',
+    url: '/leaves-system/api/v1/user/' + userId + '/form',
     method: 'get',
   });
 }
@@ -46,7 +46,7 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  */
 export function addUser(data: any) {
   return request({
-    url: '/youlai-system/api/v1/users',
+    url: '/leaves-system/api/v1/user/',
     method: 'post',
     data: data,
   });
@@ -60,7 +60,7 @@ export function addUser(data: any) {
  */
 export function updateUser(id: number, data: UserForm) {
   return request({
-    url: '/youlai-system/api/v1/users/' + id,
+    url: '/leaves-system/api/v1/user//' + id,
     method: 'put',
     data: data,
   });
@@ -74,7 +74,7 @@ export function updateUser(id: number, data: UserForm) {
  */
 export function updateUserStatus(id: number, status: number) {
   return request({
-    url: '/youlai-system/api/v1/users/' + id + '/status',
+    url: '/leaves-system/api/v1/user//' + id + '/status',
     method: 'patch',
     params: { status: status },
   });
@@ -88,7 +88,7 @@ export function updateUserStatus(id: number, status: number) {
  */
 export function updateUserPassword(id: number, password: string) {
   return request({
-    url: '/youlai-system/api/v1/users/' + id + '/password',
+    url: '/leaves-system/api/v1/user//' + id + '/password',
     method: 'patch',
     params: { password: password },
   });
@@ -101,7 +101,7 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function deleteUsers(ids: string) {
   return request({
-    url: '/youlai-system/api/v1/users/' + ids,
+    url: '/leaves-system/api/v1/user//' + ids,
     method: 'delete',
   });
 }
@@ -113,7 +113,7 @@ export function deleteUsers(ids: string) {
  */
 export function downloadTemplate() {
   return request({
-    url: '/youlai-system/api/v1/users/template',
+    url: '/leaves-system/api/v1/user//template',
     method: 'get',
     responseType: 'arraybuffer',
   });
@@ -127,7 +127,7 @@ export function downloadTemplate() {
  */
 export function exportUser(queryParams: UserQuery) {
   return request({
-    url: '/youlai-system/api/v1/users/_export',
+    url: '/leaves-system/api/v1/user//_export',
     method: 'get',
     params: queryParams,
     responseType: 'arraybuffer',
@@ -145,7 +145,7 @@ export function importUser(deptId: number, roleIds: string, file: File) {
   formData.append('deptId', deptId.toString());
   formData.append('roleIds', roleIds);
   return request({
-    url: '/youlai-system/api/v1/users/_import',
+    url: '/leaves-system/api/v1/user//_import',
     method: 'post',
     data: formData,
     headers: {

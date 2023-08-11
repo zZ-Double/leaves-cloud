@@ -1,4 +1,16 @@
 <template>
+
+<div>欢迎</div>
+
+</template>
+
+<script setup lang="ts">
+
+</script>
+<style scoped lang="scss">
+
+</style>
+<!-- <template>
   <el-row class="home" :gutter="20">
     <el-col :span="8" style="margin-top: 20px">
       <el-card shadow="hover">
@@ -251,4 +263,4 @@ export default {
     }
   }
 }
-</style>
+</style> -->

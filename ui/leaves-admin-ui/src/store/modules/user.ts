@@ -34,7 +34,6 @@ const useUserStore = defineStore({
           verifyCodeKey: verifyCodeKey,
         })
           .then((response) => {
-            console.log(response)
             const { access_token, token_type } = response.data
             const accessToken = token_type + ' ' + access_token
             localStorage.set_token(accessToken)

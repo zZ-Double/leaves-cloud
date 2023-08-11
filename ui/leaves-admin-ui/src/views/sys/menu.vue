@@ -6,15 +6,22 @@
                     <el-input v-model="queryParams.keywords" placeholder="菜单名称" clearable @keyup.enter="handleQuery" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="handleQuery" :icon="Search">搜索</el-button>
-                    <el-button @click="resetQuery" :icon="Refresh">重置</el-button>
+                    <el-button type="primary" @click="handleQuery">
+                        <template #icon><i-ep-search /></template><!-- 自动导入图标使用方法 -->
+                        搜索
+                    </el-button>
+                    <el-button @click="resetQuery">
+                        <template #icon><i-ep-refresh /></template>
+                        重置
+                    </el-button>
                 </el-form-item>
             </el-form>
         </div>
 
         <el-card shadow="never" size="small">
             <template #header>
-                <el-button :icon="Plus" v-hasPerm="['sys:menu:add']" type="success" @click="openDialog(0)">新增</el-button>
+                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog(0)">
+                    <template #icon><i-ep-plus /></template>新增</el-button>
             </template>
 
             <el-table v-loading="loading" :data="menuList" highlight-current-row :tree-props="{
@@ -24,8 +31,8 @@
                 <el-table-column label="菜单名称" min-width="200">
                     <template #default="scope">
                         <svg-icon :icon-class="scope.row.type === MenuTypeEnum.BUTTON
-                                ? 'button'
-                                : scope.row.icon
+                            ? 'button'
+                            : scope.row.icon
                             " />
                         {{ scope.row.name }}
                     </template>
@@ -61,9 +68,7 @@
 
 <script setup lang="ts">
 // 依赖
-import { ref, reactive } from 'vue';
 import { MenuTypeEnum } from '@/enums/MenuTypeEnum'
-import { Search, Refresh, Plus } from '@element-plus/icons-vue';
 
 // 变量定义
 const queryParams = reactive({
@@ -84,7 +89,7 @@ function resetQuery() {
 }
 
 // 新增
-function openDialog(param:any) {
+function openDialog(param: any) {
     console.log(param)
 
 }
