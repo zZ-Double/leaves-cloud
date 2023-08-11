@@ -44,7 +44,8 @@ export default defineConfig(({ mode }) => {
           }),
         ],
   
-        dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
+        // dts: path.resolve(pathSrc, '/types/auto-imports.d.ts'),
+        dts: 'src/types/auto-imports.d.ts',
       }),
   
       Components({
@@ -59,7 +60,8 @@ export default defineConfig(({ mode }) => {
           ElementPlusResolver(),
         ],
   
-        dts: path.resolve(pathSrc, 'components.d.ts'),
+        // dts: path.resolve(pathSrc, '/types/components.d.ts'),
+        dts: 'src/types/components.d.ts',
       }),
   
       Icons({

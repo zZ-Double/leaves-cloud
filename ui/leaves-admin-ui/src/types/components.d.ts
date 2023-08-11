@@ -7,8 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Breadcrumb: typeof import('./components/Breadcrumb/index.vue')['default']
-    Echarts: typeof import('./components/Echarts/index.vue')['default']
+    Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
+    Echarts: typeof import('./../components/Echarts/index.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -29,17 +29,17 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Hamburger: typeof import('./components/Hamburger/index.vue')['default']
+    Hamburger: typeof import('./../components/Hamburger/index.vue')['default']
     IEpPlus: typeof import('~icons/ep/plus')['default']
     IEpRefresh: typeof import('~icons/ep/refresh')['default']
     IEpSearch: typeof import('~icons/ep/search')['default']
-    RightPanel: typeof import('./components/RightPanel/index.vue')['default']
+    RightPanel: typeof import('./../components/RightPanel/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Screenfull: typeof import('./components/Screenfull/index.vue')['default']
-    SizeSelect: typeof import('./components/SizeSelect/index.vue')['default']
-    SvgIcon: typeof import('./components/SvgIcon/index.vue')['default']
-    ThemePicker: typeof import('./components/ThemePicker/index.vue')['default']
+    Screenfull: typeof import('./../components/Screenfull/index.vue')['default']
+    SizeSelect: typeof import('./../components/SizeSelect/index.vue')['default']
+    SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
+    ThemePicker: typeof import('./../components/ThemePicker/index.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
