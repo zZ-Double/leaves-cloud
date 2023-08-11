@@ -3,6 +3,8 @@ package com.leaves.system.mapper;
 import com.leaves.system.model.entity.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.Set;
+
 /**
 * @author leaves
 * @description 针对表【sys_role(角色信息表)】的数据库操作Mapper
@@ -18,6 +20,15 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @return
      */
     Integer getMaximumDataScope(String userId);
+
+
+    /**
+     * 获取角色编码
+     *
+     * @param userId
+     * @return
+     */
+    Set<String> getRoles(String userId);
 
 }
 

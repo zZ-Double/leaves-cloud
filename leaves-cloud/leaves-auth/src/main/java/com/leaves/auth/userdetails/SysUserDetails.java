@@ -2,6 +2,7 @@ package com.leaves.auth.userdetails;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.leaves.auth.enums.PasswordEncoderTypeEnum;
+import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.model.vo.UserVO;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -55,7 +56,7 @@ public class SysUserDetails implements UserDetails {
         this.setDeptId(user.getDeptId());
         this.setDataScope(user.getDataScope());
         this.setPassword(PasswordEncoderTypeEnum.BCRYPT.getPrefix() + user.getPassword());
-        this.setEnabled(user.getStatus().getValue() == 1);
+        this.setEnabled(user.getStatus().getValue() == StatusEnum.ENABLE.getValue());
         if (CollectionUtil.isNotEmpty(user.getRoles())) {
             authorities = user.getRoles().stream()
                     .map(SimpleGrantedAuthority::new)

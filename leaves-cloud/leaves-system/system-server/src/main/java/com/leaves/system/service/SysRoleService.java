@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.leaves.system.model.param.RoleParam;
 
 import java.util.List;
+import java.util.Set;
 
 /**
 * @author leaves
@@ -67,4 +68,11 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     Boolean updateRoleMenus(String roleId, List<String> menuIds);
+
+    /**
+     * 用户登陆时将用户角色设置到UserDetails中
+     * @param userId
+     * @return
+     */
+    Set<String> getRoles(String userId);
 }

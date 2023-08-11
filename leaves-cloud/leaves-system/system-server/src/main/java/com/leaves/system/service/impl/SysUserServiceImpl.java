@@ -129,9 +129,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(dbUser, userVO, true);
 
+        // 获取角色信息
+        Set<String> roles = roleService.getRoles(dbUser.getId());
+        userVO.setRoles(roles);
+
         // 获取权限
         Set<String> perms = menuService.listRolePerms(dbUser.getId());
         userVO.setPerms(perms);
+
         // 获取数据权限
         Integer dataScope = roleService.getMaximumDataScope(dbUser.getId());
         userVO.setDataScope(dataScope);

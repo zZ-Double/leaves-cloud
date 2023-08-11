@@ -45,4 +45,21 @@
 
     </select>
 
+    <select id="getRoles" resultType="java.lang.String">
+        SELECT
+        role_code
+        FROM
+        sys_role r LEFT JOIN sys_user_role ur on r.id = ur.role_id
+        <where>
+            <choose>
+                <when test="userId != null and userid != ''">
+                    ur.user_id = #{userId}
+                </when>
+                <otherwise>
+                    r.id = -1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
 </mapper>

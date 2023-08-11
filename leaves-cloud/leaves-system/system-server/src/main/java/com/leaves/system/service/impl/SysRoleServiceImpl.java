@@ -114,6 +114,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         return flag;
     }
+
+    @Override
+    public Set<String> getRoles(String userId) {
+        return this.baseMapper.getRoles(userId);
+    }
 }
 
 
