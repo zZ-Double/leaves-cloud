@@ -24,16 +24,14 @@
                     <template #icon><i-ep-plus /></template>新增</el-button>
             </template>
 
-            <el-table v-loading="loading" :data="menuList" highlight-current-row :tree-props="{
+            <el-table 
+                v-loading="loading" :data="menuList" highlight-current-row :tree-props="{
                 children: 'children',
                 hasChildren: 'hasChildren',
             }" row-key="id" default-expand-all border size="small" @row-click="onRowClick">
                 <el-table-column label="菜单名称" min-width="200">
                     <template #default="scope">
-                        <svg-icon :icon-class="scope.row.type === MenuTypeEnum.BUTTON
-                            ? 'button'
-                            : scope.row.icon
-                            " />
+                        <svg-icon :icon-class="scope.row.type === MenuTypeEnum.BUTTON ? 'button' : scope.row.icon" />
                         {{ scope.row.name }}
                     </template>
                 </el-table-column>
