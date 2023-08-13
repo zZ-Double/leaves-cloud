@@ -42,7 +42,6 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    console.log("未登录可以访问白名单页面(登录页面)")
     // 未登录可以访问白名单页面(登录页面)
     if (whiteList.indexOf(to.path) !== -1) {
       next();

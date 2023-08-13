@@ -6,6 +6,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.leaves.common.base.Option;
+import com.leaves.common.constant.GlobalConstants;
 import com.leaves.system.mapper.SysMenuMapper;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.enums.MenuTypeEnum;
@@ -73,6 +75,32 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public Set<String> listRolePerms(String userId) {
         Set<String> perms = this.baseMapper.listRolePerms(userId);
         return perms;
+    }
+
+    @Override
+    public List<Option> listMenuOptions() {
+        List<SysMenu> menuList = this.list(new LambdaQueryWrapper<SysMenu>().orderByAsc(SysMenu::getSort));
+        List<Option> menus = recurMenuOptions(GlobalConstants.ROOT_NODE_ID, menuList);
+        return menus;
+    }
+
+    /**
+     * 递归生成菜单下拉层级列表
+     *
+     * @param parentId 父级ID
+     * @param menuList 菜单列表
+     * @return
+     */
+    private static List<Option> recurMenuOptions(String parentId, List<SysMenu> menuList) {
+        if (CollectionUtil.isEmpty(menuList)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<Option> menus = menuList.stream()
+                .filter(menu -> menu.getParentId().equals(parentId))
+                .map(menu -> new Option(menu.getId(), menu.getName(), recurMenuOptions(menu.getId(), menuList)))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        return menus;
     }
 
     /**

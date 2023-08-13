@@ -1,6 +1,7 @@
 package com.leaves.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.leaves.common.base.Option;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
@@ -37,5 +38,10 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     Set<String> listRolePerms(String userId);
+
+    /**
+     * 菜单下拉数据
+     */
+    List<Option> listMenuOptions();
 
 }

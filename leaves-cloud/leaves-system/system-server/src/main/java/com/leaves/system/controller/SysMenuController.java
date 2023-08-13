@@ -1,6 +1,7 @@
 package com.leaves.system.controller;
 
 
+import com.leaves.common.base.Option;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
@@ -52,6 +53,12 @@ public class SysMenuController {
     @GetMapping("/list")
     public List<MenuVO> listMenus(MenuParam param) {
         return menuService.listMenus(param);
+    }
+
+    @ApiOperation(value = "菜单下拉列表")
+    @GetMapping("/options/list")
+    public List<Option> listMenus() {
+        return menuService.listMenuOptions();
     }
 
 }
