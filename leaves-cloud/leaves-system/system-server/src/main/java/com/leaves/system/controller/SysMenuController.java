@@ -56,7 +56,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "菜单下拉列表")
-    @GetMapping("/options/list")
+    @GetMapping("/options")
     public List<Option> listMenus() {
         return menuService.listMenuOptions();
     }

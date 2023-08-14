@@ -5,14 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leaves.common.base.IBaseEnum;
 import lombok.Getter;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MenuTypeEnum implements IBaseEnum<Integer> {
 
     NULL(0, null),
-    MENU(1, "菜单"),
-    CATALOG(2, "目录"),
-    EXT_LINK(3, "外链"),
-    BUTTON(4, "按钮"),
+    CATALOG(1, "目录"),
+    MENU(2, "菜单"),
+    BUTTON(3, "按钮"),
+    EXT_LINK(4, "外链"),
 
     ;
 

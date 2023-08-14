@@ -23,15 +23,13 @@ public class MenuVO implements Serializable {
 
     private String icon;
 
-    private String routeName;
-
-    private String routePath;
+    private String path;
 
     private String component;
 
     private Integer sort;
 
-    private Integer visible;
+    private Integer status;
 
     private String redirect;
 
