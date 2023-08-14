@@ -2,7 +2,7 @@
  * 登录用户信息
  */
 export interface UserInfo {
-  nickname: string;
+  nickName: string;
   avatar: string;
   roles: string[];
   perms: string[];

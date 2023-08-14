@@ -55,11 +55,11 @@ const useUserStore = defineStore({
             if (!data) {
               return reject('Verification failed, please Login again.');
             }
-            const { nickname, avatar, roles, perms } = data;
+            const { nickName, avatar, roles, perms } = data;
             if (!roles || roles.length <= 0) {
               reject('getUserInfo: roles must be a non-null array!');
             }
-            this.nickname = nickname;
+            this.nickname = nickName;
             this.avatar = avatar;
             this.roles = roles;
             this.perms = perms;

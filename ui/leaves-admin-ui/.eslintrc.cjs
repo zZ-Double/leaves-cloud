@@ -23,6 +23,11 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off", // 关闭any类型的警告
         "vue/no-v-model-argument": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "vue/first-attribute-linebreak": ["error", {
+            "singleline": "ignore",
+            "multiline": "ignore"
+          }]
+        
     },
     // eslint不能对html文件生效
     overrides: [
