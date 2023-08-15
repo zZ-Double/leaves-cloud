@@ -31,7 +31,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use((response) => {
 
-  console.log(JSON.stringify(response.data))
 
   const { code, msg } = response.data
   if (code === '20000') {
@@ -43,12 +42,11 @@ service.interceptors.response.use((response) => {
     }
 
     ElMessage.error(msg || '系统出错')
-    
+
     return Promise.reject(new Error(msg || 'Error'))
   }
 }, (error: any) => {
 
-  debugger
   if (error.response.data) {
     const { code, msg } = error.response.data
     // token 过期,重新登录
@@ -64,7 +62,7 @@ service.interceptors.response.use((response) => {
       ElMessage.error(msg || '系统出错')
     }
   }
-  return Promise.reject(error.message)
+  return Promise.reject(error.message || 'Error')
 },
 )
 

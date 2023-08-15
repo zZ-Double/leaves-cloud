@@ -178,7 +178,7 @@ const formData: MenuForm = reactive({
     id: '',
     parentId: '',
     name: '',
-    type: '',
+    type: 'MENU',
     path: '',
     component: '',
     perm: '',
@@ -289,8 +289,9 @@ function resetForm() {
 }
 
 // 
-function onRowClick() {
-
+function onRowClick(row: MenuVO) {
+    console.log('点击行')
+    state.currentRow = JSON.parse(JSON.stringify(row));
 }
 
 function handleDelete(menuId: string) {
