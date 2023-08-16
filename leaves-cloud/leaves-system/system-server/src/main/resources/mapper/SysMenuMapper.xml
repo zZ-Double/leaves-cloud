@@ -4,35 +4,49 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leaves.system.mapper.SysMenuMapper">
 
-    <resultMap id="BaseResultMap" type="com.leaves.system.model.entity.SysMenu">
-        <id property="id" column="id" jdbcType="VARCHAR"/>
-        <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
-        <result property="type" column="type" jdbcType="TINYINT"/>
+    <!-- 菜单路由映射 -->
+    <resultMap id="RouteMap" type="com.leaves.system.model.vo.MenuVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
         <result property="path" column="path" jdbcType="VARCHAR"/>
         <result property="component" column="component" jdbcType="VARCHAR"/>
-        <result property="perm" column="perm" jdbcType="VARCHAR"/>
+        <result property="redirect" column="redirect" jdbcType="VARCHAR"/>
         <result property="icon" column="icon" jdbcType="VARCHAR"/>
         <result property="sort" column="sort" jdbcType="INTEGER"/>
-        <result property="redirect" column="redirect" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="TINYINT"/>
-        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
-        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
-        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="OTHER"/>
+        <result property="type" column="type" jdbcType="OTHER"/>
+        <collection property="roles" ofType="string" javaType="list">
+            <result column="roleCode"/>
+        </collection>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id
-        ,parent_id,`type`,
-        `name`,`path`,component,
-        perm,icon,sort,
-        redirect,status,del_flag,
-        create_user,create_time,update_time,
-        update_user,remark
-    </sql>
+    <!-- 获取路由列表 -->
+    <select id="listRoutes" resultMap="RouteMap">
+        SELECT
+            t1.id,
+            t1.name,
+            t1.parent_id,
+            t1.path,
+            t1.component,
+            t1.icon,
+            t1.sort,
+            t1.status,
+            t1.redirect,
+            t1.type,
+            t3.role_code as roleCode
+        FROM
+            sys_menu t1
+                LEFT JOIN sys_role_menu t2 ON t1.id = t2.menu_id
+                LEFT JOIN sys_role t3 ON t2.role_id = t3.id
+                LEFT JOIN sys_user_role t4 ON t4.role_id = t2.id
+        WHERE
+            t1.type != '${@com.leaves.system.model.enums.MenuTypeEnum@BUTTON.getValue()}'
+            <if test="userId != null and userId != ''">
+                AND t4.user_id = #{userId}
+            </if>
+        ORDER BY t1.sort asc
+    </select>
 
 
     <!-- 获取角色拥有的权限集合 -->

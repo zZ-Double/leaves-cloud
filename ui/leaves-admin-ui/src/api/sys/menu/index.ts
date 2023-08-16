@@ -25,6 +25,17 @@ export function saveMenu(data: MenuForm) {
     });
 }
 
+/**
+ * 修改菜单 
+ */
+export function updateMenu(data: MenuForm) {
+    return request({
+        url: sys_base_url + 'menus/update',
+        method: 'post',
+        data
+    });
+}
+
 
 /**
  * 加载菜单下拉菜单
@@ -32,6 +43,26 @@ export function saveMenu(data: MenuForm) {
 export function menuOptions(): AxiosPromise<Option> {
     return request({
         url: sys_base_url + 'menus/options',
+        method: 'get',
+    });
+}
+
+/**
+ * 菜单详情
+ */
+export function getMenu(id: string): AxiosPromise<MenuForm> {
+    return request({
+        url: sys_base_url + 'menus/query/' + id,
+        method: 'get',
+    });
+}
+
+/**
+ * 加载菜单下拉菜单
+ */
+export function listRoutes() {
+    return request({
+        url: sys_base_url + 'menus/routes',
         method: 'get',
     });
 }

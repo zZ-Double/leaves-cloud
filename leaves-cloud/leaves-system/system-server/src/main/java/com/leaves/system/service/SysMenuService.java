@@ -5,6 +5,7 @@ import com.leaves.common.base.Option;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
+import com.leaves.system.model.vo.RouteVO;
 
 import java.util.List;
 import java.util.Set;
@@ -17,25 +18,17 @@ import java.util.Set;
 public interface SysMenuService extends IService<SysMenu> {
 
     /**
-     * 新增菜单
-     *
-     * @param menu
-     * @return
+     * 新增修改菜单
      */
     Boolean saveMenu(SysMenu menu);
 
     /**
      * 获取菜单表格列表
-     *
-     * @return
      */
     List<MenuVO> listMenus(MenuParam param);
 
     /**
      * 用户ID获取角色权限集合
-     *
-     * @param userId
-     * @return
      */
     Set<String> listRolePerms(String userId);
 
@@ -43,5 +36,10 @@ public interface SysMenuService extends IService<SysMenu> {
      * 菜单下拉数据
      */
     List<Option> listMenuOptions();
+
+    /**
+     * 路由列表
+     */
+    List<RouteVO> listRoutes();
 
 }

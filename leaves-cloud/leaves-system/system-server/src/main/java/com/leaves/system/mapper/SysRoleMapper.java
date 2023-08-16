@@ -2,7 +2,9 @@ package com.leaves.system.mapper;
 
 import com.leaves.system.model.entity.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.leaves.system.model.vo.MenuVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,18 +17,12 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     /**
      * 获取最大范围的数据权限
-     *
-     * @param userId
-     * @return
      */
     Integer getMaximumDataScope(String userId);
 
 
     /**
      * 获取角色编码
-     *
-     * @param userId
-     * @return
      */
     Set<String> getRoles(String userId);
 

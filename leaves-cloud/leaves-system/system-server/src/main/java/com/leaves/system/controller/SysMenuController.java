@@ -1,10 +1,10 @@
 package com.leaves.system.controller;
 
-
 import com.leaves.common.base.Option;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
+import com.leaves.system.model.vo.RouteVO;
 import com.leaves.system.service.SysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,8 +57,14 @@ public class SysMenuController {
 
     @ApiOperation(value = "菜单下拉列表")
     @GetMapping("/options")
-    public List<Option> listMenus() {
+    public List<Option> options() {
         return menuService.listMenuOptions();
+    }
+
+    @ApiOperation(value = "路由列表")
+    @GetMapping("/routes")
+    public List<RouteVO> routes() {
+        return menuService.listRoutes();
     }
 
 }

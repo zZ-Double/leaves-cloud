@@ -3,7 +3,8 @@
         <div class="search-container">
             <el-form ref="queryFormRef" :model="queryParams" :inline="true">
                 <el-form-item label="关键字" prop="keywords">
-                    <el-input v-model="queryParams.keywords" placeholder="菜单名称" clearable @keyup.enter="handleQuery" />
+                    <el-input v-model="queryParams.keywords" placeholder="菜单名称" 
+                    clearable @keyup.enter="handleQuery" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleQuery">
@@ -20,14 +21,15 @@
 
         <el-card shadow="never" size="small">
             <template #header>
-                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="handleAdd">
+                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog('0')">
                     <template #icon><i-ep-plus /></template>新增</el-button>
             </template>
 
             <el-table v-loading="loading" :data="menuList" highlight-current-row
-                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" default-expand-all border
+                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" 
+                default-expand-all border
                 size="small" @row-click="onRowClick">
-                <el-table-column label="菜单名称" min-width="200">
+                <el-table-column label="菜单名称" min-width="180">
                     <template #default="scope">
                         <svg-icon :icon-class="scope.row.type === MenuTypeEnum.BUTTON ? 'button' : scope.row.icon" />
                         {{ scope.row.name }}
@@ -43,31 +45,31 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="路由路径" align="left" width="150" prop="path" />
+                <el-table-column label="路由路径" align="left" width="120" prop="path" />
 
-                <el-table-column label="组件路径" align="left" width="250" prop="component" />
+                <el-table-column label="组件路径" align="left" width="200" prop="component" />
 
-                <el-table-column label="权限标识" align="center" width="200" prop="perm" />
+                <el-table-column label="权限标识" align="center" width="170" prop="perm" />
 
                 <el-table-column label="状态" align="center" width="80">
                     <template #default="scope">
-                        <el-tag v-if="scope.row.status === 1" type="success">显示</el-tag>
+                        <el-tag v-if="scope.row.status === 'ENABLE'" type="success">显示</el-tag>
                         <el-tag v-else type="info">隐藏</el-tag>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="排序" align="center" width="80" prop="sort" />
+                <el-table-column label="排序" align="center" width="70" prop="sort" />
 
                 <el-table-column fixed="right" align="center" label="操作" width="220">
                     <template #default="scope">
                         <el-button v-if="scope.row.type == 'CATALOG' || scope.row.type == 'MENU'"
                             v-hasPerm="['sys:menu:add']" type="primary" link size="small"
-                            @click.stop="handleAdd(scope.row.id)">
+                            @click.stop="openDialog(scope.row.id)">
                             <i-ep-plus />新增
                         </el-button>
 
                         <el-button v-hasPerm="['sys:menu:edit']" type="primary" link size="small"
-                            @click.stop="handleUpdate(scope.row.id)">
+                            @click.stop="openDialog(undefined, scope.row.id)">
                             <i-ep-edit />编辑
                         </el-button>
                         <el-button v-hasPerm="['sys:menu:delete']" type="primary" link size="small"
@@ -134,8 +136,8 @@
 
                 <el-form-item v-if="formData.type !== 'BUTTON'" label="状态">
                     <el-radio-group v-model="formData.status">
-                        <el-radio :label="1">显示</el-radio>
-                        <el-radio :label="0">隐藏</el-radio>
+                        <el-radio label="ENABLE">显示</el-radio>
+                        <el-radio label="DISABLE">隐藏</el-radio>
                     </el-radio-group>
                 </el-form-item>
 
@@ -158,22 +160,36 @@
 // 依赖
 import { MenuTypeEnum } from '@/enums/MenuTypeEnum'
 import IconSelect from '@/components/IconSelect/index.vue'
-import { menuOptions, saveMenu, listMenus } from '@/api/sys/menu/index'
-import { Option, MenuForm, MenuQuery, MenuVO } from '@/api/sys/menu/types';
+import { menuOptions, saveMenu, updateMenu, listMenus, getMenu } from '@/api/sys/menu/index'
+import { Option, MenuForm, MenuVO } from '@/api/sys/menu/types';
 // 获取form组件
 let dataFormRef = ref()
 // 变量定义
+let loading = ref(false)
+
 const state = reactive({
     menuOptions: [] as Option[],
     currentRow: undefined
 })
+
 const queryParams = reactive({
     keywords: ''
 })
+
 const dialog = reactive({
     visible: false,
     title: ''
 })
+
+const menuCacheData = reactive({
+    type: "",
+    path: "",
+})
+
+
+
+const menuList = ref<MenuVO[]>([])
+
 const formData: MenuForm = reactive({
     id: '',
     parentId: '',
@@ -184,13 +200,10 @@ const formData: MenuForm = reactive({
     perm: '',
     icon: '',
     redirect: '',
-    status: 1,
+    status: 'ENABLE',
     sort: 0
 })
 
-let loading = ref(false)
-
-const menuList = ref<MenuVO[]>([])
 
 // 定义表单校验规则
 const rules = reactive({
@@ -201,11 +214,6 @@ const rules = reactive({
     component: [
         { required: true, message: "请输入组件完整路径", trigger: "blur" },
     ],
-});
-
-const menuCacheData = reactive({
-    type: "",
-    path: "",
 });
 
 // 搜索
@@ -226,45 +234,28 @@ function resetQuery() {
 
 }
 
-/**
- * 新增菜单打开
- */
-async function handleAdd(row: any) {
-    formData.id = '';
-    await loadMenuData();
-    dialog.title = '添加菜单',
-        dialog.visible = true
-
-    if (row.id) {
-        // 行点击新增
-        formData.parentId = row.id;
-    } else {
-        // 工具栏新增
-        if (state.currentRow) {
-            // 选择行
-            formData.parentId = (state.currentRow as any).id;
+/** 打开弹窗 */
+function openDialog(parentId?: string, menuId?: string) {
+    const menuOptionsList: any[] = [];
+    menuOptions().then(({ data }) => {
+        const menuOption = { value: '0', label: '顶级菜单', children: data };
+        menuOptionsList.push(menuOption);
+        state.menuOptions = menuOptionsList;
+    }).then(() => {
+        dialog.visible = true;
+        if (menuId) {
+            dialog.title = "编辑菜单";
+            getMenu(menuId).then(({ data }) => {
+                console.log(data)
+                Object.assign(formData, data);
+                menuCacheData.type = data.type ?? "";
+                menuCacheData.path = data.path ?? "";
+            });
         } else {
-            // 未选择行
-            formData.parentId = '0';
+            dialog.title = "新增菜单";
+            formData.parentId = parentId;
         }
-    }
-}
-
-/**
- * 编辑菜单
- */
-async function handleUpdate(row: any) {
-    //   await loadMenuData();
-    //   state.dialog = {
-    //     title: '编辑菜单',
-    //     visible: true,
-    //   };
-    //   const id = row.id as string;
-    //   getMenuDetail(id).then(({ data }) => {
-    //     state.formData = data;
-    //     cacheData.value.menuType = data.type;
-    //     cacheData.value.menuPath = data.path;
-    //   });
+    });
 }
 
 /** 关闭弹窗 */
@@ -280,7 +271,7 @@ function resetForm() {
 
     formData.id = undefined;
     formData.parentId = '0';
-    formData.status = 1;
+    formData.status = 'ENABLE';
     formData.sort = 1;
     formData.perm = undefined;
     formData.component = undefined;
@@ -312,33 +303,20 @@ function onMenuTypeChange() {
 function submitForm() {
     dataFormRef.value.validate((isValid: boolean) => {
         if (isValid) {
-            //   if (state.formData.id) {
-            //     updateMenu(state.formData.id, state.formData).then(() => {
-            //       ElMessage.success('修改成功');
-            //       cancel();
-            //       handleQuery();
-            //     });
-            //   } else {
-            saveMenu(formData).then(() => {
-                ElMessage.success('新增成功');
-                closeDialog();
-                handleQuery();
-            });
-            //   }
+            if (formData.id) {
+                updateMenu(formData).then(() => {
+                    ElMessage.success('修改成功');
+                    closeDialog();
+                    handleQuery();
+                });
+            } else {
+                saveMenu(formData).then(() => {
+                    ElMessage.success('新增成功');
+                    closeDialog();
+                    handleQuery();
+                });
+            }
         }
-    });
-
-}
-
-/**
- * 加载菜单下拉树
- */
-async function loadMenuData() {
-    const menuOptionsList: any[] = [];
-    await menuOptions().then(({ data }) => {
-        const menuOption = { value: '0', label: '顶级菜单', children: data };
-        menuOptionsList.push(menuOption);
-        state.menuOptions = menuOptionsList;
     });
 }
 

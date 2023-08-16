@@ -63,7 +63,7 @@ export interface MenuForm {
     /**
      * 状态（1正常 0停用）
      */
-    status?: number;
+    status?: string;
     /**
      * 菜单类型(MENU：菜单；CATALOG：目录；EXT_LINK：外链；BUTTON：按钮)
      */

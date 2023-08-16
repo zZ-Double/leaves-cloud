@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leaves.common.base.IBaseEnum;
 import lombok.Getter;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GenderEnum implements IBaseEnum<Integer> {
 
     FEMALE(0, "女"),

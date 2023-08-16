@@ -2,7 +2,9 @@ package com.leaves.system.mapper;
 
 import com.leaves.system.model.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.leaves.system.model.vo.MenuVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,11 +17,14 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     /**
      * 用户ID获取角色权限集合
-     *
-     * @param userId
-     * @return
      */
     Set<String> listRolePerms(String userId);
+
+
+    /**
+     *  获取菜单路由列表
+     */
+    List<MenuVO> listRoutes(String userId);
 }
 
 

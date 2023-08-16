@@ -8,11 +8,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.base.Option;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.enums.StatusEnum;
+import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysMenuMapper;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.enums.MenuTypeEnum;
 import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
+import com.leaves.system.model.vo.RouteVO;
 import com.leaves.system.service.SysMenuService;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         MenuTypeEnum menuType = menu.getType();  // 菜单类型
         switch (menuType) {
             case CATALOG: // 目录
-                Assert.isTrue(!path.startsWith("/"), "目录路由路径格式错误，必须以/开始");
+                Assert.isTrue(path.startsWith("/"), "目录路由路径格式错误，必须以/开始");
                 menu.setComponent("Layout");
                 break;
             case EXT_LINK: // 外链
@@ -84,6 +87,17 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return menus;
     }
 
+    @Override
+    public List<RouteVO> listRoutes() {
+        String userId = "";
+        if (!SecurityUtils.isRoot()) {
+            userId = SecurityUtils.getUserId();
+        }
+        List<MenuVO> menuList = this.baseMapper.listRoutes(userId);
+        List<RouteVO> routeList = recurRoutes(GlobalConstants.ROOT_NODE_ID, menuList);
+        return routeList;
+    }
+
     /**
      * 递归生成菜单下拉层级列表
      *
@@ -125,6 +139,49 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     return menuVO;
                 }).collect(Collectors.toList());
         return menus;
+    }
+
+
+    /**
+     * 递归生成菜单路由层级列表
+     *
+     * @param parentId 父级ID
+     * @param menuList 菜单列表
+     * @return
+     */
+    private List<RouteVO> recurRoutes(String parentId, List<MenuVO> menuList) {
+        List<RouteVO> list = new ArrayList<>();
+        Optional.ofNullable(menuList).ifPresent(menus -> menus.stream()
+                .filter(menu -> menu.getParentId().equals(parentId))
+                .forEach(menu -> {
+                    RouteVO routeVO = new RouteVO();
+
+                    MenuTypeEnum menuTypeEnum = menu.getType();
+
+                    if (MenuTypeEnum.MENU.equals(menuTypeEnum)) {
+                        routeVO.setName(menu.getPath()); //  根据name路由跳转 this.$router.push({name:xxx})
+                    }
+                    routeVO.setPath(menu.getPath()); // 根据path路由跳转 this.$router.push({path:xxx})
+                    routeVO.setRedirect(menu.getRedirect());
+                    routeVO.setComponent(menu.getComponent());
+
+                    RouteVO.Meta meta = new RouteVO.Meta();
+                    meta.setTitle(menu.getName());
+                    meta.setIcon(menu.getIcon());
+                    meta.setRoles(menu.getRoles());
+                    meta.setHidden(StatusEnum.DISABLE.equals(menu.getStatus()));
+                    meta.setKeepAlive(true);
+
+                    routeVO.setMeta(meta);
+                    List<RouteVO> children = recurRoutes(menu.getId(), menuList);
+                    // 含有子节点的目录设置为可见
+                    boolean alwaysShow = CollectionUtil.isNotEmpty(children) && children.stream().anyMatch(item -> item.getMeta().getHidden().equals(false));
+                    meta.setAlwaysShow(alwaysShow);
+                    routeVO.setChildren(children);
+
+                    list.add(routeVO);
+                }));
+        return list;
     }
 }
 

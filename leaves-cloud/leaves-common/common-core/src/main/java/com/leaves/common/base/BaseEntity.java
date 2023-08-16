@@ -17,9 +17,11 @@ public class BaseEntity implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
+    @TableField(fill = FieldFill.INSERT)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private String createUser;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private String updateUser;
 

@@ -2,6 +2,7 @@ package com.leaves.system.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.model.enums.MenuTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,17 +30,15 @@ public class MenuVO implements Serializable {
 
     private Integer sort;
 
-    private Integer status;
+    private StatusEnum status;
 
     private String redirect;
 
-    @ApiModelProperty("菜单类型")
     private MenuTypeEnum type;
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private List<MenuVO> children;
 
-    @ApiModelProperty("按钮权限标识")
     private String perm;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -47,5 +46,7 @@ public class MenuVO implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+    private List<String> roles;
 
 }
