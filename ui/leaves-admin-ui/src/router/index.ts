@@ -29,36 +29,6 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: { title: "首页", icon: "homepage", affix: true },
       }
     ],
-  },
-  {
-    path: '/sys',
-    component: () => import('@/layout/index.vue'),
-    name: 'Sys',
-    meta: {
-      title: '系统设置',
-      icon: 'system'
-    },
-    redirect: '/sys/user',
-    children: [
-      {
-        path: '/sys/user',
-        component: () => import('@/views/sys/user.vue'),
-        name: 'User',
-        meta: { title: '用户管理', icon: 'User'}
-      },
-      {
-        path: '/sys/role',
-        component: () => import('@/views/sys/role.vue'),
-        name: 'Role',
-        meta: { title: '角色管理', icon: 'UserFilled'}
-      },
-      {
-        path: '/sys/menu',
-        component: () => import('@/views/sys/menu.vue'),
-        name: 'Menu',
-        meta: { title: '菜单管理', icon: 'Monitor'}
-      }
-    ]
   }
 ]
 
