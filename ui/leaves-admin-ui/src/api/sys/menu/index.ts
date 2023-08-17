@@ -8,7 +8,7 @@ import { sys_base_url } from "..";
  */
 export function listMenus(queryParams: MenuQuery): AxiosPromise<MenuVO[]> {
     return request({
-      url: sys_base_url + 'menus/list',
+      url: sys_base_url + 'menu/list',
       method: "get",
       params: queryParams,
     });
@@ -19,7 +19,7 @@ export function listMenus(queryParams: MenuQuery): AxiosPromise<MenuVO[]> {
  */
 export function saveMenu(data: MenuForm) {
     return request({
-        url: sys_base_url + 'menus/save',
+        url: sys_base_url + 'menu/save',
         method: 'post',
         data
     });
@@ -30,20 +30,9 @@ export function saveMenu(data: MenuForm) {
  */
 export function updateMenu(data: MenuForm) {
     return request({
-        url: sys_base_url + 'menus/update',
+        url: sys_base_url + 'menu/update',
         method: 'post',
         data
-    });
-}
-
-
-/**
- * 加载菜单下拉菜单
- */
-export function menuOptions(): AxiosPromise<Option> {
-    return request({
-        url: sys_base_url + 'menus/options',
-        method: 'get',
     });
 }
 
@@ -52,7 +41,27 @@ export function menuOptions(): AxiosPromise<Option> {
  */
 export function getMenu(id: string): AxiosPromise<MenuForm> {
     return request({
-        url: sys_base_url + 'menus/query/' + id,
+        url: sys_base_url + 'menu/query/' + id,
+        method: 'get',
+    });
+}
+
+/**
+ * 删除菜单
+ */
+export function removeMenu(ids: string) {
+    return request({
+        url: sys_base_url + 'menu/remove/' + ids,
+        method: 'get',
+    });
+}
+
+/**
+ * 加载菜单下拉菜单
+ */
+export function menuOptions(): AxiosPromise<Option> {
+    return request({
+        url: sys_base_url + 'menu/options',
         method: 'get',
     });
 }
@@ -62,7 +71,7 @@ export function getMenu(id: string): AxiosPromise<MenuForm> {
  */
 export function listRoutes() {
     return request({
-        url: sys_base_url + 'menus/routes',
+        url: sys_base_url + 'menu/routes',
         method: 'get',
     });
 }

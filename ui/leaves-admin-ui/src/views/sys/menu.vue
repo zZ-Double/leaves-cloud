@@ -3,8 +3,7 @@
         <div class="search-container">
             <el-form ref="queryFormRef" :model="queryParams" :inline="true">
                 <el-form-item label="关键字" prop="keywords">
-                    <el-input v-model="queryParams.keywords" placeholder="菜单名称" 
-                    clearable @keyup.enter="handleQuery" />
+                    <el-input v-model="queryParams.keywords" placeholder="菜单名称" clearable @keyup.enter="handleQuery" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleQuery">
@@ -26,9 +25,8 @@
             </template>
 
             <el-table v-loading="loading" :data="menuList" highlight-current-row
-                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" 
-                default-expand-all border
-                size="small" @row-click="onRowClick">
+                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" default-expand-all border
+                size="small">
                 <el-table-column label="菜单名称" min-width="180">
                     <template #default="scope">
                         <svg-icon :icon-class="scope.row.type === MenuTypeEnum.BUTTON ? 'button' : scope.row.icon" />
@@ -81,7 +79,7 @@
             </el-table>
         </el-card>
 
-        <el-dialog v-model="dialog.visible" :title="dialog.title" destroy-on-close append-to-body width="750px"
+        <el-dialog v-model="state.visible" :title="state.title" destroy-on-close append-to-body width="750px"
             @close="closeDialog">
             <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
                 <el-form-item label="父级菜单" prop="parentId">
@@ -160,36 +158,28 @@
 // 依赖
 import { MenuTypeEnum } from '@/enums/MenuTypeEnum'
 import IconSelect from '@/components/IconSelect/index.vue'
-import { menuOptions, saveMenu, updateMenu, listMenus, getMenu } from '@/api/sys/menu/index'
+import { menuOptions, saveMenu, updateMenu, listMenus, getMenu, removeMenu } from '@/api/sys/menu/index'
 import { Option, MenuForm, MenuVO } from '@/api/sys/menu/types';
 // 获取form组件
 let dataFormRef = ref()
 // 变量定义
 let loading = ref(false)
 
+// 临时变量
 const state = reactive({
     menuOptions: [] as Option[],
-    currentRow: undefined
+    visible: false,//dialog 可见性标识
+    title: '',//dialog 标题
+    type: "",// 菜单类型
+    path: ""// 菜单路由路径
 })
-
+// 搜索条件
 const queryParams = reactive({
     keywords: ''
 })
-
-const dialog = reactive({
-    visible: false,
-    title: ''
-})
-
-const menuCacheData = reactive({
-    type: "",
-    path: "",
-})
-
-
-
+// table数据
 const menuList = ref<MenuVO[]>([])
-
+// 表单提交数据
 const formData: MenuForm = reactive({
     id: '',
     parentId: '',
@@ -204,7 +194,6 @@ const formData: MenuForm = reactive({
     sort: 0
 })
 
-
 // 定义表单校验规则
 const rules = reactive({
     parentId: [{ required: true, message: "请选择顶级菜单", trigger: "blur" }],
@@ -216,7 +205,7 @@ const rules = reactive({
     ],
 });
 
-// 搜索
+/** 条件搜索 */
 function handleQuery() {
     // 重置父组件
     loading.value = true;
@@ -229,9 +218,10 @@ function handleQuery() {
         });
 }
 
-// 重置
+/** 重置搜索条件 */
 function resetQuery() {
-
+    dataFormRef.value.resetFields()
+    handleQuery()
 }
 
 /** 打开弹窗 */
@@ -242,17 +232,17 @@ function openDialog(parentId?: string, menuId?: string) {
         menuOptionsList.push(menuOption);
         state.menuOptions = menuOptionsList;
     }).then(() => {
-        dialog.visible = true;
+        state.visible = true;
         if (menuId) {
-            dialog.title = "编辑菜单";
+            state.title = "编辑菜单";
             getMenu(menuId).then(({ data }) => {
                 console.log(data)
                 Object.assign(formData, data);
-                menuCacheData.type = data.type ?? "";
-                menuCacheData.path = data.path ?? "";
+                state.type = data.type ?? "";
+                state.path = data.path ?? "";
             });
         } else {
-            dialog.title = "新增菜单";
+            state.title = "新增菜单";
             formData.parentId = parentId;
         }
     });
@@ -260,46 +250,41 @@ function openDialog(parentId?: string, menuId?: string) {
 
 /** 关闭弹窗 */
 function closeDialog() {
-    dialog.visible = false;
+    state.visible = false;
     resetForm();
 }
 
-/** 重置表单 */
-function resetForm() {
-    dataFormRef.value.resetFields();
-    dataFormRef.value.clearValidate();
 
-    formData.id = undefined;
-    formData.parentId = '0';
-    formData.status = 'ENABLE';
-    formData.sort = 1;
-    formData.perm = undefined;
-    formData.component = undefined;
-    formData.path = undefined;
-    formData.redirect = undefined;
-}
-
-// 
-function onRowClick(row: MenuVO) {
-    console.log('点击行')
-    state.currentRow = JSON.parse(JSON.stringify(row));
-}
-
+/** 删除菜单 */
 function handleDelete(menuId: string) {
+    if (!menuId) {
+        ElMessage.warning("请勾选删除项");
+        return false;
+    }
 
+    ElMessageBox.confirm("确认删除已选中的数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+    }).then(() => {
+        removeMenu(menuId).then(() => {
+            ElMessage.success("删除成功");
+            handleQuery();
+        });
+    }).catch(() => ElMessage.info("已取消删除"));
 }
 
+/** 菜单类型切换事件处理 */
 function onMenuTypeChange() {
     // 如果菜单类型改变，清空路由路径；未改变在切换后还原路由路径
-    if (formData.type !== menuCacheData.type) {
+    if (formData.type !== state.type) {
         formData.path = "";
     } else {
-        formData.path = menuCacheData.path;
+        formData.path = state.path;
     }
 }
-/**
- * 表单提交
- */
+
+/** 表单提交 */
 function submitForm() {
     dataFormRef.value.validate((isValid: boolean) => {
         if (isValid) {
@@ -318,6 +303,21 @@ function submitForm() {
             }
         }
     });
+}
+
+/** 重置表单 */
+function resetForm() {
+    dataFormRef.value.resetFields();
+    dataFormRef.value.clearValidate();
+
+    formData.id = undefined;
+    formData.parentId = '0';
+    formData.status = 'ENABLE';
+    formData.sort = 1;
+    formData.perm = undefined;
+    formData.component = undefined;
+    formData.path = undefined;
+    formData.redirect = undefined;
 }
 
 // 组件挂载

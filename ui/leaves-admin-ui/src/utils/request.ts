@@ -59,7 +59,11 @@ service.interceptors.response.use((response) => {
         window.location.href = '/'
       })
     } else {
-      ElMessage.error(msg || '系统出错')
+      if (msg) {
+        ElMessage.error(msg || '系统出错')
+      } else {
+        ElMessage.error(error.message || '系统出错')
+      }
     }
   }
   return Promise.reject(error.message || 'Error')

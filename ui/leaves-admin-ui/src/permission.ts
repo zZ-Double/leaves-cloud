@@ -46,7 +46,6 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      console.log("未登录可以访问白名单页面(登录页面)   /login?redirect")
       next(`/login?redirect=${to.path}`);
       NProgress.done();
     }
