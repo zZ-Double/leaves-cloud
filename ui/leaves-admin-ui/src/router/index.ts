@@ -1,6 +1,5 @@
 //通过vue-router插件实现模板路由配置
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import useStore from '@/store';
 
 // 定义常量路由
 export const constantRoute: Array<RouteRecordRaw> = [
@@ -29,21 +28,13 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: { title: "首页", icon: "homepage", affix: true },
       }
     ],
-  }
+  },
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   component: () => import('@/views/404/index.vue'),
+  //   meta: { hidden: true },
+  // }
 ]
-
-//任意路由
-export const anyRoute = {
-  //任意路由
-  path: '/:pathMatch(.*)*',
-  redirect: '/404',
-  name: 'Any',
-  meta: {
-    title: '任意路由',
-    hidden: true,
-    icon: 'DataLine'
-  }
-}
 
 //创建路由器
 const router = createRouter({
@@ -61,13 +52,7 @@ const router = createRouter({
 
 // 重置路由
 export function resetRouter() {
-  const { permission } = useStore();
-  permission.routes.forEach((route) => {
-    const name = route.name;
-    if (name && router.hasRoute(name)) {
-      router.removeRoute(name);
-    }
-  });
+  router.replace({ path: "/login" });
 }
 
 export default router

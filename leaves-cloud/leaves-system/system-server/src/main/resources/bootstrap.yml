@@ -43,3 +43,6 @@ dubbo:
     address: spring-cloud://localhost:8848
   cloud:
     subscribed-services: leaves-system
+# 开启全局统一返回
+response:
+  advice: true

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leaves.common.result.Result;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,6 +21,7 @@ import java.util.Objects;
  */
 @Slf4j
 @RestControllerAdvice
+@ConditionalOnProperty(prefix = "response", name = "advice")
 public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
 
@@ -27,6 +29,11 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         // 排除swagger/knife4j
         if ("ApiResourceController".equals(methodParameter.getDeclaringClass().getSimpleName())) {
+            return false;
+        }
+
+        // 排除springboot 自动处理的 如404等错误
+        if ("BasicErrorController".equals(methodParameter.getDeclaringClass().getSimpleName())) {
             return false;
         }
 
@@ -57,6 +64,9 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         if (methodParameter.getGenericParameterType().equals(String.class)) {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(Result.success(o));
+        }
+        if (methodParameter.getGenericParameterType().equals(Boolean.class)) {
+            return Result.judge((Boolean) o);
         }
         // 将原本的数据包装
         return Result.success(o);

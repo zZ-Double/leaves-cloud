@@ -89,7 +89,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public List<DeptVO> listDept(DeptParam param) {
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .eq(StrUtil.isNotBlank(param.getStatus()), SysDept::getStatus, param.getStatus())
+                .eq(Objects.nonNull(param.getStatus()), SysDept::getStatus, param.getStatus())
                 .like(StrUtil.isNotBlank(param.getDeptName()), SysDept::getDeptName, param.getDeptName())
                 .orderByAsc(SysDept::getParentId, SysDept::getOrderNum);
         List<SysDept> deptList = this.baseMapper.selectList(queryWrapper);

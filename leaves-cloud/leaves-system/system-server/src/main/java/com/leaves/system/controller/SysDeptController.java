@@ -31,7 +31,7 @@ public class SysDeptController {
     }
 
 
-    @GetMapping(value = "/remove/{id}")
+    @GetMapping(value = "/remove/{ids}")
     @ApiOperation(value = "删除部门")
     public Boolean removeDept(@PathVariable String ids) {
         return deptService.removeDept(ids);

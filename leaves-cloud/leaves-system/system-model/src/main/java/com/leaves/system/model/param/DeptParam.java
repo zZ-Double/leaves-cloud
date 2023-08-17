@@ -1,6 +1,7 @@
 package com.leaves.system.model.param;
 
 import com.leaves.common.base.BaseParam;
+import com.leaves.common.enums.StatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,7 @@ public class DeptParam extends BaseParam {
     private String email;
 
     @ApiModelProperty(value = "部门状态（1正常 0停用）")
-    private String status;
+    private StatusEnum status;
 
 
 }
