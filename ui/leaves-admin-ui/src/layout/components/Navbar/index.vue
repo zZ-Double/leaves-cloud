@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-            @toggleClick="toggleSideBar" />
+            @toggle-click="toggleSideBar" />
 
         <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
         <div class="right-menu">
