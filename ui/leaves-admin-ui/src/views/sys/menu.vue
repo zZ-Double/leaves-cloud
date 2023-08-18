@@ -18,7 +18,7 @@
             </el-form>
         </div>
 
-        <el-card shadow="never" size="small">
+        <el-card>
             <template #header>
                 <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog('0')">
                     <template #icon><i-ep-plus /></template>新增</el-button>

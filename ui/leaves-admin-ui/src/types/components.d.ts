@@ -42,6 +42,7 @@ declare module 'vue' {
     IEpCaretTop: typeof import('~icons/ep/caret-top')['default']
     IEpDelete: typeof import('~icons/ep/delete')['default']
     IEpEdit: typeof import('~icons/ep/edit')['default']
+    IEpMinus: typeof import('~icons/ep/minus')['default']
     IEpPlus: typeof import('~icons/ep/plus')['default']
     IEpRefresh: typeof import('~icons/ep/refresh')['default']
     IEpSearch: typeof import('~icons/ep/search')['default']
