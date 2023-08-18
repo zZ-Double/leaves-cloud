@@ -1,5 +1,6 @@
 package com.leaves.gateway.route;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -11,10 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 /**
  * 动态路由更新
  */
 @Component
+@Slf4j
 public class DynamicRouteService implements ApplicationEventPublisherAware {
 
     @Autowired
@@ -25,28 +29,13 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
     /**
      * 增加路由
      */
-    public int addRoute(RouteDefinition definition) {
-        routeDefinitionWriter.save(Mono.just(definition)).subscribe();
+    public String addRoute(Map<String, RouteDefinition> map) {
+        map.forEach((key, value) -> {
+            routeDefinitionWriter.save(Mono.just(value)).subscribe();
+            log.info("+++++++服务【{}】已添加到路由中", key);
+        });
         publisher.publishEvent(new RefreshRoutesEvent(this));
-        return 1;
-    }
-
-    /**
-     * 更新路由
-     */
-    public int updateRoute(RouteDefinition definition) {
-        try {
-            routeDefinitionWriter.delete(Mono.just(definition.getId()));
-        } catch (Exception e) {
-            // 异常说明没有该路由可以删除,直接略过,继续增加
-        }
-        try {
-            routeDefinitionWriter.save(Mono.just(definition)).subscribe();
-            publisher.publishEvent(new RefreshRoutesEvent(this));
-            return 1;
-        } catch (Exception e) {
-            return 0;
-        }
+        return "success";
     }
 
     /**

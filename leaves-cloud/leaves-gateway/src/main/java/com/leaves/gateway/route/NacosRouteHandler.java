@@ -78,11 +78,9 @@ public class NacosRouteHandler implements IRoute {
         });
 
         // 将待添加的加到路由和缓存中
-        toAddRouteMap.forEach((key, value) -> {
-            dynamicRouteService.addRoute(value);
-            cachedRouteMap.put(key, value);
-            log.info("+++++++服务【{}】已添加到路由中", key);
-        });
+        dynamicRouteService.addRoute(toAddRouteMap);
+        cachedRouteMap.putAll(toAddRouteMap);
+
 
         // 将待移除的从路由和缓存中移除
         toRemoveRouteMap.forEach((key, value) -> {
