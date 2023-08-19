@@ -1,6 +1,7 @@
 package com.leaves.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.leaves.common.base.Option;
 import com.leaves.system.model.entity.SysDept;
 import com.leaves.system.model.param.DeptParam;
 import com.leaves.system.model.vo.DeptVO;
@@ -23,4 +24,6 @@ public interface SysDeptService extends IService<SysDept> {
     DeptVO getDept(String id);
 
     List<DeptVO> listDept(DeptParam param);
+
+    List<Option> deptOptions();
 }

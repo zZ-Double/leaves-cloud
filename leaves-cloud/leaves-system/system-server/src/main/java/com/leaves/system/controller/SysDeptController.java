@@ -2,6 +2,7 @@ package com.leaves.system.controller;
 
 
 import cn.hutool.core.util.ArrayUtil;
+import com.leaves.common.base.Option;
 import com.leaves.system.model.param.DeptParam;
 import com.leaves.system.model.vo.DeptVO;
 import com.leaves.system.service.SysDeptService;
@@ -71,5 +72,11 @@ public class SysDeptController {
             }
         }
         return deptList;
+    }
+
+    @GetMapping(value = "/options")
+    @ApiOperation(value = "部门下拉列表")
+    public List<Option> options(DeptParam param) {
+        return deptService.deptOptions();
     }
 }

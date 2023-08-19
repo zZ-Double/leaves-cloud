@@ -4,8 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.leaves.common.base.Option;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.mapper.SysDeptMapper;
 import com.leaves.system.model.entity.SysDept;
@@ -16,9 +18,7 @@ import com.leaves.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author leaves
@@ -95,6 +95,88 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         List<SysDept> deptList = this.baseMapper.selectList(queryWrapper);
         List<DeptVO> deptVOS = BeanUtil.copyToList(deptList, DeptVO.class);
         return deptVOS;
+    }
+
+    /**
+     * 部门下拉选项
+     */
+    @Override
+    public List<Option> deptOptions() {
+        List<SysDept> deptList = this.list(new LambdaQueryWrapper<SysDept>()
+                .eq(SysDept::getStatus, StatusEnum.ENABLE.getValue())
+                .select(SysDept::getId, SysDept::getParentId, SysDept::getDeptName)
+                .orderByAsc(SysDept::getOrderNum)
+        );
+
+        List<Option> options = buildDeptTree(deptList);
+        return options;
+    }
+
+
+    /**
+     * 递归生成部门表格层级列表
+     */
+    public List<Option> buildDeptTree(List<SysDept> deptList) {
+        if (CollectionUtil.isEmpty(deptList)) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Option> returnList = new ArrayList<>();
+        List<String> tempList = new ArrayList<>();
+        for (SysDept dept : deptList) {
+            tempList.add(dept.getId());
+        }
+        for (SysDept dept : deptList) {
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!tempList.contains(dept.getParentId())) {
+                Option option = new Option(dept.getId(), dept.getDeptName());
+                recursionFn(deptList, option);
+                returnList.add(option);
+            }
+        }
+        if (returnList.isEmpty()) {
+            deptList.stream().forEach(dept -> {
+                Option option = new Option(dept.getId(), dept.getDeptName());
+                returnList.add(option);
+            });
+        }
+        return returnList;
+    }
+
+    /**
+     * 递归列表
+     */
+    private void recursionFn(List<SysDept> list, Option t) {
+        // 得到子节点列表
+        List<Option> childList = getChildList(list, t);
+        t.setChildren(childList);
+        for (Option tChild : childList) {
+            if (hasChild(list, tChild)) {
+                recursionFn(list, tChild);
+            }
+        }
+    }
+
+    /**
+     * 得到子节点列表
+     */
+    private List<Option> getChildList(List<SysDept> list, Option t) {
+        List<Option> options = new ArrayList<>();
+        Iterator<SysDept> it = list.iterator();
+        while (it.hasNext()) {
+            SysDept n = it.next();
+            if (n.getParentId() != null && n.getParentId() == t.getValue()) {
+                Option option = new Option(n.getId(), n.getDeptName());
+                options.add(option);
+            }
+        }
+        return options;
+    }
+
+    /**
+     * 判断是否有子节点
+     */
+    private boolean hasChild(List<SysDept> list, Option t) {
+        return getChildList(list, t).size() > 0;
     }
 }
 
