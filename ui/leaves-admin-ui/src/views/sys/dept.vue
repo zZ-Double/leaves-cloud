@@ -6,11 +6,11 @@
                     <el-input placeholder="菜单名称" clearable />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary">
+                    <el-button type="primary" @click="handleQuery">
                         <template #icon><i-ep-search /></template><!-- 自动导入图标使用方法 -->
                         搜索
                     </el-button>
-                    <el-button>
+                    <el-button @click="resetQuery">
                         <template #icon><i-ep-refresh /></template>
                         重置
                     </el-button>
@@ -63,7 +63,7 @@
             <el-form ref="dataFormRef" label-width="100px">
 
                 <el-form-item label="上级部门" prop="parentId">
-                    <el-tree-select v-model="formData.parentId" placeholder="选择上级部门" :data="deptOptions" filterable
+                    <el-tree-select v-model="formData.parentId" placeholder="选择上级部门" :data="deptOptionArr" filterable
                         check-strictly :render-after-expand="false" />
                 </el-form-item>
                 <el-form-item label="部门名称" prop="name">
@@ -87,19 +87,21 @@
 
 <script setup lang="ts">
 import { DeptVO } from '@/api/sys/dept/types'
-import { listDepts } from '@/api/sys/dept/index'
+import { Option } from '@/api/sys/menu/types';
+import { listDepts, deptOptions } from '@/api/sys/dept/index'
 
 // 获取form组件
 let dataFormRef = ref()
 
 // 临时变量
+let loading = ref(false)
+// 存储勾选的列表
+let ids = ref<string[]>([])
+
 const state = reactive({
     title: '',
     visible: false
 })
-let loading = ref(false)
-// 存储勾选的列表
-let ids = ref<string[]>([])
 
 // 查询参数
 const queryParams = reactive({
@@ -109,7 +111,7 @@ const queryParams = reactive({
 const deptList = ref<DeptVO[]>([])
 
 // dialog下拉数据
-const deptOptions = reactive([])
+let deptOptionArr = reactive<Option[]>([])
 
 // form Data
 const formData = reactive({
@@ -138,8 +140,24 @@ function resetQuery() {
 }
 
 // 打开弹窗
-function openDialog(parentId?: string, id?: string) {
-
+async function openDialog(parentId?: string, id?: string) {
+    const deptOptionsList: any[] = [];
+    deptOptions().then(({ data }) => {
+        const deptOption = { value: '0', label: '顶级部门', children: data };
+        deptOptionsList.push(deptOption);
+        deptOptionArr = deptOptionsList;
+    }).then(() => {
+        state.visible = true;
+        if (id) {
+            state.title = "修改部门";
+            // getDeptForm(deptId).then(({ data }) => {
+            //   Object.assign(formData, data);
+            // });
+        } else {
+            state.title = "新增部门";
+            formData.parentId = parentId ?? '0';
+        }
+    })
 }
 
 // 关闭弹窗
@@ -162,4 +180,4 @@ onMounted(() => {
     handleQuery()
 })
 </script>
-<style scoped lang="scss"></style>@/api/sys/dept/types
+<style scoped lang="scss"></style>
