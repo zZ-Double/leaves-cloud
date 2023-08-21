@@ -47,7 +47,52 @@ export interface DeptVO {
 
 export interface Query {
     /**
-     * 关键字(菜单名称)
+     * 部门名称
      */
-    keywords?: string;
+    deptName?: string;
+    /**
+     * 部门负责人
+     */
+    leader?: string;
+    /**
+     * 部门状态
+     */
+    status?: string;
+
+
+}
+
+export interface DeptForm {
+    /**
+     * 部门名称
+     */
+    deptName: string;
+    /**
+     * 邮箱
+     */
+    email?: string;
+    /**
+     * 部门ID
+     */
+    id?: string;
+    /**
+     * 负责人
+     */
+    leader?: string;
+    /**
+     * 显示顺序
+     */
+    orderNum?: number;
+    /**
+     * 父级部门id
+     */
+    parentId: string;
+    /**
+     * 联系电话
+     */
+    phone?: string;
+    /**
+     * 部门状态（1正常 0停用）
+     */
+    status?: string;
 }

@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { DeptVO, Query } from "./types"
+import { DeptVO, Query, DeptForm } from "./types"
 import { AxiosPromise } from 'axios';
 import { sys_base_url } from "..";
 import { Option } from "../menu/types";
@@ -23,4 +23,46 @@ export function deptOptions(): AxiosPromise<Option> {
         url: sys_base_url + 'dept/options',
         method: 'get'
     })
+}
+
+/**
+ * 新增部门
+ */
+export function saveDept(data: DeptForm) {
+    return request({
+        url: sys_base_url + 'dept/save',
+        method: 'post',
+        data
+    });
+}
+
+/**
+ * 修改部门
+ */
+export function updateDept(data: DeptForm) {
+    return request({
+        url: sys_base_url + 'dept/update',
+        method: 'post',
+        data
+    });
+}
+
+/**
+ * 部门详情
+ */
+export function getDept(id: string): AxiosPromise<DeptForm> {
+    return request({
+        url: sys_base_url + 'dept/query/' + id,
+        method: 'get',
+    });
+}
+
+/**
+ * 删除部门
+ */
+export function removeDept(ids: string) {
+    return request({
+        url: sys_base_url + 'dept/remove/' + ids,
+        method: 'get',
+    });
 }
