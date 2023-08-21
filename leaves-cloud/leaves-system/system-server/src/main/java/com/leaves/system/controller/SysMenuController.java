@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
-@Api(tags = "菜单接口")
+@Api(tags = "菜单管理")
 @RestController
 @RequestMapping("/api/v1/menu")
 @RequiredArgsConstructor
