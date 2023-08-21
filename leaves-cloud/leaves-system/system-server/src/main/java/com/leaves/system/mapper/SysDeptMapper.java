@@ -3,7 +3,6 @@ package com.leaves.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.leaves.system.model.entity.SysDept;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * @author leaves
@@ -13,8 +12,7 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface SysDeptMapper extends BaseMapper<SysDept> {
 
-    @Select("SELECT count(1) from sys_dept where dept_name = #{deptName} and parent_id = #{parentId} limit 1")
-    Integer checkUniqueName(@Param("deptName") String deptName, @Param("parentId") String parentId);
+    Integer checkUniqueName(@Param("deptName") String deptName, @Param("parentId") String parentId, @Param("id") String id);
 
 }
 

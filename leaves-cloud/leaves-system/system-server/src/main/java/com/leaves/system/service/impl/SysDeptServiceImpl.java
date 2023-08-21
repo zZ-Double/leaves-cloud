@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.base.Option;
+import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.mapper.SysDeptMapper;
 import com.leaves.system.model.entity.SysDept;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author leaves
@@ -35,16 +37,19 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public Boolean saveDept(DeptParam param) {
 
         // 重名判断
-        Integer exist = this.baseMapper.checkUniqueName(param.getDeptName(), param.getParentId());
+        Integer exist = this.baseMapper.checkUniqueName(param.getDeptName(), param.getParentId(), "");
         Assert.isTrue(exist <= 0, "部门名称" + param.getDeptName() + "已存在");
 
         // 判断父节点状态
-        SysDept parentDept = this.baseMapper.selectById(param.getParentId());
-        Assert.isTrue(!parentDept.getStatus().equals(StatusEnum.DISABLE.getValue()), "部门已停用，不允许新增");
+        SysDept parentDept = null;
+        if (!param.getParentId().equals(GlobalConstants.ROOT_NODE_ID)) {
+            parentDept = this.baseMapper.selectById(param.getParentId());
+            Assert.isTrue(!parentDept.getStatus().equals(StatusEnum.DISABLE.getValue()), "部门已停用，不允许新增");
+        }
 
         SysDept sysDept = new SysDept();
         BeanUtil.copyProperties(param, sysDept, true);
-        sysDept.setAncestors(parentDept.getAncestors() + "," + parentDept.getId());
+        sysDept.setAncestors(Objects.nonNull(parentDept) ? parentDept.getAncestors() + "," + parentDept.getId() : GlobalConstants.ROOT_NODE_ID);
         return this.baseMapper.insert(sysDept) > 0;
     }
 
@@ -53,12 +58,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
         Assert.isTrue(StrUtil.isNotBlank(ids), "删除的数据为空");
         List<String> deptIds = Arrays.asList(ids.split(","));
-
-        // 判断当前部门是否存在下级节点
-        QueryWrapper<SysDept> deptQueryWrapper = new QueryWrapper();
-        deptQueryWrapper.lambda().in(CollectionUtil.isNotEmpty(deptIds), SysDept::getParentId, deptIds);
-        Integer count = this.baseMapper.selectCount(deptQueryWrapper);
-        Assert.isTrue(count == 0, "当前节点存在下级节点，不能删除");
 
         // 判断当前节点是否存在用户
         Integer integer = userService.listUserByDeptId(deptIds);
@@ -71,6 +70,10 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public Boolean updateDept(DeptParam param) {
         SysDept dbSysDept = this.baseMapper.selectById(param.getId());
         Assert.isTrue(Objects.nonNull(dbSysDept), "未查询到当前记录,请重试");
+
+        // 重名判断
+        Integer exist = this.baseMapper.checkUniqueName(param.getDeptName(), param.getParentId(), dbSysDept.getId());
+        Assert.isTrue(exist <= 0, "部门名称" + param.getDeptName() + "已存在");
 
         BeanUtil.copyProperties(param, dbSysDept, true);
         return this.baseMapper.updateById(dbSysDept) > 0;
@@ -91,10 +94,32 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         queryWrapper.lambda()
                 .eq(Objects.nonNull(param.getStatus()), SysDept::getStatus, param.getStatus())
                 .like(StrUtil.isNotBlank(param.getDeptName()), SysDept::getDeptName, param.getDeptName())
+                .like(StrUtil.isNotBlank(param.getLeader()), SysDept::getLeader, param.getLeader())
                 .orderByAsc(SysDept::getParentId, SysDept::getOrderNum);
         List<SysDept> deptList = this.baseMapper.selectList(queryWrapper);
-        List<DeptVO> deptVOS = BeanUtil.copyToList(deptList, DeptVO.class);
-        return deptVOS;
+
+        List<DeptVO> list = new ArrayList<>();
+
+        if (CollectionUtil.isNotEmpty(deptList)) {
+
+            Set<String> cacheDeptIds = deptList.stream().map(SysDept::getId).collect(Collectors.toSet());
+
+            for (SysDept dept : deptList) {
+                String parentId = dept.getParentId();
+                // 不在缓存ID列表的parentId是顶级节点ID，以此作为递归开始
+                if (cacheDeptIds.contains(parentId) == false) {
+                    list.addAll(recurDepartments(parentId, deptList));
+                    cacheDeptIds.add(parentId); // 避免重复递归
+                }
+            }
+        }
+
+        //  列表为空说明所有的节点都是独立的
+        if (list.isEmpty()) {
+            return BeanUtil.copyToList(deptList, DeptVO.class);
+        }
+
+        return list;
     }
 
     /**
@@ -110,6 +135,26 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
         List<Option> options = buildDeptTree(deptList);
         return options;
+    }
+
+    /**
+     * 递归生成部门层级列表
+     *
+     * @param parentId
+     * @param deptList
+     * @return
+     */
+    public List<DeptVO> recurDepartments(String parentId, List<SysDept> deptList) {
+        List<DeptVO> list = deptList.stream()
+                .filter(dept -> dept.getParentId().equals(parentId))
+                .map(dept -> {
+                    DeptVO deptVO = new DeptVO();
+                    BeanUtil.copyProperties(dept, deptVO);
+                    List<DeptVO> children = recurDepartments(dept.getId(), deptList);
+                    deptVO.setChildren(children);
+                    return deptVO;
+                }).collect(Collectors.toList());
+        return list;
     }
 
 

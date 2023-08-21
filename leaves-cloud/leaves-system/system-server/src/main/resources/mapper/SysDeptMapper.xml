@@ -29,4 +29,15 @@
         del_flag,create_user,create_time,
         update_user,update_time
     </sql>
+
+    <select id="checkUniqueName" resultType="java.lang.Integer">
+        SELECT count(1)
+        from sys_dept
+        where dept_name = #{deptName}
+          and parent_id = #{parentId}
+          <if test="id != null and id != ''">
+              and id != #{id}
+          </if>
+          limit 1
+    </select>
 </mapper>

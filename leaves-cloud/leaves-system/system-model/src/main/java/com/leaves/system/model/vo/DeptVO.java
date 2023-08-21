@@ -4,6 +4,8 @@ import com.leaves.system.model.entity.SysDept;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @author leaves
  * @version 1.0
@@ -13,4 +15,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DeptVO extends SysDept {
+
+    private List<DeptVO> children;
 }
