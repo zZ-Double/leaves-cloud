@@ -31,7 +31,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use((response) => {
 
-
   const { code, msg } = response.data
   if (code === '20000') {
     return response.data

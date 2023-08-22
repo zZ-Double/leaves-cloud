@@ -59,7 +59,7 @@ export function removeMenu(ids: string) {
 /**
  * 加载下拉列表
  */
-export function menuOptions(): AxiosPromise<Option> {
+export function menuOptions(): AxiosPromise<Option[]> {
     return request({
         url: sys_base_url + 'menu/options',
         method: 'get',

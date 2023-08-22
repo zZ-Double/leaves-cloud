@@ -49,7 +49,7 @@
                         <el-tag v-else type="info">禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="sort" label="排序" width="100" />
+                <el-table-column prop="orderNum" label="排序" width="100" />
                 <el-table-column label="操作" fixed="right" align="left" width="200">
                     <template #default="scope">
                         <el-button v-hasPerm="['sys:dept:add']" type="primary" link size="small"
