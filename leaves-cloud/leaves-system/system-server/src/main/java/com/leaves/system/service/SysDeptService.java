@@ -1,7 +1,7 @@
 package com.leaves.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.leaves.common.base.Option;
+import com.leaves.common.model.Option;
 import com.leaves.system.model.entity.SysDept;
 import com.leaves.system.model.param.DeptParam;
 import com.leaves.system.model.vo.DeptVO;

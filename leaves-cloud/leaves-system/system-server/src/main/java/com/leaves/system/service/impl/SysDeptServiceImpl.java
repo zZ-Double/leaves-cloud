@@ -7,7 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.leaves.common.base.Option;
+import com.leaves.common.model.Option;
 import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.mapper.SysDeptMapper;

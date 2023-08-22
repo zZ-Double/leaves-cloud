@@ -5,10 +5,12 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.leaves.common.base.BaseParam;
+import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysRoleMapper;
 import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.entity.SysRoleMenu;
@@ -72,23 +74,30 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public IPage<SysRole> listRolePages(RoleParam param) {
+    public IPage<SysRole> listRolePages(BaseParam param) {
         // 查询数据
         return this.page(new Page<>(param.getCurrent(), param.getSize()),
                 new LambdaQueryWrapper<SysRole>()
-                        .eq(StrUtil.isNotBlank(param.getStatus()), SysRole::getStatus, param.getStatus())
-                        .like(StrUtil.isNotBlank(param.getRoleName()), SysRole::getRoleName, param.getRoleName())
-                        .like(StrUtil.isNotBlank(param.getRoleCode()), SysRole::getRoleCode, param.getRoleCode()));
+                        .and(StrUtil.isNotBlank(param.getKeywords()),
+                                wrapper ->
+                                        wrapper.like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleName, param.getKeywords())
+                                                .or()
+                                                .like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleCode, param.getKeywords())
+                        )
+                        .ne(!SecurityUtils.isRoot(), SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
     }
 
     @Override
-    public List<SysRole> listRole(RoleParam param) {
-        QueryWrapper<SysRole> sysRoleQueryWrapper = new QueryWrapper();
-        sysRoleQueryWrapper.lambda().
-                eq(StrUtil.isNotBlank(param.getStatus()), SysRole::getStatus, param.getStatus()).
-                like(StrUtil.isNotBlank(param.getRoleName()), SysRole::getRoleName, param.getRoleName()).
-                like(StrUtil.isNotBlank(param.getRoleCode()), SysRole::getRoleCode, param.getRoleCode());
-        return this.baseMapper.selectList(sysRoleQueryWrapper);
+    public List<SysRole> listRole(BaseParam param) {
+        return this.list(new LambdaQueryWrapper<SysRole>()
+                .and(StrUtil.isNotBlank(param.getKeywords()),
+                        wrapper ->
+                                wrapper.like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleName, param.getKeywords())
+                                        .or()
+                                        .like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleCode, param.getKeywords())
+                )
+                .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
+
     }
 
     @Override

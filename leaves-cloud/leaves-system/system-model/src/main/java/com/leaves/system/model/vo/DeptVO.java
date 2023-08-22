@@ -6,12 +6,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * @author leaves
- * @version 1.0
- * @description
- * @date 2023/7/11
- */
 @Setter
 @Getter
 public class DeptVO extends SysDept {

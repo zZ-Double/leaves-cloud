@@ -6,14 +6,14 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.leaves.common.base.Option;
+import com.leaves.common.base.BaseParam;
+import com.leaves.common.model.Option;
 import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysMenuMapper;
 import com.leaves.system.model.entity.SysMenu;
 import com.leaves.system.model.enums.MenuTypeEnum;
-import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
 import com.leaves.system.model.vo.RouteVO;
 import com.leaves.system.service.SysMenuService;
@@ -54,7 +54,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<MenuVO> listMenus(MenuParam param) {
+    public List<MenuVO> listMenus(BaseParam param) {
         List<SysMenu> menus = this.list(new LambdaQueryWrapper<SysMenu>()
                 .like(StrUtil.isNotBlank(param.getKeywords()), SysMenu::getName, param.getKeywords())
                 .orderByAsc(SysMenu::getSort)

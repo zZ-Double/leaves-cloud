@@ -1,4 +1,4 @@
-package com.leaves.common.base;
+package com.leaves.common.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @author leaves
- * @version 1.0
- * @description
- * @date 2023/8/12
+ * 下拉选项对象
  */
 @ApiModel("下拉选项对象")
 @Data

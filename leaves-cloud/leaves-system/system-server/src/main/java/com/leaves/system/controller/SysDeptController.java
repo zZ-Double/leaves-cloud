@@ -1,6 +1,6 @@
 package com.leaves.system.controller;
 
-import com.leaves.common.base.Option;
+import com.leaves.common.model.Option;
 import com.leaves.system.model.param.DeptParam;
 import com.leaves.system.model.vo.DeptVO;
 import com.leaves.system.service.SysDeptService;
@@ -27,13 +27,11 @@ public class SysDeptController {
         return deptService.saveDept(param);
     }
 
-
     @GetMapping(value = "/remove/{ids}")
     @ApiOperation(value = "删除部门")
     public Boolean removeDept(@PathVariable String ids) {
         return deptService.removeDept(ids);
     }
-
 
     @PostMapping(value = "/update")
     @ApiOperation(value = "修改部门")
@@ -41,13 +39,11 @@ public class SysDeptController {
         return deptService.updateDept(param);
     }
 
-
     @GetMapping(value = "/query/{id}")
     @ApiOperation(value = "部门ID查询部门")
     public DeptVO getDept(@PathVariable String id) {
         return deptService.getDept(id);
     }
-
 
     @GetMapping(value = "/list")
     @ApiOperation(value = "查询部门列表")
@@ -57,7 +53,7 @@ public class SysDeptController {
 
     @GetMapping(value = "/options")
     @ApiOperation(value = "部门下拉列表")
-    public List<Option> options(DeptParam param) {
+    public List<Option> options() {
         return deptService.deptOptions();
     }
 }

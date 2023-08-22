@@ -6,12 +6,6 @@ import lombok.Setter;
 
 import java.util.Set;
 
-/**
- * @author leaves
- * @version 1.0
- * @description
- * @date 2023/7/12
- */
 @Setter
 @Getter
 public class UserVO extends SysUser {

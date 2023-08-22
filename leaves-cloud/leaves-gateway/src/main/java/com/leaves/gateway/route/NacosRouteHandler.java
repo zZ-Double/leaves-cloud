@@ -26,13 +26,16 @@ public class NacosRouteHandler implements IRoute {
     @Value("${spring.application.name}")
     private String myServiceName;
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+    private final DiscoveryClient discoveryClient;
 
-    @Autowired
-    private DynamicRouteService dynamicRouteService;
+    private final DynamicRouteService dynamicRouteService;
 
     private Map<String, RouteDefinition> cachedRouteMap = new HashMap<>();
+
+    public NacosRouteHandler(DiscoveryClient discoveryClient, DynamicRouteService dynamicRouteService) {
+        this.discoveryClient = discoveryClient;
+        this.dynamicRouteService = dynamicRouteService;
+    }
 
     /**
      * 从nacos中获取服务并更新路由
