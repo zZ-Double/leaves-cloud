@@ -57,9 +57,9 @@ export function removeMenu(ids: string) {
 }
 
 /**
- * 加载菜单下拉菜单
+ * 加载下拉列表
  */
-export function menuOptions(): AxiosPromise<Option> {
+export function menuOptions(): AxiosPromise<Option[]> {
     return request({
         url: sys_base_url + 'menu/options',
         method: 'get',
@@ -67,7 +67,7 @@ export function menuOptions(): AxiosPromise<Option> {
 }
 
 /**
- * 加载菜单下拉菜单
+ * 加载菜单路由列表
  */
 export function listRoutes() {
     return request({

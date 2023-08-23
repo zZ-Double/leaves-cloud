@@ -1,3 +1,5 @@
+import { PageQuery, PageResult } from "@/api/types";
+
 /**
  * 登录用户信息
  */
@@ -13,8 +15,8 @@ export interface UserInfo {
  */
 export interface UserQuery extends PageQuery {
   keywords: string;
-  status: number;
-  deptId: number;
+  status: string;
+  deptId: string;
 }
 
 /**
@@ -23,12 +25,12 @@ export interface UserQuery extends PageQuery {
 export interface UserType {
   id: string;
   username: string;
-  nickname: string;
-  mobile: string;
-  gender: number;
+  nickName: string;
+  phoneNumber: string;
+  sex: string;
   avatar: string;
   email: string;
-  status: number;
+  status: string;
   deptName: string;
   roleNames: string;
   createTime: string;
@@ -43,23 +45,23 @@ export type UserPageResult = PageResult<UserType[]>;
  * 用户表单类型声明
  */
 export interface UserForm {
-  id: number | undefined;
-  deptId: number;
+  id: string | undefined;
+  deptId: string;
   username: string;
   nickname: string;
   password: string;
   mobile: string;
   email: string;
   gender: number;
-  status: number;
+  status: string;
   remark: string;
-  roleIds: number[];
+  roleIds: string[];
 }
 
 /**
  * 用户导入表单类型声明
  */
 export interface UserImportData {
-  deptId: number;
-  roleIds: number[];
+  deptId: string;
+  roleIds: string[];
 }

@@ -25,6 +25,12 @@ public class BaseParam implements Serializable {
             Pattern.CASE_INSENSITIVE);
 
     /**
+     * 关键字查询
+     */
+    @ApiModelProperty(value = "关键字查询")
+    private String keywords;
+
+    /**
      * 分页页码
      */
     @ApiModelProperty(value = "分页页码")

@@ -1,8 +1,8 @@
 package com.leaves.system.controller;
 
-import com.leaves.common.base.Option;
+import com.leaves.common.base.BaseParam;
+import com.leaves.common.model.Option;
 import com.leaves.system.model.entity.SysMenu;
-import com.leaves.system.model.param.MenuParam;
 import com.leaves.system.model.vo.MenuVO;
 import com.leaves.system.model.vo.RouteVO;
 import com.leaves.system.service.SysMenuService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
-@Api(tags = "菜单接口")
+@Api(tags = "菜单管理")
 @RestController
 @RequestMapping("/api/v1/menu")
 @RequiredArgsConstructor
@@ -51,7 +51,7 @@ public class SysMenuController {
 
     @ApiOperation(value = "菜单列表")
     @GetMapping("/list")
-    public List<MenuVO> listMenus(MenuParam param) {
+    public List<MenuVO> listMenus(BaseParam param) {
         return menuService.listMenus(param);
     }
 

@@ -25,6 +25,7 @@
         <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="dataScope" column="data_scope" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -36,6 +37,36 @@
         salt,login_ip,login_date,
         last_login_time,status,del_flag,
         create_user,create_time,update_user,
-        update_time,remark,dept_id
+        update_time,remark,dept_id,data_scope
     </sql>
+
+
+    <select id="userPage" resultType="com.leaves.system.model.vo.UserVO">
+        SELECT u.id,
+               u.username,
+               u.nick_name,
+               u.user_type,
+               u.phone_number,
+               u.sex,
+               u.avatar,
+               u.status,
+               u.create_time,
+               u.dept_id,
+               d.dept_name as dept_name
+        FROM sys_user u LEFT JOIN sys_dept d ON u.dept_id = d.id
+        <where>
+            <if test="param.keywords != null and param.keywords != ''">
+                AND u.username LIKE CONCAT('%', #{param.keywords}, '%')
+            </if>
+            <if test="param.keywords != null and param.keywords != ''">
+                AND u.nick_name LIKE CONCAT('%', #{param.keywords}, '%')
+            </if>
+            <if test="param.keywords != null and param.keywords != ''">
+                AND u.phone_number LIKE CONCAT('%', #{param.keywords}, '%')
+            </if>
+            <if test="param.status != null">
+                AND u.status = #{param.status}
+            </if>
+        </where>
+    </select>
 </mapper>

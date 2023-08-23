@@ -12,6 +12,9 @@ import '@/permission';
 import { createPinia } from 'pinia'
 // 引入自定义指令
 import { setupDirective } from '@/directive';
+// 设置国际化语言为中文
+import ElementPlus from 'element-plus'
+import zhCn  from 'element-plus/es/locale/lang/zh-cn';
 
 // 获取应用实例对象
 const app = createApp(App)
@@ -19,6 +22,9 @@ const app = createApp(App)
 setupDirective(app);
 
 app
+  .use(ElementPlus, {
+    locale: zhCn
+  })
   .use(router)
   .use(createPinia())
   .mount('#app')

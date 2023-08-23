@@ -1,7 +1,12 @@
 package com.leaves.system.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.leaves.system.model.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.leaves.system.model.param.UserParam;
+import com.leaves.system.model.vo.UserVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author leaves
@@ -10,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.leaves.system.model.entity.SysUser
 */
 public interface SysUserMapper extends BaseMapper<SysUser> {
+
+    IPage<UserVO> userPage(Page<SysUser> page, @Param("param") UserParam param);
 
 }
 

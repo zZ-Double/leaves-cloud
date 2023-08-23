@@ -5,12 +5,17 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.enums.DataScopeEnum;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysUserMapper;
+import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
@@ -113,6 +118,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public IPage<UserVO> userPage(UserParam param) {
+        // 查询数据
+        return this.baseMapper.userPage(new Page<>(param.getCurrent(), param.getSize()), param);
+    }
+
+    @Override
     public Integer listUserByDeptId(List<String> deptIds) {
         Assert.isTrue(CollectionUtil.isNotEmpty(deptIds), "查询的数据不存在");
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
@@ -137,8 +148,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Set<String> perms = menuService.listRolePerms(dbUser.getId());
         userVO.setPerms(perms);
 
-        // 获取数据权限
+        // 获取角色数据权限
         Integer dataScope = roleService.getMaximumDataScope(dbUser.getId());
+        // 取最小值的数据权限
+        if (Objects.nonNull(dbUser.getDataScope())) {
+            dataScope = dataScope > dbUser.getDataScope() ? dbUser.getDataScope() : dataScope;
+        }
+
         userVO.setDataScope(dataScope);
         return userVO;
 

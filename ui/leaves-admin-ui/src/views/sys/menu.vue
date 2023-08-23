@@ -162,6 +162,7 @@ import { menuOptions, saveMenu, updateMenu, listMenus, getMenu, removeMenu } fro
 import { Option, MenuForm, MenuVO } from '@/api/sys/menu/types';
 // 获取form组件
 let dataFormRef = ref()
+let queryFormRef = ref()
 // 变量定义
 let loading = ref(false)
 
@@ -220,7 +221,7 @@ function handleQuery() {
 
 /** 重置搜索条件 */
 function resetQuery() {
-    dataFormRef.value.resetFields()
+    queryFormRef.value.resetFields()
     handleQuery()
 }
 

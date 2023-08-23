@@ -1,5 +1,4 @@
 interface DefaultSettings {
-  title: string;
   showSettings: boolean;
   tagsView: boolean;
   fixedHeader: boolean;
@@ -8,7 +7,6 @@ interface DefaultSettings {
 }
 
 const defaultSettings: DefaultSettings = {
-  title: 'youlai-mall',
   showSettings: true,
   tagsView: true,
   fixedHeader: false,
