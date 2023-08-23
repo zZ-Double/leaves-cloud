@@ -1,13 +1,14 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { UserForm, UserInfo, UserPageResult, UserQuery } from './types';
+import { sys_base_url } from '..';
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
  */
 export function getUserInfo(): AxiosPromise<UserInfo> {
   return request({
-    url: '/leaves-system/api/v1/user/me',
+    url: sys_base_url + 'user/me',
     method: 'get',
   });
 }
@@ -17,11 +18,9 @@ export function getUserInfo(): AxiosPromise<UserInfo> {
  *
  * @param queryParams
  */
-export function listUserPages(
-  queryParams: UserQuery
-): AxiosPromise<UserPageResult> {
+export function userPages(queryParams: UserQuery): AxiosPromise<UserPageResult> {
   return request({
-    url: '/leaves-system/api/v1/user/list',
+    url: sys_base_url + 'user/page',
     method: 'get',
     params: queryParams,
   });
@@ -32,9 +31,9 @@ export function listUserPages(
  *
  * @param userId
  */
-export function getUserForm(userId: number): AxiosPromise<UserForm> {
+export function getUserForm(userId: string): AxiosPromise<UserForm> {
   return request({
-    url: '/leaves-system/api/v1/user/' + userId + '/form',
+    url: sys_base_url + 'user/' + userId + '/form',
     method: 'get',
   });
 }
@@ -46,7 +45,7 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  */
 export function addUser(data: any) {
   return request({
-    url: '/leaves-system/api/v1/user/',
+    url: sys_base_url + 'user/',
     method: 'post',
     data: data,
   });
@@ -60,7 +59,7 @@ export function addUser(data: any) {
  */
 export function updateUser(id: number, data: UserForm) {
   return request({
-    url: '/leaves-system/api/v1/user//' + id,
+    url: sys_base_url + 'user/' + id,
     method: 'put',
     data: data,
   });
@@ -74,7 +73,7 @@ export function updateUser(id: number, data: UserForm) {
  */
 export function updateUserStatus(id: number, status: number) {
   return request({
-    url: '/leaves-system/api/v1/user//' + id + '/status',
+    url: sys_base_url + 'user/' + id + '/status',
     method: 'patch',
     params: { status: status },
   });
@@ -88,7 +87,7 @@ export function updateUserStatus(id: number, status: number) {
  */
 export function updateUserPassword(id: number, password: string) {
   return request({
-    url: '/leaves-system/api/v1/user//' + id + '/password',
+    url: sys_base_url + 'user/' + id + '/password',
     method: 'patch',
     params: { password: password },
   });
@@ -101,55 +100,55 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function deleteUsers(ids: string) {
   return request({
-    url: '/leaves-system/api/v1/user//' + ids,
+    url: sys_base_url + 'user/' + ids,
     method: 'delete',
   });
 }
 
-/**
- * 下载用户导入模板
- *
- * @returns
- */
-export function downloadTemplate() {
-  return request({
-    url: '/leaves-system/api/v1/user//template',
-    method: 'get',
-    responseType: 'arraybuffer',
-  });
-}
+// /**
+//  * 下载用户导入模板
+//  *
+//  * @returns
+//  */
+// export function downloadTemplate() {
+//   return request({
+//     url: '/leaves-system/api/v1/user//template',
+//     method: 'get',
+//     responseType: 'arraybuffer',
+//   });
+// }
 
-/**
- * 导出用户
- *
- * @param queryParams
- * @returns
- */
-export function exportUser(queryParams: UserQuery) {
-  return request({
-    url: '/leaves-system/api/v1/user//_export',
-    method: 'get',
-    params: queryParams,
-    responseType: 'arraybuffer',
-  });
-}
+// /**
+//  * 导出用户
+//  *
+//  * @param queryParams
+//  * @returns
+//  */
+// export function exportUser(queryParams: UserQuery) {
+//   return request({
+//     url: '/leaves-system/api/v1/user//_export',
+//     method: 'get',
+//     params: queryParams,
+//     responseType: 'arraybuffer',
+//   });
+// }
 
-/**
- * 导入用户
- *
- * @param file
- */
-export function importUser(deptId: number, roleIds: string, file: File) {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('deptId', deptId.toString());
-  formData.append('roleIds', roleIds);
-  return request({
-    url: '/leaves-system/api/v1/user//_import',
-    method: 'post',
-    data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-}
+// /**
+//  * 导入用户
+//  *
+//  * @param file
+//  */
+// export function importUser(deptId: number, roleIds: string, file: File) {
+//   const formData = new FormData();
+//   formData.append('file', file);
+//   formData.append('deptId', deptId.toString());
+//   formData.append('roleIds', roleIds);
+//   return request({
+//     url: '/leaves-system/api/v1/user//_import',
+//     method: 'post',
+//     data: formData,
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   });
+// }

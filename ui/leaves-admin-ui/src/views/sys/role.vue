@@ -34,7 +34,7 @@
                 :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" border size="small"
                 @selection-change="handleSelectionChange">
 
-                <el-table-column type="selection" width="55" align="center" />
+                <el-table-column :selectable="handleDisable" type="selection" width="55" align="center" />
                 <el-table-column prop="roleName" label="角色名称" min-width="100" />
                 <el-table-column prop="roleCode" label="角色编码" min-width="80" />
                 <el-table-column prop="status" label="状态" width="100">
@@ -45,15 +45,17 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" align="left" width="220">
                     <template #default="scope">
-                        <el-button v-hasPerm="['sys:dept:add']" type="primary" link size="small"
-                            @click.stop="openMenuDialog(scope.row)"><i-ep-position />分配权限
-                        </el-button>
-                        <el-button v-hasPerm="['sys:dept:edit']" type="primary" link size="small"
-                            @click.stop="openDialog(scope.row.id)"><i-ep-edit />编辑
-                        </el-button>
-                        <el-button v-hasPerm="['sys:dept:delete']" type="primary" link size="small"
-                            @click.stop="handleDelete(scope.row.id)"><i-ep-delete />删除
-                        </el-button>
+                        <div v-if="scope.row.roleCode !== 'ROOT'">
+                            <el-button v-hasPerm="['sys:dept:add']" type="primary" link size="small"
+                                @click.stop="openMenuDialog(scope.row)"><i-ep-position />分配权限
+                            </el-button>
+                            <el-button v-hasPerm="['sys:dept:edit']" type="primary" link size="small"
+                                @click.stop="openDialog(scope.row.id)"><i-ep-edit />编辑
+                            </el-button>
+                            <el-button v-hasPerm="['sys:dept:delete']" type="primary" link size="small"
+                                @click.stop="handleDelete(scope.row.id)"><i-ep-delete />删除
+                            </el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -304,6 +306,14 @@ function handleRoleMenuSubmit() {
         }).finally(() => {
             loading.value = false;
         })
+    }
+}
+
+function handleDisable(row:RoleVO, index:number) {
+    if (row.roleCode === 'ROOT') {
+        return false
+    } else {
+        return true
     }
 }
 

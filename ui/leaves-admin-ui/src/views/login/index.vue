@@ -24,7 +24,7 @@
       </el-form-item>
 
       <!-- 验证码 -->
-      <el-form-item prop="code" v-if="state.captchaOnOff">
+      <el-form-item v-if="state.captchaOnOff" prop="code">
         <span class="svg-container">
           <svg-icon icon-class="valid_code" />
         </span>
@@ -35,8 +35,8 @@
       </el-form-item>
 
       <!-- 登录按钮 -->
-      <el-button @click="handleLogin" :loading="state.loading" size="default" type="primary"
-        style="width: 100%; margin-bottom: 30px">登录</el-button>
+      <el-button :loading="state.loading" size="default" type="primary" style="width: 100%; margin-bottom: 30px"
+        @click="handleLogin">登录</el-button>
     </el-form>
   </div>
 </template>
