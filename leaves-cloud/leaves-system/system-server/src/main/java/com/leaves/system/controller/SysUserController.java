@@ -1,6 +1,7 @@
 package com.leaves.system.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.common.annotation.OperaLog;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
@@ -55,6 +56,13 @@ public class SysUserController {
     @OperaLog(title = "查询用户列表")
     public List<UserVO> queryUserList(UserParam param) {
         return userService.listUser(param);
+    }
+
+    @GetMapping(value = "/page")
+    @ApiOperation(value = "用户列表分页")
+    @OperaLog(title = "用户列表分页")
+    public IPage<UserVO> userPage(UserParam param) {
+        return userService.userPage(param);
     }
 
     @GetMapping(value = "/me")

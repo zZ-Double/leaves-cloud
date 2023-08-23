@@ -21,7 +21,7 @@ public class UserVO extends SysUser {
     private Set<String> perms;
 
     /**
-     * 数据权限范围
+     * 部门名称
      */
-    private Integer dataScope;
+    private String deptName;
 }

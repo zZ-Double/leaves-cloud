@@ -1,6 +1,9 @@
 package com.leaves.system.model.param;
 
 import com.leaves.common.base.BaseParam;
+import com.leaves.common.enums.DataScopeEnum;
+import com.leaves.common.enums.GenderEnum;
+import com.leaves.common.enums.StatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,12 +35,17 @@ public class UserParam extends BaseParam {
 
     @ApiModelProperty(value = "用户性别（0女 1男 2未知）")
     @NotNull(message = "用户性别不能为空", groups = {add.class, edit.class})
-    private Integer sex;
+    private GenderEnum sex;
 
     @ApiModelProperty(value = "头像路径")
     private String avatar;
 
     @ApiModelProperty(value = "角色Id集合，以逗号分隔（1,2,3,4）")
     private String roleIds;
+
+    @ApiModelProperty(value = "数据范围（1：全部数据权限 2：本部门及以下数据权限 3：本部门数据权限 4：本人数据）")
+    private DataScopeEnum dataScope;
+
+    private StatusEnum status;
 
 }

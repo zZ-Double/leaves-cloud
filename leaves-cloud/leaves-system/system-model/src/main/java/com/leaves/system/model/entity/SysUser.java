@@ -3,6 +3,7 @@ package com.leaves.system.model.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leaves.common.base.BaseEntity;
+import com.leaves.common.enums.DataScopeEnum;
 import com.leaves.common.enums.GenderEnum;
 import com.leaves.common.enums.StatusEnum;
 import lombok.Data;
@@ -86,5 +87,10 @@ public class SysUser extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 数据范围（1：全部数据权限 2：本部门及以下数据权限 3：本部门数据权限 4：本人数据）
+     */
+    private Integer dataScope;
 
 }

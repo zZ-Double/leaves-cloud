@@ -1,5 +1,6 @@
 package com.leaves.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.param.UserParam;
@@ -23,6 +24,8 @@ public interface SysUserService extends IService<SysUser> {
     UserVO getUser(String id);
 
     List<UserVO> listUser(UserParam param);
+
+    IPage<UserVO> userPage(UserParam param);
 
     Integer listUserByDeptId(List<String> deptIds);
 

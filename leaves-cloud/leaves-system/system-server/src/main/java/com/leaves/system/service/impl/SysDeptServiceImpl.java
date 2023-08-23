@@ -166,10 +166,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             return Collections.EMPTY_LIST;
         }
         List<Option> returnList = new ArrayList<>();
-        List<String> tempList = new ArrayList<>();
-        for (SysDept dept : deptList) {
-            tempList.add(dept.getId());
-        }
+
+        List<String> tempList = deptList.stream().map(SysDept::getId).collect(Collectors.toList());
+
         for (SysDept dept : deptList) {
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(dept.getParentId())) {
@@ -209,7 +208,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         Iterator<SysDept> it = list.iterator();
         while (it.hasNext()) {
             SysDept n = it.next();
-            if (n.getParentId() != null && n.getParentId() == t.getValue()) {
+            if (n.getParentId() != null && n.getParentId().equals(t.getValue())) {
                 Option option = new Option(n.getId(), n.getDeptName());
                 options.add(option);
             }
