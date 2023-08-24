@@ -23,7 +23,7 @@ export interface UserQuery extends PageQuery {
  * 用户分页列表项声明
  */
 export interface UserType {
-  id: string;
+  id?: string;
   username: string;
   nickName: string;
   phoneNumber: string;
@@ -34,6 +34,7 @@ export interface UserType {
   deptName: string;
   roleNames: string;
   createTime: string;
+  deptId: string;
 }
 
 /**
@@ -48,14 +49,14 @@ export interface UserForm {
   id: string | undefined;
   deptId: string;
   username: string;
-  nickname: string;
-  password: string;
-  mobile: string;
+  nickName: string;
+  phoneNumber: string;
   email: string;
-  gender: number;
+  sex: string;
   status: string;
   remark: string;
-  roleIds: string[];
+  roleIds: [];
+  dataScope?: number
 }
 
 /**

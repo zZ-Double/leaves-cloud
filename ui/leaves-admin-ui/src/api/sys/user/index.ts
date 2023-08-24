@@ -31,9 +31,9 @@ export function userPages(queryParams: UserQuery): AxiosPromise<UserPageResult> 
  *
  * @param userId
  */
-export function getUserForm(userId: string): AxiosPromise<UserForm> {
+export function getUser(userId: string): AxiosPromise<UserForm> {
   return request({
-    url: sys_base_url + 'user/' + userId + '/form',
+    url: sys_base_url + 'user/query/' + userId,
     method: 'get',
   });
 }
@@ -43,9 +43,9 @@ export function getUserForm(userId: string): AxiosPromise<UserForm> {
  *
  * @param data
  */
-export function addUser(data: any) {
+export function saveUser(data: any) {
   return request({
-    url: sys_base_url + 'user/',
+    url: sys_base_url + 'user/save',
     method: 'post',
     data: data,
   });
@@ -57,10 +57,10 @@ export function addUser(data: any) {
  * @param id
  * @param data
  */
-export function updateUser(id: number, data: UserForm) {
+export function updateUser(data: UserForm) {
   return request({
-    url: sys_base_url + 'user/' + id,
-    method: 'put',
+    url: sys_base_url + 'user/update',
+    method: 'post',
     data: data,
   });
 }
@@ -98,10 +98,10 @@ export function updateUserPassword(id: number, password: string) {
  *
  * @param ids
  */
-export function deleteUsers(ids: string) {
+export function removeUser(ids: string) {
   return request({
-    url: sys_base_url + 'user/' + ids,
-    method: 'delete',
+    url: sys_base_url + 'user/remove' + ids,
+    method: 'get',
   });
 }
 
