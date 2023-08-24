@@ -3,6 +3,7 @@ package com.leaves.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.common.base.BaseParam;
+import com.leaves.common.model.Option;
 import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.param.RoleParam;
 import com.leaves.system.service.SysRoleService;
@@ -70,6 +71,12 @@ public class SysRoleController {
     @PostMapping("/menus/{roleId}")
     public Boolean updateRoleMenus(@PathVariable String roleId, @RequestBody List<String> menuIds) {
         return roleService.updateRoleMenus(roleId, menuIds);
+    }
+
+    @ApiOperation(value = "角色下拉列表")
+    @GetMapping(value = "/options")
+    public List<Option> roleOptions() {
+        return roleService.roleOptions();
     }
 
 }

@@ -3,6 +3,8 @@ package com.leaves.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.common.annotation.OperaLog;
+import com.leaves.common.base.BaseParam;
+import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
 import com.leaves.system.service.SysUserService;
@@ -25,8 +27,8 @@ public class SysUserController {
 
     @PostMapping(value = "/save")
     @ApiOperation(value = "新增用户")
-    public Boolean saveUser(@RequestBody @Validated(UserParam.add.class) UserParam param) {
-        return userService.saveUser(param);
+    public Boolean saveUser(@RequestBody @Validated UserForm form) {
+        return userService.saveUser(form);
     }
 
 
@@ -39,8 +41,8 @@ public class SysUserController {
 
     @PostMapping(value = "/update")
     @ApiOperation(value = "修改用户基础信息")
-    public Boolean updateUser(@RequestBody @Validated(UserParam.edit.class) UserParam param) {
-        return userService.updateUser(param);
+    public Boolean updateUser(@RequestBody @Validated UserForm form) {
+        return userService.updateUser(form);
     }
 
 
@@ -50,13 +52,6 @@ public class SysUserController {
         return userService.getUser(id);
     }
 
-
-    @GetMapping(value = "/list")
-    @ApiOperation(value = "查询用户列表")
-    @OperaLog(title = "查询用户列表")
-    public List<UserVO> queryUserList(UserParam param) {
-        return userService.listUser(param);
-    }
 
     @GetMapping(value = "/page")
     @ApiOperation(value = "用户列表分页")

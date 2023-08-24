@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.base.BaseParam;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.model.Option;
 import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysRoleMapper;
 import com.leaves.system.model.entity.SysRole;
@@ -84,7 +85,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                                                 .or()
                                                 .like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleCode, param.getKeywords())
                         )
-                        .ne(!SecurityUtils.isRoot(), SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
+//                        .ne(!SecurityUtils.isRoot(), SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
+                        .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
     }
 
     @Override
@@ -128,6 +130,28 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public Set<String> getRoles(String userId) {
         return this.baseMapper.getRoles(userId);
     }
+
+    @Override
+    public List<Option> roleOptions() {
+        // 查询数据
+        List<SysRole> roleList = this.list(new LambdaQueryWrapper<SysRole>()
+                .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE)
+                .select(SysRole::getId, SysRole::getRoleName)
+                .orderByAsc(SysRole::getCreateTime));
+
+        if (CollectionUtil.isEmpty(roleList)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return roleList.stream().map(r -> {
+            Option option = new Option();
+            option.setLabel(r.getRoleName());
+            option.setValue(r.getId());
+            return option;
+        }).collect(Collectors.toList());
+    }
+
+
 }
 
 

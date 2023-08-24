@@ -24,7 +24,7 @@
     <!-- 获取路由列表 -->
     <select id="listRoutes" resultMap="RouteMap">
         SELECT
-            t1.id,
+            DISTINCT t1.id,
             t1.name,
             t1.parent_id,
             t1.path,
@@ -39,11 +39,11 @@
             sys_menu t1
                 LEFT JOIN sys_role_menu t2 ON t1.id = t2.menu_id
                 LEFT JOIN sys_role t3 ON t2.role_id = t3.id
-                LEFT JOIN sys_user_role t4 ON t4.role_id = t2.id
+                LEFT JOIN sys_user_role t4 ON t4.role_id = t3.id
         WHERE
             t1.type != '${@com.leaves.system.model.enums.MenuTypeEnum@BUTTON.getValue()}'
             <if test="userId != null and userId != ''">
-                AND t4.user_id = #{userId}
+                AND t4.del_flag = 1 AND t4.user_id = #{userId}
             </if>
         ORDER BY t1.sort asc
     </select>
