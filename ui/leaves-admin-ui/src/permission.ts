@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
       const hasGetUserInfo = user.roles.length > 0;
       if (hasGetUserInfo) {
         if (to.matched.length === 0) {
-          from.name ? next({ name: from.name as any }) : next('/401');
+          from.name ? next({ name: from.name as any }) : next('/404');
         } else {
           next();
         }

@@ -80,6 +80,7 @@ const useUserStore = defineStore({
           .then(() => {
             localStorage.clear();
             this.RESET_STATE();
+            location.reload();
             resetRouter();
             resolve(null);
           })

@@ -11,12 +11,6 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: { hidden: true },
   },
   {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: { hidden: true },
-  },
-  {
     path: "/",
     component: () => import('@/layout/index.vue'),
     redirect: "/dashboard",
@@ -26,7 +20,13 @@ export const constantRoute: Array<RouteRecordRaw> = [
         component: () => import("@/views/dashboard/index.vue"),
         name: "Dashboard",
         meta: { title: "首页", icon: "homepage", affix: true },
-      }
+      },
+      {
+        path: '/404',
+        component: () => import('@/views/404/index.vue'),
+        name: '404',
+        meta: { hidden: true },
+      },
     ],
   },
   // {
