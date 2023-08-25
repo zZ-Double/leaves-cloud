@@ -20,7 +20,7 @@
 
         <el-card>
             <template #header>
-                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog('0')">
+                <el-button v-hasPerm="['sys:menu:save']" type="success" @click="openDialog('0')">
                     <template #icon><i-ep-plus /></template>新增</el-button>
             </template>
 
@@ -61,16 +61,16 @@
                 <el-table-column fixed="right" align="center" label="操作" width="220">
                     <template #default="scope">
                         <el-button v-if="scope.row.type == 'CATALOG' || scope.row.type == 'MENU'"
-                            v-hasPerm="['sys:menu:add']" type="primary" link size="small"
+                            v-hasPerm="['sys:menu:save']" type="primary" link size="small"
                             @click.stop="openDialog(scope.row.id)">
                             <i-ep-plus />新增
                         </el-button>
 
-                        <el-button v-hasPerm="['sys:menu:edit']" type="primary" link size="small"
+                        <el-button v-hasPerm="['sys:menu:update']" type="primary" link size="small"
                             @click.stop="openDialog(undefined, scope.row.id)">
                             <i-ep-edit />编辑
                         </el-button>
-                        <el-button v-hasPerm="['sys:menu:delete']" type="primary" link size="small"
+                        <el-button v-hasPerm="['sys:menu:remove']" type="primary" link size="small"
                             @click.stop="handleDelete(scope.row.id)">
                             <i-ep-delete />删除
                         </el-button>

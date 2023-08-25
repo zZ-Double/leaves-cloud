@@ -7,7 +7,7 @@ import { Option } from '../menu/types'
 
 export function pageRoles(queryParams: Query): AxiosPromise<RolePageResult> {
     return request({
-        url: sys_base_url + 'role/pages',
+        url: sys_base_url + 'role/page',
         method: 'get',
         params: queryParams
     })

@@ -50,9 +50,9 @@
                     <template #header>
                         <div style="justify-content: space-between;display: flex;">
                             <div>
-                                <el-button v-hasPerm="['sys:user:add']" type="success"
+                                <el-button v-hasPerm="['sys:user:save']" type="success"
                                     @click="openDialog()"><i-ep-plus />新增</el-button>
-                                <el-button v-hasPerm="['sys:user:delete']" type="danger" :disabled="ids.length === 0"
+                                <el-button v-hasPerm="['sys:user:remove']" type="danger" :disabled="ids.length === 0"
                                     @click="handleDelete()"><i-ep-delete />删除</el-button>
                             </div>
                             <div>
@@ -98,11 +98,11 @@
                         <el-table-column label="创建时间" align="center" prop="createTime" width="180" />
                         <el-table-column label="操作" fixed="right" width="220">
                             <template #default="scope">
-                                <el-button v-hasPerm="['sys:user:reset_pwd']" type="primary" size="small" link
-                                    @click="resetPassword(scope.row)"><i-ep-refresh-left />重置密码</el-button>
-                                <el-button v-hasPerm="['sys:user:edit']" type="primary" link size="small"
+                                <el-button v-hasPerm="['sys:user:passwd:reset']" type="primary" size="small" link
+                                    @click="resetPassword(scope.row.id)"><i-ep-refresh-left />重置密码</el-button>
+                                <el-button v-hasPerm="['sys:user:update']" type="primary" link size="small"
                                     @click="openDialog(scope.row.id)"><i-ep-edit />编辑</el-button>
-                                <el-button v-hasPerm="['sys:user:delete']" type="primary" link size="small"
+                                <el-button v-hasPerm="['sys:user:remove']" type="primary" link size="small"
                                     @click="handleDelete(scope.row.id)"><i-ep-delete />删除</el-button>
                             </template>
                         </el-table-column>
@@ -184,7 +184,7 @@
 import { Option } from '@/api/sys/menu/types';
 import { deptOptions } from '@/api/sys/dept';
 import { roleOptions } from '@/api/sys/role'
-import { getUser, removeUser, updateUser, saveUser } from '@/api/sys/user'
+import { getUser, removeUser, updateUser, saveUser, resetPasswd } from '@/api/sys/user'
 import { UserForm, UserQuery, UserType } from "@/api/sys/user/types";
 import { userPages } from '@/api/sys/user';
 
@@ -378,15 +378,28 @@ function resetForm() {
     formData.status = 'ENABLE'
 }
 
-function handleUserExport() {
-
-}
-
-function handleSelectionChange() {
-
+function handleSelectionChange(selection: any) {
+    ids.value = selection.map((item: any) => item.id);
 }
 
 function resetPassword(id: any) {
+    ElMessageBox.confirm("确认为选中的用户重置密码吗?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+    }).then(() => {
+        resetPasswd(id).then(() => {
+            ElMessage.success("重置成功");
+            handleQuery();
+        });
+    }).catch(() => {
+        ElMessage.info("已取消重置")
+    }).finally(() => {
+        loading.value = false;
+    })
+}
+
+function handleUserExport() {
 
 }
 

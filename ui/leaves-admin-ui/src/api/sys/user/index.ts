@@ -66,19 +66,14 @@ export function updateUser(data: UserForm) {
 }
 
 /**
- * 修改用户状态
- *
- * @param id
- * @param status
+ * 重置用户密码 
  */
-export function updateUserStatus(id: number, status: number) {
+export function resetPasswd(id:string) {
   return request({
-    url: sys_base_url + 'user/' + id + '/status',
-    method: 'patch',
-    params: { status: status },
-  });
+    url: sys_base_url + 'user/passwd/reset/' + id,
+    method: 'get'
+  })
 }
-
 /**
  * 修改用户密码
  *
@@ -100,7 +95,7 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function removeUser(ids: string) {
   return request({
-    url: sys_base_url + 'user/remove' + ids,
+    url: sys_base_url + 'user/remove/' + ids,
     method: 'get',
   });
 }

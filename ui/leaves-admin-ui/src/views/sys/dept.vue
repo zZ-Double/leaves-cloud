@@ -29,10 +29,10 @@
 
         <el-card>
             <template #header>
-                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog('0', undefined)">
+                <el-button v-hasPerm="['sys:dept:save']" type="success" @click="openDialog('0', undefined)">
                     <template #icon><i-ep-plus /></template>新增
                 </el-button>
-                <el-button v-hasPerm="['sys:menu:add']" type="danger" :disabled="ids.length === 0" @click="handleDelete()">
+                <el-button v-hasPerm="['sys:dept:remove']" type="danger" :disabled="ids.length === 0" @click="handleDelete()">
                     <template #icon><i-ep-delete /></template>删除
                 </el-button>
             </template>
@@ -52,13 +52,13 @@
                 <el-table-column prop="orderNum" label="排序" width="100" />
                 <el-table-column label="操作" fixed="right" align="left" width="200">
                     <template #default="scope">
-                        <el-button v-hasPerm="['sys:dept:add']" type="primary" link size="small"
+                        <el-button v-hasPerm="['sys:dept:save']" type="primary" link size="small"
                             @click.stop="openDialog(scope.row.id, undefined)"><i-ep-plus />新增
                         </el-button>
-                        <el-button v-hasPerm="['sys:dept:edit']" type="primary" link size="small"
+                        <el-button v-hasPerm="['sys:dept:update']" type="primary" link size="small"
                             @click.stop="openDialog(scope.row.parentId, scope.row.id)"><i-ep-edit />编辑
                         </el-button>
-                        <el-button v-hasPerm="['sys:dept:delete']" type="primary" link size="small"
+                        <el-button v-hasPerm="['sys:dept:remove']" type="primary" link size="small"
                             @click.stop="handleDelete(scope.row.id)"><i-ep-delete />删除
                         </el-button>
                     </template>
