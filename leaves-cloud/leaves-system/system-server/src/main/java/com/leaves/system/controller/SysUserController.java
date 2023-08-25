@@ -11,6 +11,7 @@ import com.leaves.system.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,46 +26,62 @@ public class SysUserController {
     private final SysUserService userService;
 
 
-    @PostMapping(value = "/save")
     @ApiOperation(value = "新增用户")
+    @PostMapping(value = "/save")
+    @PreAuthorize("hasPerm('sys:user:save')")
+    @OperaLog(title = "新增用户")
     public Boolean saveUser(@RequestBody @Validated UserForm form) {
         return userService.saveUser(form);
     }
 
-
-    @GetMapping(value = "/remove/{id}")
     @ApiOperation(value = "删除用户")
+    @GetMapping(value = "/remove/{id}")
+    @PreAuthorize("hasPerm('sys:user:remove')")
+    @OperaLog(title = "删除用户")
     public Boolean removeUser(@PathVariable String id) {
         return userService.removeUser(id);
     }
 
-
+    @ApiOperation(value = "修改用户")
     @PostMapping(value = "/update")
-    @ApiOperation(value = "修改用户基础信息")
+    @PreAuthorize("hasPerm('sys:user:update')")
+    @OperaLog(title = "修改用户")
     public Boolean updateUser(@RequestBody @Validated UserForm form) {
         return userService.updateUser(form);
     }
 
-
-    @GetMapping(value = "/query/{id}")
     @ApiOperation(value = "用户ID查询用户")
+    @GetMapping(value = "/query/{id}")
+    @PreAuthorize("hasPerm('sys:user:query')")
+    @OperaLog(title = "用户ID查询用户")
     public UserVO getUser(@PathVariable String id) {
         return userService.getUser(id);
     }
 
-
-    @GetMapping(value = "/page")
     @ApiOperation(value = "用户列表分页")
+    @GetMapping(value = "/page")
+    @PreAuthorize("hasPerm('sys:user:page')")
     @OperaLog(title = "用户列表分页")
     public IPage<UserVO> userPage(UserParam param) {
         return userService.userPage(param);
     }
 
-    @GetMapping(value = "/me")
     @ApiOperation(value = "获取当前登陆用户信息")
+    @GetMapping(value = "/me")
     @OperaLog(title = "获取当前登陆用户信息")
     public UserVO me() {
         return userService.getLoginUserInfo();
     }
+
+
+    @ApiOperation(value = "重置用户密码")
+    @GetMapping(value = "/passwd/reset/{userId}")
+    @PreAuthorize("hasPerm('sys:user:passwd:reset')")
+    @OperaLog(title = "重置用户密码")
+    public Boolean reset(@PathVariable String userId) {
+        return userService.resetPasswd(userId);
+    }
+
+
 
 }

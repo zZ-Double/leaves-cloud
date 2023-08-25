@@ -11,8 +11,12 @@ import com.leaves.common.model.Option;
 import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
+import com.leaves.common.web.exception.BizException;
 import com.leaves.system.mapper.SysMenuMapper;
 import com.leaves.system.model.entity.SysMenu;
+import com.leaves.system.model.entity.SysRole;
+import com.leaves.system.model.entity.SysRoleMenu;
+import com.leaves.system.model.entity.SysUserRole;
 import com.leaves.system.model.enums.MenuTypeEnum;
 import com.leaves.system.model.vo.MenuVO;
 import com.leaves.system.model.vo.RouteVO;
@@ -51,6 +55,28 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         boolean result = this.saveOrUpdate(menu);
         return result;
+    }
+
+    @Override
+    public Boolean removeMenu(String ids) {
+        Assert.isTrue(StrUtil.isNotBlank(ids), "删除的数据不存在");
+        List<String> menuIds = Arrays.asList(ids.split(","));
+        try {
+            Optional.ofNullable(menuIds)
+                    .orElse(new ArrayList<>())
+                    .forEach(id -> {
+                        this.remove(new LambdaQueryWrapper<SysMenu>()
+                                .and(StrUtil.isNotBlank(id),
+                                        wrapper -> wrapper
+                                                .eq(SysMenu::getId, id)
+                                                .or()
+                                                .eq(SysMenu::getParentId, id)));
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("删除菜单失败");
+        }
+        return true;
     }
 
     @Override

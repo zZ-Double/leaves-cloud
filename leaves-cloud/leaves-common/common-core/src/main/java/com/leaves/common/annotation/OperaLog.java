@@ -14,7 +14,7 @@ public @interface OperaLog {
     /**
      * 模块
      */
-    String title() default "";
+    String title() default "操作日志";
 
     /**
      * 是否保存请求的参数

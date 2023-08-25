@@ -14,6 +14,7 @@ import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.DataScopeEnum;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
+import com.leaves.common.web.exception.BizException;
 import com.leaves.system.mapper.SysUserMapper;
 import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.entity.SysUser;
@@ -181,6 +182,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         vo.setPerms(perms);
 
         return vo;
+    }
+
+    @Override
+    public Boolean resetPasswd(String userId) {
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        if (Objects.isNull(user)) {
+            throw new BizException("未查询到用户信息，请刷新后重试");
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(GlobalConstants.DEFAULT_USER_PASSWORD));
+        return updateById(user);
     }
 }
 

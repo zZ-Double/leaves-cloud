@@ -40,13 +40,6 @@ public interface SysRoleService extends IService<SysRole> {
     IPage<SysRole> listRolePages(BaseParam param);
 
     /**
-     * 角色列表
-     * @param param
-     * @return
-     */
-    List<SysRole> listRole(BaseParam param);
-
-    /**
      * 获取最大范围的数据权限
      *
      * @param userId

@@ -90,19 +90,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRole> listRole(BaseParam param) {
-        return this.list(new LambdaQueryWrapper<SysRole>()
-                .and(StrUtil.isNotBlank(param.getKeywords()),
-                        wrapper ->
-                                wrapper.like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleName, param.getKeywords())
-                                        .or()
-                                        .like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleCode, param.getKeywords())
-                )
-                .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
-
-    }
-
-    @Override
     public Integer getMaximumDataScope(String userId) {
         return this.baseMapper.getMaximumDataScope(userId);
     }

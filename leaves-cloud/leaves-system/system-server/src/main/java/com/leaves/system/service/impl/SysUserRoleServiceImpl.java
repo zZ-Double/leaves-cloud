@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.leaves.common.enums.StatusEnum;
 import com.leaves.system.model.entity.SysUserRole;
 import com.leaves.system.service.SysUserRoleService;
 import com.leaves.system.mapper.SysUserRoleMapper;
@@ -15,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author leaves
@@ -28,6 +30,18 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean setUserRoles(List<String> roleIds, String userId) {
+
+        // 获取当前用户角色关联
+        List<SysUserRole> list = this.list(new QueryWrapper<SysUserRole>().lambda()
+                .eq(SysUserRole::getUserId, userId));
+        if (CollectionUtil.isNotEmpty(list)) {
+            List<String> dbRoleIds = list.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+            boolean allMatch = dbRoleIds.stream().allMatch(r -> roleIds.contains(r));
+            if (allMatch) {
+                return true;
+            }
+        }
+
         // 更新用户时，如果角色id字符串为空，说明是将用户角色全部去除
         Boolean flag = removeUserRoles(Arrays.asList(userId));
         if (CollectionUtil.isEmpty(roleIds)) {

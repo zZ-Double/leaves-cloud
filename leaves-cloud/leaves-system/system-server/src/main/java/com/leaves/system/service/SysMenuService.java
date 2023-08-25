@@ -22,6 +22,8 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     Boolean saveMenu(SysMenu menu);
 
+    Boolean removeMenu(String ids);
+
     /**
      * 获取菜单表格列表
      */

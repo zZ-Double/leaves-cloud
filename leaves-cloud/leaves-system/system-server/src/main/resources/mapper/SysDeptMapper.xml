@@ -35,6 +35,7 @@
         from sys_dept
         where dept_name = #{deptName}
           and parent_id = #{parentId}
+          and del_flag = 1
           <if test="id != null and id != ''">
               and id != #{id}
           </if>

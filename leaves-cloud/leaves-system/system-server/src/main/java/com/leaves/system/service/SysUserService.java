@@ -41,4 +41,11 @@ public interface SysUserService extends IService<SysUser> {
      */
     UserVO getLoginUserInfo();
 
+    /**
+     * 重置用户密码
+     * @param userId
+     * @return
+     */
+    Boolean resetPasswd(String userId);
+
 }
