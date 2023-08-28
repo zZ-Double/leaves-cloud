@@ -46,8 +46,8 @@ export default {
             );
             barList.push(
                 Mock.mock({
-                    新增用户:Mock.Random.float(1,1000,0,0),
-                    活跃用户:Mock.Random.float(1,1000,0,0),
+                    新增用户: Mock.Random.float(1, 1000, 0, 0),
+                    活跃用户: Mock.Random.float(1, 1000, 0, 0),
                 })
             );
         }
@@ -56,13 +56,13 @@ export default {
             data: {
                 // 饼图
                 pieData: {
-                    date:[],
+                    date: [],
                     data: pieList
                 },
                 // 柱状图
-                barData:{
-                    date:['周一','周二','周三','周四','周五','周六','周日'],
-                    data:barList
+                barData: {
+                    date: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    data: barList
                 },
                 // 折线图
                 lineData: {

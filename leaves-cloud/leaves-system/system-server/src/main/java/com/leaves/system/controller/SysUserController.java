@@ -1,9 +1,7 @@
 package com.leaves.system.controller;
 
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.common.annotation.OperaLog;
-import com.leaves.common.base.BaseParam;
 import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
@@ -14,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = "用户管理")
 @RestController
@@ -73,7 +69,6 @@ public class SysUserController {
         return userService.getLoginUserInfo();
     }
 
-
     @ApiOperation(value = "重置用户密码")
     @GetMapping(value = "/passwd/reset/{userId}")
     @PreAuthorize("hasPerm('sys:user:passwd:reset')")
@@ -81,7 +76,6 @@ public class SysUserController {
     public Boolean reset(@PathVariable String userId) {
         return userService.resetPasswd(userId);
     }
-
 
 
 }
