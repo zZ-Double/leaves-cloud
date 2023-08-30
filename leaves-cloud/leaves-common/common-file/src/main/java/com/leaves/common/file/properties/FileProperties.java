@@ -27,6 +27,11 @@ public class FileProperties {
     private Long fileMaxSize;
 
     /**
+     * 访问地址
+     */
+    private String domain;
+
+    /**
      * 本地地址
      */
     private String localPath;

@@ -11,6 +11,7 @@ import com.leaves.common.file.utils.FileTypeUtils;
 import com.leaves.common.file.utils.MimeTypeUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.Objects;
  * 策略模板
  */
 @RequiredArgsConstructor
+@ConditionalOnBean(FileProperties.class)
 public abstract class AbstractFileHandler implements FileStrategy {
 
     private final FileProperties properties;

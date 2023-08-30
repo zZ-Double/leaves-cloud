@@ -4,16 +4,18 @@ import com.leaves.common.exception.BizException;
 import com.leaves.common.file.AbstractFileHandler;
 import com.leaves.common.file.enums.FileStorageEnum;
 import com.leaves.common.file.properties.FileProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-
 /**
  * 本地上传文件
  */
+
+@ConditionalOnBean(FileProperties.class)
 public class LocalFileHandlerStrategy extends AbstractFileHandler {
 
     private FileProperties properties;
@@ -38,7 +40,7 @@ public class LocalFileHandlerStrategy extends AbstractFileHandler {
             e.printStackTrace();
             throw new BizException("上传文件错误，请联系管理员");
         }
-        return getPathFileName(fileName);
+        return properties.getDomain() + properties.getLocalPath() + getPathFileName(fileName);
     }
 
     @Override
