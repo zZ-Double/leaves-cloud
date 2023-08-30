@@ -48,4 +48,13 @@ public interface SysUserService extends IService<SysUser> {
      */
     Boolean resetPasswd(String userId);
 
+    /**
+     * 修改个人密码
+     * @param oldPasswd
+     * @param newPasswd
+     * @param confirmPasswd
+     * @return
+     */
+    Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd);
+
 }

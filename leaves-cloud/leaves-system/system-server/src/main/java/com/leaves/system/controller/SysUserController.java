@@ -77,5 +77,12 @@ public class SysUserController {
         return userService.resetPasswd(userId);
     }
 
+    @ApiOperation(value = "修改个人密码")
+    @PostMapping(value = "/passwd/modify")
+    @OperaLog(title = "修改个人密码")
+    public Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd) {
+        return userService.modifyPasswd(oldPasswd, newPasswd, confirmPasswd);
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.leaves.common.web.exception;
+package com.leaves.common.exception;
 
 import com.leaves.common.result.IResultCode;
 import lombok.Getter;

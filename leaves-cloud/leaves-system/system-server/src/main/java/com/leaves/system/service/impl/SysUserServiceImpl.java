@@ -5,18 +5,15 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
-import com.leaves.common.enums.DataScopeEnum;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
-import com.leaves.common.web.exception.BizException;
+import com.leaves.common.exception.BizException;
 import com.leaves.system.mapper.SysUserMapper;
-import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.entity.SysUserRole;
 import com.leaves.system.model.form.UserForm;
@@ -192,6 +189,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BizException("未查询到用户信息，请刷新后重试");
         }
         user.setPassword(new BCryptPasswordEncoder().encode(GlobalConstants.DEFAULT_USER_PASSWORD));
+        return updateById(user);
+    }
+
+    @Override
+    public Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.isNull(user), "未查询到用户信息，请刷新后重试");
+
+        Assert.isTrue(newPasswd.equals(confirmPasswd), "两次密码不一致");
+
+        Assert.isTrue((new BCryptPasswordEncoder().encode(oldPasswd)).equals(user.getPassword()), "原始密码输入错误");
+
+        user.setPassword(new BCryptPasswordEncoder().encode(newPasswd));
         return updateById(user);
     }
 }
