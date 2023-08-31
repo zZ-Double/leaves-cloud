@@ -201,6 +201,12 @@
 
             <dependency>
                 <groupId>com.leaves</groupId>
+                <artifactId>common-file</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
                 <artifactId>system-model</artifactId>
                 <version>${project-version}</version>
             </dependency>
