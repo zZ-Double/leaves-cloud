@@ -5,19 +5,31 @@ import cn.hutool.core.util.StrUtil;
 import com.leaves.common.file.enums.FileStorageEnum;
 import com.leaves.common.file.strategy.FileStrategy;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 策略模式工厂
  */
 
 @Slf4j
-public class FileStrategyFactory {
+public class FileStrategyFactory implements ApplicationContextAware {
 
-    @Resource
-    private List<FileStrategy> strategyList;
+    protected List<FileStrategy> strategyList = new ArrayList<>();
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Map<String, FileStrategy> beansOfType = applicationContext.getBeansOfType(FileStrategy.class);
+        beansOfType.forEach((k, v) -> {
+            strategyList.add(v);
+            log.info("初始化文件上传策略：" + k);
+        });
+    }
 
     public FileStrategy getStrategy(FileStorageEnum fileStorage) {
         log.info("文件存储类型：{}", fileStorage.getName());

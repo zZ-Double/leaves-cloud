@@ -13,8 +13,9 @@ import lombok.Getter;
 public enum FileStorageEnum implements IBaseEnum<String> {
 
     LOCAL_STO("local","本地存储"),
-    FAST_DFS_STO("fast_dfs","Fast-dfs"),
-    ALI_OSS_STO("ali_oss","阿里云OSS"),
+    MINIO_STO("minio","MINIO存储"),
+    FAST_DFS_STO("fast_dfs","FAST_DFS存储"),
+    ALI_OSS_STO("ali_oss","阿里云存储"),
 
     ;
 

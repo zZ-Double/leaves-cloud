@@ -1,6 +1,7 @@
 package com.leaves.common.file.strategy;
 
 import com.leaves.common.file.enums.FileStorageEnum;
+import com.leaves.common.file.model.FileInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -20,7 +21,7 @@ public interface FileStrategy {
     /**
      * 上传
      */
-    String uploadFile(MultipartFile file);
+    FileInfo uploadFile(MultipartFile file);
 
     /**
      * 下载

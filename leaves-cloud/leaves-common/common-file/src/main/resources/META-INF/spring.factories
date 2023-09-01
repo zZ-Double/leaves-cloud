@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.leaves.common.file.AbstractFileHandler,\
+  com.leaves.common.file.controller.FileController,\
   com.leaves.common.file.factory.FileStrategyFactory,\
-  com.leaves.common.file.strategy.LocalFileHandlerStrategy
+  com.leaves.common.file.strategy.MinioFileStrategy,\
+  com.leaves.common.file.strategy.LocalFileStrategy

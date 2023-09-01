@@ -84,5 +84,4 @@ public class SysUserController {
         return userService.modifyPasswd(oldPasswd, newPasswd, confirmPasswd);
     }
 
-
 }
