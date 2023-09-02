@@ -1,5 +1,6 @@
 package com.leaves.common.file.strategy;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.leaves.common.exception.BizException;
@@ -11,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * 策略模板
@@ -67,6 +69,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * 编码文件名
      */
     public static final String extractFilename(MultipartFile file) {
-        return StrUtil.format("{}_{}.{}", FilenameUtils.getBaseName(file.getOriginalFilename()), IdUtil.simpleUUID(), FileTypeUtils.getExtension(file));
+        return StrUtil.format("{}/{}_{}.{}", DateUtil.format(new Date(), "yyyy/MM/dd"),
+                FilenameUtils.getBaseName(file.getOriginalFilename()), IdUtil.simpleUUID(), FileTypeUtils.getExtension(file));
     }
 }
