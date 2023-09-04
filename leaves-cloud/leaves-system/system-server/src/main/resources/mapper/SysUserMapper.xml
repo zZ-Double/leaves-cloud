@@ -75,4 +75,21 @@
         </where>
         GROUP BY u.id
     </select>
+
+    <select id="userProfile" resultType="com.leaves.system.model.vo.UserVO">
+        select u.nick_name,
+               u.avatar,
+               u.sex,
+               u.phone_number,
+               u.email,
+               u.create_time,
+               group_concat(DISTINCT d.dept_name) as deptName,
+               group_concat(DISTINCT r.role_name) as roleNames
+        from leaves_system.sys_user u
+                 left join leaves_system.sys_dept d on u.dept_id = d.id
+                 left join leaves_system.sys_user_role ur on u.id = ur.user_id
+                 left join leaves_system.sys_role r on r.id = ur.role_id
+        where u.id = #{userId}
+        group by u.username
+    </select>
 </mapper>

@@ -44,6 +44,9 @@ public class UserForm implements Serializable {
     @NotNull(message = "用户性别不能为空")
     private GenderEnum sex;
 
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+
     @ApiModelProperty(value = "头像路径")
     private String avatar;
 

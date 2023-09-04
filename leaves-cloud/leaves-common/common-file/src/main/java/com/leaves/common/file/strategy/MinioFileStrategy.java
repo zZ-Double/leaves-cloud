@@ -1,6 +1,7 @@
 package com.leaves.common.file.strategy;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.leaves.common.exception.BizException;
 import com.leaves.common.file.enums.FileStorageEnum;
 import com.leaves.common.file.model.FileInfo;
@@ -50,6 +51,12 @@ public class MinioFileStrategy extends AbstractFileStrategy implements Initializ
     @Setter
     private String bucketName;
 
+    /**
+     * nginx 反向代理
+     */
+    @Setter
+    private String customDomain;
+
     private MinioClient minioClient;
 
     @Override
@@ -87,13 +94,18 @@ public class MinioFileStrategy extends AbstractFileStrategy implements Initializ
             minioClient.putObject(putObjectArgs);
 
             // 返回文件路径
-            GetPresignedObjectUrlArgs getPresignedObjectUrlArgs = GetPresignedObjectUrlArgs.builder()
-                    .bucket(bucketName).object(fileName)
-                    .method(Method.GET)
-                    .build();
+            String fileUrl;
+            if (StrUtil.isBlank(customDomain)) { // 未配置自定义域名
+                GetPresignedObjectUrlArgs getPresignedObjectUrlArgs = GetPresignedObjectUrlArgs.builder()
+                        .bucket(bucketName).object(fileName)
+                        .method(Method.GET)
+                        .build();
 
-            String fileUrl = minioClient.getPresignedObjectUrl(getPresignedObjectUrlArgs);
-            fileUrl = fileUrl.substring(0, fileUrl.indexOf("?"));
+                fileUrl = minioClient.getPresignedObjectUrl(getPresignedObjectUrlArgs);
+                fileUrl = fileUrl.substring(0, fileUrl.indexOf("?"));
+            } else { // 配置自定义文件路径域名
+                fileUrl = customDomain + '/' + bucketName + "/" + fileName;
+            }
 
             return FileInfo.builder()
                     .fileName(fileName)

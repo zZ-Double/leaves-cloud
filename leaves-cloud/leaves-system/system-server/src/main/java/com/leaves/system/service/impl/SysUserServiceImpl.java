@@ -10,9 +10,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
+import com.leaves.common.enums.GenderEnum;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
-import com.leaves.common.exception.BizException;
 import com.leaves.system.mapper.SysUserMapper;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.entity.SysUserRole;
@@ -185,9 +185,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean resetPasswd(String userId) {
         Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
         SysUser user = getById(userId);
-        if (Objects.isNull(user)) {
-            throw new BizException("未查询到用户信息，请刷新后重试");
-        }
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
         user.setPassword(new BCryptPasswordEncoder().encode(GlobalConstants.DEFAULT_USER_PASSWORD));
         return updateById(user);
     }
@@ -198,13 +196,43 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
 
         SysUser user = getById(userId);
-        Assert.isTrue(Objects.isNull(user), "未查询到用户信息，请刷新后重试");
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
 
         Assert.isTrue(newPasswd.equals(confirmPasswd), "两次密码不一致");
 
         Assert.isTrue((new BCryptPasswordEncoder().encode(oldPasswd)).equals(user.getPassword()), "原始密码输入错误");
 
         user.setPassword(new BCryptPasswordEncoder().encode(newPasswd));
+        return updateById(user);
+    }
+
+    @Override
+    public UserVO userProfile() {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "未查询到用户信息，请刷新后重试");
+        return this.baseMapper.userProfile(userId);
+    }
+
+    @Override
+    public Boolean userAvatar(String userAvatarUrl) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+        user.setAvatar(userAvatarUrl);
+        return updateById(user);
+    }
+
+    @Override
+    public Boolean userInfo(UserForm form) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+        user.setNickName(form.getNickName());
+        user.setPhoneNumber(form.getPhoneNumber());
+        user.setEmail(form.getEmail());
+        user.setSex(form.getSex());
         return updateById(user);
     }
 }

@@ -62,13 +62,6 @@ public class SysUserController {
         return userService.userPage(param);
     }
 
-    @ApiOperation(value = "获取当前登陆用户信息")
-    @GetMapping(value = "/me")
-    @OperaLog(title = "获取当前登陆用户信息")
-    public UserVO me() {
-        return userService.getLoginUserInfo();
-    }
-
     @ApiOperation(value = "重置用户密码")
     @GetMapping(value = "/passwd/reset/{userId}")
     @PreAuthorize("hasPerm('sys:user:passwd:reset')")
@@ -77,11 +70,10 @@ public class SysUserController {
         return userService.resetPasswd(userId);
     }
 
-    @ApiOperation(value = "修改个人密码")
-    @PostMapping(value = "/passwd/modify")
-    @OperaLog(title = "修改个人密码")
-    public Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd) {
-        return userService.modifyPasswd(oldPasswd, newPasswd, confirmPasswd);
+    @ApiOperation(value = "获取当前登陆用户信息")
+    @GetMapping(value = "/me")
+    @OperaLog(title = "获取当前登陆用户信息")
+    public UserVO me() {
+        return userService.getLoginUserInfo();
     }
-
 }
