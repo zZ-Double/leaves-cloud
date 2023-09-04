@@ -25,10 +25,10 @@
                         <router-link to="/">
                             <el-dropdown-item>首页</el-dropdown-item>
                         </router-link>
-                        <!-- <a target="_blank" href="https://github.com/hxrui">
-                            <el-dropdown-item>Github</el-dropdown-item>
-                        </a>
-                        <a target="_blank" href="https://gitee.com/haoxr">
+                        <router-link to="/user/profile">
+                            <el-dropdown-item>个人信息</el-dropdown-item>
+                        </router-link>
+                        <!-- <a target="_blank" href="https://gitee.com/haoxr">
                             <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>
                         </a>
                         <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">

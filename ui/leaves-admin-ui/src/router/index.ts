@@ -29,11 +29,20 @@ export const constantRoute: Array<RouteRecordRaw> = [
       },
     ],
   },
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   component: () => import('@/views/404/index.vue'),
-  //   meta: { hidden: true },
-  // }
+  {
+    path: '/user',
+    component: () => import('@/layout/index.vue'),
+    meta: { hidden: true },
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'profile',
+        component: () => import('@/views/sys/profile/index.vue'),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user' }
+      }
+    ]
+  }
 ]
 
 //创建路由器
