@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.leaves.common.enums.GenderEnum;
 import com.leaves.system.model.entity.SysUser;
+import com.leaves.system.model.form.PasswdForm;
 import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
@@ -51,12 +52,9 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 修改个人密码
-     * @param oldPasswd
-     * @param newPasswd
-     * @param confirmPasswd
      * @return
      */
-    Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd);
+    Boolean modifyPasswd(PasswdForm form);
 
 
     /**

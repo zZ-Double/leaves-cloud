@@ -1,7 +1,7 @@
 package com.leaves.system.controller;
 
 import com.leaves.common.annotation.OperaLog;
-import com.leaves.common.enums.GenderEnum;
+import com.leaves.system.model.form.PasswdForm;
 import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.vo.UserVO;
 import com.leaves.system.service.SysUserService;
@@ -43,8 +43,8 @@ public class SysProfileController {
     @ApiOperation(value = "修改个人密码")
     @PostMapping(value = "/passwd")
     @OperaLog(title = "修改个人密码")
-    public Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd) {
-        return userService.modifyPasswd(oldPasswd, newPasswd, confirmPasswd);
+    public Boolean modifyPasswd(@RequestBody PasswdForm form) {
+        return userService.modifyPasswd(form);
     }
 
 

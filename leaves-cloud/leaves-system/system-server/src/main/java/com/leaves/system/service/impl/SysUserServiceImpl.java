@@ -16,6 +16,7 @@ import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysUserMapper;
 import com.leaves.system.model.entity.SysUser;
 import com.leaves.system.model.entity.SysUserRole;
+import com.leaves.system.model.form.PasswdForm;
 import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
@@ -191,18 +192,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Boolean modifyPasswd(String oldPasswd, String newPasswd, String confirmPasswd) {
+    public Boolean modifyPasswd(PasswdForm form) {
         String userId = SecurityUtils.getUserId();
         Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
 
         SysUser user = getById(userId);
         Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
 
-        Assert.isTrue(newPasswd.equals(confirmPasswd), "两次密码不一致");
+        Assert.isTrue(form.getNewPasswd().equals(form.getConfirmPasswd()), "两次密码不一致");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        Assert.isTrue((new BCryptPasswordEncoder().encode(oldPasswd)).equals(user.getPassword()), "原始密码输入错误");
 
-        user.setPassword(new BCryptPasswordEncoder().encode(newPasswd));
+        Assert.isTrue((encoder.matches(form.getOldPasswd(), user.getPassword())), "原始密码输入错误");
+
+        user.setPassword(new BCryptPasswordEncoder().encode(form.getNewPasswd()));
         return updateById(user);
     }
 
