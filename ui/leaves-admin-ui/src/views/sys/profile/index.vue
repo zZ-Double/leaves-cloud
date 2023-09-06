@@ -54,7 +54,7 @@
                             <userInfo :user="state.user" />
                         </el-tab-pane>
                         <el-tab-pane label="修改密码" name="resetPwd">
-                            <!-- <resetPwd /> -->
+                            <resetPwd />
                         </el-tab-pane>
                     </el-tabs>
                 </el-card>
@@ -67,6 +67,7 @@
 import { userProfile } from '@/api/sys/profile/index'
 import userAvatar from '../profile/userAvatar.vue'
 import userInfo from '../profile/userInfo.vue'
+import resetPwd from '../profile/resetPwd.vue'
 
 const activeTab = ref("userinfo");
 

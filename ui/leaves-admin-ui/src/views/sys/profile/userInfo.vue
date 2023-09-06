@@ -31,7 +31,10 @@ const props = defineProps({
     type: Object,
     required: true
   }
-});
+})
+
+// 感觉这行没啥卵用，但是可以去除ES报错 
+const { user } = toRefs(props)
 
 const rules = ref({
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
@@ -43,18 +46,14 @@ const rules = ref({
 function submit() {
   userRef.value.validate(valid => {
     if (valid) {
-      userInfo(
-        props.user.nickName,
-        props.user.phoneNumber,
-        props.user.email,
-        props.user.sex)
-      .then(({ code }) => {
-        if (code === '20000') {
-          ElMessage.success("修改成功")
-        } else {
-          ElMessage.error("修改失败")
-        }
-      });
+      userInfo(props.user.nickName, props.user.phoneNumber, props.user.email, props.user.sex)
+        .then(({ code }) => {
+          if (code === '20000') {
+            ElMessage.success("修改成功")
+          } else {
+            ElMessage.error("修改失败")
+          }
+        })
     }
   });
 };

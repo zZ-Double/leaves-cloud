@@ -18,7 +18,7 @@ export function userAvatar(avatarUrl: string) {
     });
 }
 
-export function userInfo(nickName?: string, phoneNumber?:string, email?:string, sex?:string) {
+export function userInfo(nickName?: string, phoneNumber?: string, email?: string, sex?: string) {
     const data = {
         nickName,
         phoneNumber,
@@ -32,7 +32,7 @@ export function userInfo(nickName?: string, phoneNumber?:string, email?:string, 
     });
 }
 
-export function userPasswd(oldPasswd: string, confirmPasswd:string, newPasswd:string) {
+export function userPasswd(oldPasswd: string, newPasswd: string, confirmPasswd: string) {
     const data = {
         oldPasswd,
         confirmPasswd,
