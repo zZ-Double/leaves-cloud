@@ -176,7 +176,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         vo.setRoles(roles);
 
         // 用户权限集合
-        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get("AUTH:USER_PERMS:" + vo.getId());
+        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get(GlobalConstants.AUTH_PREFIX + vo.getId());
         vo.setPerms(perms);
 
         return vo;
@@ -200,9 +200,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
 
         Assert.isTrue(form.getNewPasswd().equals(form.getConfirmPasswd()), "两次密码不一致");
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-
         Assert.isTrue((encoder.matches(form.getOldPasswd(), user.getPassword())), "原始密码输入错误");
 
         user.setPassword(new BCryptPasswordEncoder().encode(form.getNewPasswd()));
