@@ -18,6 +18,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     IPage<UserVO> userPage(Page<SysUser> page, @Param("param") UserParam param);
 
+    UserVO userProfile(@Param("userId") String userId);
+
 }
 
 

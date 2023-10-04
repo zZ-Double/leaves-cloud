@@ -2,6 +2,7 @@ package com.leaves.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leaves.common.base.BaseParam;
+import com.leaves.common.model.Option;
 import com.leaves.system.model.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.leaves.system.model.param.RoleParam;
@@ -39,13 +40,6 @@ public interface SysRoleService extends IService<SysRole> {
     IPage<SysRole> listRolePages(BaseParam param);
 
     /**
-     * 角色列表
-     * @param param
-     * @return
-     */
-    List<SysRole> listRole(BaseParam param);
-
-    /**
      * 获取最大范围的数据权限
      *
      * @param userId
@@ -76,4 +70,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     Set<String> getRoles(String userId);
+
+
+    List<Option> roleOptions();
 }

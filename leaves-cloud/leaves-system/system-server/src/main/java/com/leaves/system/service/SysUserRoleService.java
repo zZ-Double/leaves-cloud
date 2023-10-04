@@ -12,7 +12,7 @@ import java.util.List;
 */
 public interface SysUserRoleService extends IService<SysUserRole> {
 
-    Boolean setUserRoles(String roleIds, String userId);
+    Boolean setUserRoles(List<String> roleIds, String userId);
 
     Boolean removeUserRoles(List<String> userIds);
 }

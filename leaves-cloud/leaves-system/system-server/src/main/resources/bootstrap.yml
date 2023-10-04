@@ -29,6 +29,7 @@ mybatis-plus:
       logic-delete-value: 0 #删除的
       logic-not-delete-value: 1 #未删除的
   type-enums-package: com.leaves.*.enums
+
 dubbo:
   # 扫描的包路径
   scan:
@@ -43,6 +44,7 @@ dubbo:
     address: spring-cloud://localhost:8848
   cloud:
     subscribed-services: leaves-system
+
 # 开启全局统一返回
 response:
   advice: true

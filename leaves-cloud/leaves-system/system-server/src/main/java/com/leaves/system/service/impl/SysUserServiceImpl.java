@@ -5,18 +5,19 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.constant.GlobalConstants;
-import com.leaves.common.enums.DataScopeEnum;
+import com.leaves.common.enums.GenderEnum;
 import com.leaves.common.enums.StatusEnum;
 import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysUserMapper;
-import com.leaves.system.model.entity.SysRole;
 import com.leaves.system.model.entity.SysUser;
+import com.leaves.system.model.entity.SysUserRole;
+import com.leaves.system.model.form.PasswdForm;
+import com.leaves.system.model.form.UserForm;
 import com.leaves.system.model.param.UserParam;
 import com.leaves.system.model.vo.UserVO;
 import com.leaves.system.service.SysMenuService;
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author leaves
@@ -50,22 +52,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean saveUser(UserParam param) {
+    public Boolean saveUser(UserForm userForm) {
 
         //以登录账户查询是否存在记录 存在则抛出异常
         SysUser dbSysUser = this.baseMapper.selectOne(new QueryWrapper<SysUser>()
-                .lambda().eq(SysUser::getUsername, param.getUsername()));
+                .lambda().eq(SysUser::getUsername, userForm.getUsername()));
         Assert.isTrue(ObjectUtil.isNull(dbSysUser), "新增用户失败,登录账号已存在");
 
         SysUser sysUser = new SysUser();
         //利用huTool BeanUtil 进行Bean拷贝, 忽略null
-        BeanUtil.copyProperties(param, sysUser, true);
+        BeanUtil.copyProperties(userForm, sysUser, true);
         sysUser.setPassword(new BCryptPasswordEncoder().encode(GlobalConstants.DEFAULT_USER_PASSWORD));
 
         boolean flag = this.baseMapper.insert(sysUser) > 0;
         //用户角色关联关系
-        if (flag && StrUtil.isNotBlank(param.getRoleIds())) {
-            flag = userRoleService.setUserRoles(param.getRoleIds(), sysUser.getId());
+        if (flag && CollectionUtil.isNotEmpty(userForm.getRoleIds())) {
+            flag = userRoleService.setUserRoles(userForm.getRoleIds(), sysUser.getId());
         }
         return flag;
     }
@@ -83,16 +85,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean updateUser(UserParam param) {
+    public Boolean updateUser(UserForm userForm) {
         //查询用户是否存在 不存在则抛出自定义异常
-        SysUser dbSysUser = this.baseMapper.selectById(param.getId());
+        SysUser dbSysUser = this.baseMapper.selectById(userForm.getId());
         Assert.isTrue(Objects.nonNull(dbSysUser), "当前用户不存在，请重试");
 
-        BeanUtil.copyProperties(param, dbSysUser, true);
+        BeanUtil.copyProperties(userForm, dbSysUser, true);
         boolean flag = this.baseMapper.updateById(dbSysUser) > 0;
         //用户角色关联关系
         if (flag) {
-            flag = userRoleService.setUserRoles(param.getRoleIds(), dbSysUser.getId());
+            flag = userRoleService.setUserRoles(userForm.getRoleIds(), dbSysUser.getId());
         }
         return flag;
     }
@@ -103,18 +105,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Assert.isTrue(Objects.nonNull(dbSysUser), "当前用户不存在，请重试");
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(dbSysUser, userVO);
+        List<SysUserRole> userRoles = userRoleService.list(
+                new QueryWrapper<SysUserRole>().lambda()
+                        .select(SysUserRole::getRoleId)
+                        .eq(SysUserRole::getUserId, dbSysUser.getId()));
+        if (CollectionUtil.isNotEmpty(userRoles)) {
+            userVO.setRoleIds(userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()));
+        }
         return userVO;
-    }
-
-    @Override
-    public List<UserVO> listUser(UserParam param) {
-        QueryWrapper<SysUser> sysUserQueryWrapper = new QueryWrapper();
-        sysUserQueryWrapper.lambda().
-                eq(StrUtil.isNotBlank(param.getUsername()), SysUser::getUsername, param.getUsername()).
-                eq(StrUtil.isNotBlank(param.getPhoneNumber()), SysUser::getPhoneNumber, param.getPhoneNumber());
-        List<SysUser> sysUsers = this.baseMapper.selectList(sysUserQueryWrapper);
-        List<UserVO> userVOS = BeanUtil.copyToList(sysUsers, UserVO.class);
-        return userVOS;
     }
 
     @Override
@@ -178,10 +176,66 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         vo.setRoles(roles);
 
         // 用户权限集合
-        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get("AUTH:USER_PERMS:" + vo.getId());
+        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get(GlobalConstants.AUTH_PREFIX + vo.getId());
         vo.setPerms(perms);
 
         return vo;
+    }
+
+    @Override
+    public Boolean resetPasswd(String userId) {
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+        user.setPassword(new BCryptPasswordEncoder().encode(GlobalConstants.DEFAULT_USER_PASSWORD));
+        return updateById(user);
+    }
+
+    @Override
+    public Boolean modifyPasswd(PasswdForm form) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+
+        Assert.isTrue(form.getNewPasswd().equals(form.getConfirmPasswd()), "两次密码不一致");
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Assert.isTrue((encoder.matches(form.getOldPasswd(), user.getPassword())), "原始密码输入错误");
+
+        user.setPassword(new BCryptPasswordEncoder().encode(form.getNewPasswd()));
+        return updateById(user);
+    }
+
+    @Override
+    public UserVO userProfile() {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "未查询到用户信息，请刷新后重试");
+        return this.baseMapper.userProfile(userId);
+    }
+
+    @Override
+    public Boolean userAvatar(String userAvatarUrl) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+        user.setAvatar(userAvatarUrl);
+        return updateById(user);
+    }
+
+    @Override
+    public Boolean userInfo(UserForm form) {
+        String userId = SecurityUtils.getUserId();
+        Assert.isTrue(StrUtil.isNotBlank(userId), "用户ID不能为空");
+        SysUser user = getById(userId);
+        Assert.isTrue(Objects.nonNull(user), "未查询到用户信息，请刷新后重试");
+        user.setNickName(form.getNickName());
+        user.setPhoneNumber(form.getPhoneNumber());
+        user.setEmail(form.getEmail());
+        user.setSex(form.getSex());
+        return updateById(user);
     }
 }
 

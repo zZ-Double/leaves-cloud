@@ -36,6 +36,7 @@
     "pinia": "^2.1.6",
     "screenfull": "^6.0.0",
     "vue": "^3.3.4",
+    "vue-cropper": "^0.6.2",
     "vue-router": "^4.2.4",
     "xlsx": "^0.18.5"
   },

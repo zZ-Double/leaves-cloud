@@ -50,6 +50,9 @@
         <hutool.version>5.8.5</hutool.version>
         <redisson.version>3.16.8</redisson.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
+        <commons.io.version>2.13.0</commons.io.version>
+        <minio.version>8.3.7</minio.version>
+        <okhttp3.version>4.8.1</okhttp3.version>
 
     </properties>
 
@@ -148,6 +151,20 @@
                 <version>${easy-captcha.version}</version>
             </dependency>
 
+            <!-- io常用工具类 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+
+            <!-- 分布式文件存储 -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>com.leaves</groupId>
@@ -182,6 +199,18 @@
             <dependency>
                 <groupId>com.leaves</groupId>
                 <artifactId>common-security</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>common-security</artifactId>
+                <version>${project-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.leaves</groupId>
+                <artifactId>common-file</artifactId>
                 <version>${project-version}</version>
             </dependency>
 

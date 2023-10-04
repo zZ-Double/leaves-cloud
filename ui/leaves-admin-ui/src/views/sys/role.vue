@@ -22,10 +22,10 @@
 
         <el-card>
             <template #header>
-                <el-button v-hasPerm="['sys:menu:add']" type="success" @click="openDialog()">
+                <el-button v-hasPerm="['sys:role:save']" type="success" @click="openDialog()">
                     <template #icon><i-ep-plus /></template>新增
                 </el-button>
-                <el-button v-hasPerm="['sys:menu:add']" type="danger" :disabled="ids.length === 0" @click="handleDelete()">
+                <el-button v-hasPerm="['sys:role:remove']" type="danger" :disabled="ids.length === 0" @click="handleDelete()">
                     <template #icon><i-ep-delete /></template>删除
                 </el-button>
             </template>
@@ -46,13 +46,13 @@
                 <el-table-column label="操作" fixed="right" align="left" width="220">
                     <template #default="scope">
                         <div v-if="scope.row.roleCode !== 'ROOT'">
-                            <el-button v-hasPerm="['sys:dept:add']" type="primary" link size="small"
+                            <el-button v-hasPerm="['sys:role:menus:save']" type="primary" link size="small"
                                 @click.stop="openMenuDialog(scope.row)"><i-ep-position />分配权限
                             </el-button>
-                            <el-button v-hasPerm="['sys:dept:edit']" type="primary" link size="small"
+                            <el-button v-hasPerm="['sys:role:update']" type="primary" link size="small"
                                 @click.stop="openDialog(scope.row.id)"><i-ep-edit />编辑
                             </el-button>
-                            <el-button v-hasPerm="['sys:dept:delete']" type="primary" link size="small"
+                            <el-button v-hasPerm="['sys:role:remove']" type="primary" link size="small"
                                 @click.stop="handleDelete(scope.row.id)"><i-ep-delete />删除
                             </el-button>
                         </div>
@@ -77,10 +77,10 @@
 
                 <el-form-item label="数据权限" prop="dataScope">
                     <el-select v-model="formData.dataScope">
-                        <el-option :key="0" label="全部数据" :value="0" />
-                        <el-option :key="1" label="部门及子部门数据" :value="1" />
-                        <el-option :key="2" label="本部门数据" :value="2" />
-                        <el-option :key="3" label="本人数据" :value="3" />
+                        <el-option :key="1" label="全部数据" :value="1" />
+                        <el-option :key="2" label="部门及子部门数据" :value="2" />
+                        <el-option :key="3" label="本部门数据" :value="3" />
+                        <el-option :key="4" label="本人数据" :value="4" />
                     </el-select>
                 </el-form-item>
 

@@ -2,11 +2,12 @@ import request from '@/utils/request'
 import { AxiosPromise } from 'axios'
 import { Query, RolePageResult, RoleVO } from './types'
 import { sys_base_url } from '..'
+import { Option } from '../menu/types'
 
 
 export function pageRoles(queryParams: Query): AxiosPromise<RolePageResult> {
     return request({
-        url: sys_base_url + 'role/pages',
+        url: sys_base_url + 'role/page',
         method: 'get',
         params: queryParams
     })
@@ -55,4 +56,11 @@ export function updateRoleMenus(roleId: string, data: string): AxiosPromise<any>
       method: 'post',
       data: data,
     });
-  }
+}
+
+export function roleOptions():AxiosPromise<Option[]> {
+    return request({
+        url: sys_base_url + 'role/options',
+        method: 'get'
+    })
+}

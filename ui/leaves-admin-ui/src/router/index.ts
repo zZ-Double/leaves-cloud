@@ -11,12 +11,6 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: { hidden: true },
   },
   {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: { hidden: true },
-  },
-  {
     path: "/",
     component: () => import('@/layout/index.vue'),
     redirect: "/dashboard",
@@ -26,14 +20,29 @@ export const constantRoute: Array<RouteRecordRaw> = [
         component: () => import("@/views/dashboard/index.vue"),
         name: "Dashboard",
         meta: { title: "首页", icon: "homepage", affix: true },
-      }
+      },
+      {
+        path: '/404',
+        component: () => import('@/views/404/index.vue'),
+        name: '404',
+        meta: { hidden: true },
+      },
     ],
   },
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   component: () => import('@/views/404/index.vue'),
-  //   meta: { hidden: true },
-  // }
+  {
+    path: '/user',
+    component: () => import('@/layout/index.vue'),
+    meta: { hidden: true },
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'profile',
+        component: () => import('@/views/sys/profile/index.vue'),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user' }
+      }
+    ]
+  }
 ]
 
 //创建路由器

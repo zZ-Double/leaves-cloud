@@ -1,6 +1,7 @@
 package com.leaves.common.web.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.leaves.common.exception.BizException;
 import com.leaves.common.result.Result;
 import com.leaves.common.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
