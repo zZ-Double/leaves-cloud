@@ -2,6 +2,7 @@ package com.leaves.system.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.leaves.common.mybatis.annotation.DataPermission;
 import com.leaves.system.model.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.leaves.system.model.param.UserParam;
@@ -16,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    @DataPermission(userAlias = "u", deptAlias = "d")
     IPage<UserVO> userPage(Page<SysUser> page, @Param("param") UserParam param);
 
     UserVO userProfile(@Param("userId") String userId);

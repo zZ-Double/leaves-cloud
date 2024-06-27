@@ -42,6 +42,12 @@
             <artifactId>common-security</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>com.leaves</groupId>
+            <artifactId>common-core</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>
