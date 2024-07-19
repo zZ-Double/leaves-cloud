@@ -8,7 +8,7 @@
         <id property="id" column="id" jdbcType="VARCHAR"/>
         <result property="userId" column="user_id" jdbcType="VARCHAR"/>
         <result property="roleId" column="role_id" jdbcType="VARCHAR"/>
-        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">

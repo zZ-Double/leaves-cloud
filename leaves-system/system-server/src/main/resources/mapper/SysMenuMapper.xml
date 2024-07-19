@@ -41,10 +41,10 @@
                 LEFT JOIN sys_role t3 ON t2.role_id = t3.id
                 LEFT JOIN sys_user_role t4 ON t4.role_id = t3.id
         WHERE
-            t1.del_flag = 0
+            t1.deleted = 0
             AND t1.type != '${@com.leaves.system.model.enums.MenuTypeEnum@BUTTON.getValue()}'
             <if test="userId != null and userId != ''">
-                AND t4.del_flag = 1 AND t4.user_id = #{userId}
+                AND t4.deleted = 0 AND t4.user_id = #{userId}
             </if>
         ORDER BY t1.sort asc
     </select>
@@ -59,12 +59,12 @@
         LEFT JOIN sys_role_menu t2 ON t2.menu_id = t1.id
         LEFT JOIN sys_user_role t3 ON t2.role_id = t3.role_id
         WHERE
-        t1.del_flag = 0 AND
+        t1.deleted = 0 AND
         t1.type = '${@com.leaves.system.model.enums.MenuTypeEnum@BUTTON.getValue()}'
         AND t1.perm IS NOT NULL
         <choose>
             <when test="userId!=null and userId != ''">
-                AND t3.del_flag = 0
+                AND t3.deleted = 0
                 AND t3.user_id = #{userId}
             </when>
             <otherwise>

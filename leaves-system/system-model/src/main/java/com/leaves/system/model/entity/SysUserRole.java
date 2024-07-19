@@ -34,6 +34,6 @@ public class SysUserRole implements Serializable {
     private String roleId;
 
     @TableLogic
-    private Boolean delFlag;
+    private Boolean deleted;
 
 }

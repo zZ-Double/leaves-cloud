@@ -19,7 +19,7 @@
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="deptId" column="dept_id" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
-        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
@@ -35,7 +35,7 @@
         phone_number,description,email_flag,
         phone_flag,sex,avatar,
         salt,login_ip,login_date,
-        last_login_time,status,del_flag,
+        last_login_time,status,deleted,
         create_user,create_time,update_user,
         update_time,remark,dept_id,data_scope
     </sql>
@@ -59,7 +59,7 @@
         LEFT JOIN sys_user_role ur ON u.id = ur.user_id
         LEFT JOIN sys_role r ON ur.role_id = r.id
         <where>
-            u.del_flag = 0 AND r.role_code != 'ROOT'
+            u.deleted = 0 AND r.role_code != 'ROOT'
             <if test="param.keywords != null and param.keywords != ''">
                 AND (u.username LIKE CONCAT('%', #{param.keywords}, '%')
                 OR u.nick_name LIKE CONCAT('%', #{param.keywords}, '%')

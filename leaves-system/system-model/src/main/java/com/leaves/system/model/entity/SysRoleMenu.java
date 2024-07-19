@@ -34,7 +34,7 @@ public class SysRoleMenu implements Serializable {
      * 删除标志位
      */
     @TableLogic
-    private Integer delFlag;
+    private Integer deleted;
 
     public SysRoleMenu(String roleId, String menuId) {
         this.roleId = roleId;

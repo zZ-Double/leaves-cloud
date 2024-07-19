@@ -8,11 +8,11 @@
             <result property="id" column="id" jdbcType="VARCHAR"/>
             <result property="roleId" column="role_id" jdbcType="VARCHAR"/>
             <result property="menuId" column="menu_id" jdbcType="VARCHAR"/>
-            <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,role_id,menu_id,
-        del_flag
+        deleted
     </sql>
 </mapper>

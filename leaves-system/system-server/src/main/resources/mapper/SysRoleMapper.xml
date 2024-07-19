@@ -10,7 +10,7 @@
         <result property="roleCode" column="role_code" jdbcType="VARCHAR"/>
         <result property="dataScope" column="data_scope" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
-        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
@@ -21,7 +21,7 @@
     <sql id="Base_Column_List">
         id
         ,role_name,role_code,
-        data_scope,status,del_flag,
+        data_scope,status,deleted,
         create_user,create_time,update_user,
         update_time,remark
     </sql>
@@ -33,8 +33,8 @@
         FROM
         sys_role r LEFT JOIN sys_user_role ur on r.id = ur.role_id
         <where>
-            r.del_flag = 0
-            AND ur.del_flag = 0
+            r.deleted = 0
+            AND ur.deleted = 0
             <choose>
                 <when test="userId != null and userid != ''">
                     AND ur.user_id = #{userId}
@@ -53,8 +53,8 @@
         FROM
         sys_role r LEFT JOIN sys_user_role ur on r.id = ur.role_id
         <where>
-            r.del_flag = 0
-            AND ur.del_flag = 0
+            r.deleted = 0
+            AND ur.deleted = 0
             <choose>
                 <when test="userId != null and userid != ''">
                     AND ur.user_id = #{userId}

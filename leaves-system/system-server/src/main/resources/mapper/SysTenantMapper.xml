@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaves.system.mapper.SysTenantMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.leaves.system.model.entity.SysTenant">
+        <id column="id" property="id" />
+        <result column="tenant_name" property="tenantName" />
+        <result column="begin_date" property="beginDate" />
+        <result column="end_date" property="endDate" />
+        <result column="status" property="status" />
+        <result column="deleted" property="deleted" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tenant_name, begin_date, end_date, status, deleted, create_user, create_time, update_time, update_user, remark
+    </sql>
+
+    <select id="tenantPage" resultType="com.leaves.system.model.entity.SysTenant">
+        select id,
+               tenant_name,
+               begin_date,
+               end_date,
+               status,
+               deleted,
+               create_user,
+               create_time,
+               update_time,
+               update_user,
+               remark,
+               DATEDIFF(end_date, begin_date) as dateDiff
+        from leaves_system.sys_tenant
+        <where>
+            deleted = 0
+            <if test="param.keywords != null and param.keywords != ''">
+                AND tenant_name LIKE CONCAT('%', #{param.keywords}, '%')
+            </if>
+            <if test="param.status != null">
+                AND status = #{param.status}
+            </if>
+        </where>
+    </select>
+
+</mapper>
