@@ -39,5 +39,5 @@ public class BaseEntity implements Serializable {
      * 删除标志
      */
     @TableLogic
-    private Boolean delFlag;
+    private Boolean deleted;
 }

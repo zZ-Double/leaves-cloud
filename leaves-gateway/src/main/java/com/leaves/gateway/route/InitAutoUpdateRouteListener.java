@@ -22,7 +22,7 @@ public class InitAutoUpdateRouteListener implements ApplicationListener<Applicat
     @Value("${spring.cloud.nacos.discovery.autoUpdateRoute.enable:true}")
     private boolean isAutoUpdateRoute;
 
-    @Value("${spring.cloud.nacos.discovery.autoUpdateRoute.runSecond:30}")
+    @Value("${spring.cloud.nacos.discovery.autoUpdateRoute.runSecond:10}")
     private int taskRunSecond;
 
     @Autowired
