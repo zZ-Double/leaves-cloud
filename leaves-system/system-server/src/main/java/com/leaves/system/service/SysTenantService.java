@@ -16,6 +16,12 @@ import com.leaves.system.model.param.TenantParam;
  */
 public interface SysTenantService extends IService<SysTenant> {
 
+    Boolean tenantSave(SysTenant tenant);
+
+    Boolean tenantUpdate(SysTenant tenant);
+
     IPage<SysTenant> tenantPage(TenantParam param);
+
+    SysTenant tenantQuery(String id);
 
 }

@@ -28,7 +28,7 @@ public class SysTenantController {
     @PreAuthorize("hasPerm('sys:tenant:save')")
     @OperaLog(title = "新增租户")
     public Boolean saveTenant(@RequestBody SysTenant sysTenant) {
-        return tenantService.save(sysTenant);
+        return tenantService.tenantSave(sysTenant);
     }
 
     @ApiOperation(value = "删除租户")
@@ -44,7 +44,7 @@ public class SysTenantController {
     @PreAuthorize("hasPerm('sys:tenant:update')")
     @OperaLog(title = "修改租户")
     public Boolean updateTenant(@RequestBody SysTenant sysTenant) {
-        return tenantService.updateById(sysTenant);
+        return tenantService.tenantUpdate(sysTenant);
     }
 
     @ApiOperation(value = "租户分页")
@@ -60,7 +60,7 @@ public class SysTenantController {
     @PreAuthorize("hasPerm('sys:tenant:query')")
     @OperaLog(title = "租户详情")
     public SysTenant tenant(@PathVariable String id) {
-        return tenantService.getById(id);
+        return tenantService.tenantQuery(id);
     }
 
 }

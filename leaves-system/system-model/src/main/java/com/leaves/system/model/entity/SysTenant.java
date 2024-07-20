@@ -10,9 +10,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -38,13 +41,13 @@ public class SysTenant implements Serializable {
     private String tenantName;
 
     @ApiModelProperty(value = "有效期开始时间")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime beginDate;
 
     @ApiModelProperty(value = "有效期结束时间")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
     @ApiModelProperty(value = "状态（1正常 0停用）")
@@ -80,5 +83,9 @@ public class SysTenant implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "有效期天数")
     private Integer dateDiff;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "有效期回显")
+    private List<String> dateRange = new ArrayList<>(2);
 
 }
