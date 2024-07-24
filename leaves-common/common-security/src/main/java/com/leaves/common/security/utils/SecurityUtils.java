@@ -61,6 +61,16 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取用户昵称/姓名
+     *
+     * @return nickname
+     */
+    public static String getTenantId() {
+        String tenantId = Convert.toStr(getTokenAttributes().get("tenantId"));
+        return tenantId;
+    }
+
+    /**
      * 获取用户角色
      *
      * @return 角色Code集合

@@ -53,13 +53,18 @@
             u.create_time,
             u.dept_id,
             d.dept_name as dept_name,
+            GROUP_CONCAT( t.tenant_name ) AS tenant_names,
             GROUP_CONCAT( r.role_name ) AS role_names
         FROM sys_user u
         LEFT JOIN sys_dept d ON u.dept_id = d.id
         LEFT JOIN sys_user_role ur ON u.id = ur.user_id
         LEFT JOIN sys_role r ON ur.role_id = r.id
+        LEFT JOIN sys_tenant t ON u.tenant_id = t.id
         <where>
             u.deleted = 0 AND r.role_code != 'ROOT'
+            <if test="param.tenantId != null and param.tenantId != ''">
+                AND u.tenant_id = #{tenantId}
+            </if>
             <if test="param.keywords != null and param.keywords != ''">
                 AND (u.username LIKE CONCAT('%', #{param.keywords}, '%')
                 OR u.nick_name LIKE CONCAT('%', #{param.keywords}, '%')

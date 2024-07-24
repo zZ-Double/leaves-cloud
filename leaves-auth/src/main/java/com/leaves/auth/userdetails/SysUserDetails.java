@@ -38,6 +38,11 @@ public class SysUserDetails implements UserDetails {
     private Integer dataScope;
 
     /**
+     * 用户租户ID
+     */
+    private String tenantId;
+
+    /**
      * 默认字段
      */
     private String username;
@@ -55,6 +60,7 @@ public class SysUserDetails implements UserDetails {
         this.setUsername(user.getUsername());
         this.setDeptId(user.getDeptId());
         this.setDataScope(user.getDataScope());
+        this.setTenantId(user.getTenantId());
         this.setPassword(PasswordEncoderTypeEnum.BCRYPT.getPrefix() + user.getPassword());
         this.setEnabled(user.getStatus().getValue() == StatusEnum.ENABLE.getValue());
         if (CollectionUtil.isNotEmpty(user.getRoles())) {

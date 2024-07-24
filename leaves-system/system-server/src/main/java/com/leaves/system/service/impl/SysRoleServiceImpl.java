@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -85,8 +86,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                                                 .or()
                                                 .like(StrUtil.isNotBlank(param.getKeywords()), SysRole::getRoleCode, param.getKeywords())
                         )
-//                        .ne(!SecurityUtils.isRoot(), SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
-                        .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
+
+                        .eq(!SecurityUtils.isRoot(), SysRole::getTenantId, SecurityUtils.getTenantId())
+                        .ne(!SecurityUtils.isRoot(), SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE));
     }
 
     @Override
@@ -119,10 +121,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<Option> roleOptions() {
+    public List<Option> roleOptions(String tenantId) {
         // 查询数据
         List<SysRole> roleList = this.list(new LambdaQueryWrapper<SysRole>()
                 .ne(SysRole::getRoleCode, GlobalConstants.ROOT_ROLE_CODE)
+                .eq(!SecurityUtils.isRoot(), SysRole::getTenantId, SecurityUtils.getTenantId())
+                .eq(SecurityUtils.isRoot() && StrUtil.isNotBlank(tenantId), SysRole::getTenantId, tenantId)
                 .select(SysRole::getId, SysRole::getRoleName)
                 .orderByAsc(SysRole::getCreateTime));
 

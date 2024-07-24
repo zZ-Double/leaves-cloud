@@ -117,6 +117,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public IPage<UserVO> userPage(UserParam param) {
+        if (!SecurityUtils.isRoot()) {
+            param.setTenantId(SecurityUtils.getTenantId());
+        }
         // 查询数据
         return this.baseMapper.userPage(new Page<>(param.getCurrent(), param.getSize()), param);
     }

@@ -45,5 +45,7 @@ public class DeptParam extends BaseParam {
     @ApiModelProperty(value = "部门状态（1正常 0停用）")
     private StatusEnum status;
 
+    private String tenantId;
+
 
 }

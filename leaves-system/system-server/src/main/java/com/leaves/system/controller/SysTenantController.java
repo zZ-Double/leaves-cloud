@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.leaves.common.annotation.OperaLog;
 import com.leaves.common.base.BaseParam;
+import com.leaves.common.model.Option;
+import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.model.entity.SysTenant;
 import com.leaves.system.model.param.TenantParam;
 import com.leaves.system.service.SysTenantService;
@@ -14,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Api("租户管理")
 @RestController
@@ -63,4 +66,30 @@ public class SysTenantController {
         return tenantService.tenantQuery(id);
     }
 
+    @ApiOperation(value = "查询租户的菜单列表")
+    @GetMapping(value = "/menus/{tenantId}")
+    @PreAuthorize("hasPerm('sys:tenant:menus:query')")
+    @OperaLog(title = "查询租户的菜单列表")
+    public List<String> getTenantMenuIds(@PathVariable String tenantId) {
+        return tenantService.getTenantMenuIds(tenantId);
+    }
+
+    @ApiOperation(value = "分配租户的资源权限")
+    @PostMapping("/menus/{tenantId}")
+    @PreAuthorize("hasPerm('sys:tenant:menus:save')")
+    @OperaLog(title = "分配租户的资源权限")
+    public Boolean updateRoleMenus(@PathVariable String tenantId, @RequestBody List<String> menuIds) {
+        return tenantService.updateTenantMenus(tenantId, menuIds);
+    }
+
+    @ApiOperation(value = "租户下拉列表")
+    @GetMapping(value = "/options")
+    @PreAuthorize("hasPerm('sys:tenant:options')")
+    @OperaLog(title = "租户下拉列表")
+    public List<Option> tenantOptions(@RequestParam(required = false) String tenantId) {
+        if (!SecurityUtils.isRoot()) {
+            tenantId = SecurityUtils.getTenantId();
+        }
+        return tenantService.tenantOptions(tenantId);
+    }
 }

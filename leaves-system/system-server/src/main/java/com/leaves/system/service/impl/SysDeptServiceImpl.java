@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leaves.common.model.Option;
 import com.leaves.common.constant.GlobalConstants;
 import com.leaves.common.enums.StatusEnum;
+import com.leaves.common.security.utils.SecurityUtils;
 import com.leaves.system.mapper.SysDeptMapper;
 import com.leaves.system.model.entity.SysDept;
 import com.leaves.system.model.param.DeptParam;
@@ -18,6 +19,7 @@ import com.leaves.system.service.SysDeptService;
 import com.leaves.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,6 +95,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(Objects.nonNull(param.getStatus()), SysDept::getStatus, param.getStatus())
+                .eq(!SecurityUtils.isRoot(), SysDept::getTenantId, SecurityUtils.getTenantId())
+                .eq(SecurityUtils.isRoot() && StrUtil.isNotBlank(param.getTenantId()),
+                        SysDept::getTenantId, param.getTenantId())
                 .like(StrUtil.isNotBlank(param.getDeptName()), SysDept::getDeptName, param.getDeptName())
                 .like(StrUtil.isNotBlank(param.getLeader()), SysDept::getLeader, param.getLeader())
                 .orderByAsc(SysDept::getParentId, SysDept::getOrderNum);
@@ -126,9 +131,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      * 部门下拉选项
      */
     @Override
-    public List<Option> deptOptions() {
+    public List<Option> deptOptions(@RequestParam(required = false) String tenantId) {
         List<SysDept> deptList = this.list(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getStatus, StatusEnum.ENABLE.getValue())
+                .eq(!SecurityUtils.isRoot(), SysDept::getTenantId, SecurityUtils.getTenantId())
+                .eq(SecurityUtils.isRoot() && StrUtil.isNotBlank(tenantId), SysDept::getTenantId, tenantId)
                 .select(SysDept::getId, SysDept::getParentId, SysDept::getDeptName)
                 .orderByAsc(SysDept::getOrderNum)
         );

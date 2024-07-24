@@ -70,7 +70,7 @@ public class SysDeptController {
     @GetMapping(value = "/options")
     @PreAuthorize("hasPerm('sys:dept:options')")
     @OperaLog(title = "部门下拉列表")
-    public List<Option> options() {
-        return deptService.deptOptions();
+    public List<Option> options(@RequestParam(required = false) String tenantId) {
+        return deptService.deptOptions(tenantId);
     }
 }

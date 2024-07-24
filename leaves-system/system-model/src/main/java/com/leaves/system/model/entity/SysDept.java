@@ -54,5 +54,6 @@ public class SysDept extends BaseEntity {
      */
     private StatusEnum status;
 
+    private String tenantId;
 
 }

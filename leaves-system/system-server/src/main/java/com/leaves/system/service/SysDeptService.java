@@ -5,6 +5,7 @@ import com.leaves.common.model.Option;
 import com.leaves.system.model.entity.SysDept;
 import com.leaves.system.model.param.DeptParam;
 import com.leaves.system.model.vo.DeptVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface SysDeptService extends IService<SysDept> {
 
     List<DeptVO> listDept(DeptParam param);
 
-    List<Option> deptOptions();
+    List<Option> deptOptions(String tenantId);
 }

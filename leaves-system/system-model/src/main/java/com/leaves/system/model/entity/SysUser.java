@@ -93,4 +93,6 @@ public class SysUser extends BaseEntity {
      */
     private Integer dataScope;
 
+    private String tenantId;
+
 }

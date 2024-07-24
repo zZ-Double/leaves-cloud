@@ -85,8 +85,8 @@ public class SysRoleController {
     @GetMapping(value = "/options")
     @PreAuthorize("hasPerm('sys:role:options')")
     @OperaLog(title = "角色下拉列表")
-    public List<Option> roleOptions() {
-        return roleService.roleOptions();
+    public List<Option> roleOptions(@RequestParam(required = false) String tenantId) {
+        return roleService.roleOptions(tenantId);
     }
 
 }

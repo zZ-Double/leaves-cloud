@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaves.system.mapper.SysTenantMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.leaves.system.model.entity.SysTenantMenu">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="tenantId" column="tenant_id" jdbcType="VARCHAR"/>
+            <result property="menuId" column="menu_id" jdbcType="VARCHAR"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tenant_id,menu_id,
+        deleted
+    </sql>
+</mapper>

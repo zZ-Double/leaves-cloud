@@ -39,5 +39,7 @@ public class SysRole extends BaseEntity {
      */
     private String remark;
 
+    private String tenantId;
+
 
 }

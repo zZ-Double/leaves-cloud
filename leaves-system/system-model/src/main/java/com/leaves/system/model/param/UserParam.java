@@ -27,4 +27,6 @@ public class UserParam extends BaseParam {
     // 部门ID
     private String deptId;
 
+    private String tenantId;
+
 }

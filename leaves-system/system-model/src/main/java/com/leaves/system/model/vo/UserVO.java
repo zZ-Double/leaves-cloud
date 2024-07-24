@@ -32,6 +32,11 @@ public class UserVO extends SysUser {
     private String roleNames;
 
     /**
+     * 角色名称
+     */
+    private String tenantNames;
+
+    /**
      * 角色ID集合
      */
     private List<String> roleIds;

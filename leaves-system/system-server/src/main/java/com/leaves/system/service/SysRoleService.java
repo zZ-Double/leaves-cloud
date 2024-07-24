@@ -72,5 +72,5 @@ public interface SysRoleService extends IService<SysRole> {
     Set<String> getRoles(String userId);
 
 
-    List<Option> roleOptions();
+    List<Option> roleOptions(String tenantId);
 }
